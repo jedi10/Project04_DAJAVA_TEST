@@ -47,10 +47,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    92,3%
+    92,9%
   </span>
   <span class="absValue">
-    (12/ 13)
+    (13/ 14)
   </span>
 </td>
 </tr>
@@ -85,10 +85,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    92,9%
+    93,3%
   </span>
   <span class="absValue">
-    (13/ 14)
+    (14/ 15)
   </span>
 </td>
 </tr>
@@ -103,38 +103,41 @@
 <i>3</i>&nbsp;import com.parkit.parkingsystem.constants.Fare;
 <i>4</i>&nbsp;import com.parkit.parkingsystem.model.Ticket;
 <i>5</i>&nbsp;
-<b class="fc"><i>6</i>&nbsp;public class FareCalculatorService {</b>
-<i>7</i>&nbsp;
-<i>8</i>&nbsp;    public void calculateFare(Ticket ticket){
-<b class="fc"><i>9</i>&nbsp;        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){</b>
-<b class="fc"><i>10</i>&nbsp;            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot;+ticket.getOutTime().toString());</b>
-<i>11</i>&nbsp;        }
-<i>12</i>&nbsp;
-<b class="fc"><i>13</i>&nbsp;        int inHour = ticket.getInTime().getHours();</b>
-<b class="fc"><i>14</i>&nbsp;        int outHour = ticket.getOutTime().getHours();</b>
+<i>6</i>&nbsp;import java.time.Duration;
+<i>7</i>&nbsp;import java.time.Instant;
+<i>8</i>&nbsp;
+<b class="fc"><i>9</i>&nbsp;public class FareCalculatorService {</b>
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    public void calculateFare(Ticket ticket){
+<b class="fc"><i>12</i>&nbsp;        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){</b>
+<b class="fc"><i>13</i>&nbsp;            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot;+ticket.getOutTime().toString());</b>
+<i>14</i>&nbsp;        }
 <i>15</i>&nbsp;
-<i>16</i>&nbsp;        //TODO: Some tests are failing here. Need to check if this logic is correct
-<b class="fc"><i>17</i>&nbsp;        int duration = outHour - inHour;</b>
+<b class="fc"><i>16</i>&nbsp;        Instant inInstant = ticket.getInTime().toInstant();</b>
+<b class="fc"><i>17</i>&nbsp;        Instant outInstant = ticket.getOutTime().toInstant();</b>
 <i>18</i>&nbsp;
-<b class="fc"><i>19</i>&nbsp;        switch (ticket.getParkingSpot().getParkingType()){</b>
-<i>20</i>&nbsp;            case CAR: {
-<b class="fc"><i>21</i>&nbsp;                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);</b>
-<b class="fc"><i>22</i>&nbsp;                break;</b>
-<i>23</i>&nbsp;            }
-<i>24</i>&nbsp;            case BIKE: {
-<b class="fc"><i>25</i>&nbsp;                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);</b>
-<b class="fc"><i>26</i>&nbsp;                break;</b>
-<i>27</i>&nbsp;            }
-<b class="nc"><i>28</i>&nbsp;            default: throw new IllegalArgumentException(&quot;Unkown Parking Type&quot;);</b>
-<i>29</i>&nbsp;        }
-<b class="fc"><i>30</i>&nbsp;    }</b>
-<i>31</i>&nbsp;}
+<b class="fc"><i>19</i>&nbsp;        Duration duration = Duration.between(inInstant, outInstant);</b>
+<b class="fc"><i>20</i>&nbsp;        long durationMinute = duration.toMinutes();</b>
+<i>21</i>&nbsp;
+<b class="fc"><i>22</i>&nbsp;        switch (ticket.getParkingSpot().getParkingType()){</b>
+<i>23</i>&nbsp;            case CAR: {
+<b class="fc"><i>24</i>&nbsp;                ticket.setPrice(durationMinute * (Fare.CAR_RATE_PER_HOUR/60));</b>
+<b class="fc"><i>25</i>&nbsp;                break;</b>
+<i>26</i>&nbsp;            }
+<i>27</i>&nbsp;            case BIKE: {
+<b class="fc"><i>28</i>&nbsp;                ticket.setPrice(durationMinute * (Fare.BIKE_RATE_PER_HOUR/60));</b>
+<b class="fc"><i>29</i>&nbsp;                break;</b>
+<i>30</i>&nbsp;            }
+<b class="nc"><i>31</i>&nbsp;            default: throw new IllegalArgumentException(&quot;Unkown Parking Type&quot;);</b>
+<i>32</i>&nbsp;        }
+<b class="fc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-01 17:41</div>
+    <div style="float:right;">generated on 2020-05-01 18:26</div>
 </div>
 </body>
 </html>
