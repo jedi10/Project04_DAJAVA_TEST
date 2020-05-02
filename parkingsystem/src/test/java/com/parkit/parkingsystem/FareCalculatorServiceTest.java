@@ -138,7 +138,7 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
-        assertEquals(ticket.getPrice(), 0);
+        assertEquals(0, ticket.getPrice());
     }
 
     @ParameterizedTest(name = "For {0} Minute(s) Bike Parking Time, Price should be 0")
@@ -153,7 +153,7 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
-        assertEquals(ticket.getPrice(), 0);
+        assertEquals(0, ticket.getPrice());
     }
 
 }
