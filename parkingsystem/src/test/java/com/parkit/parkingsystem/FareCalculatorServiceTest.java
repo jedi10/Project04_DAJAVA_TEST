@@ -7,6 +7,7 @@ import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.FareCalculatorService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -126,6 +127,7 @@ public class FareCalculatorServiceTest {
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
     }
 
+    @DisplayName("free Fare Car When Short Parking Time")
     @ParameterizedTest(name = "For {0} Minute(s) Car Parking Time, Price should be 0")
     @ValueSource(ints = { 1, 15, 29 })
     public void calculateFareCarWithLessThan30MinParkingTime(int arg){
@@ -141,6 +143,7 @@ public class FareCalculatorServiceTest {
         assertEquals(0, ticket.getPrice());
     }
 
+    @DisplayName("free Fare Bike When Short Parking Time")
     @ParameterizedTest(name = "For {0} Minute(s) Bike Parking Time, Price should be 0")
     @ValueSource(ints = { 1, 15, 29 })
     public void calculateFareBikeWithLessThan30MinParkingTime(int arg){
@@ -155,5 +158,4 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
         assertEquals(0, ticket.getPrice());
     }
-
 }
