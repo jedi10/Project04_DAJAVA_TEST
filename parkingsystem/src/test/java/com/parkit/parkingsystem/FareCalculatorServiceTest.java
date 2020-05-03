@@ -6,9 +6,6 @@ import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.FareCalculatorService;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -69,7 +66,7 @@ public class FareCalculatorServiceTest {
                 ticket.getPrice(), "Ticket Price is bad");
     }
 
-    @Order(8)
+    @Order(9)
     @Test
     public void calculateFareUnknownType(){
         Date inTime = new Date();
@@ -83,7 +80,7 @@ public class FareCalculatorServiceTest {
         assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
 
-    @Order(9)
+    @Order(10)
     @Test
     public void calculateFareBikeWithFutureInTime(){
         Date inTime = new Date();
@@ -135,10 +132,13 @@ public class FareCalculatorServiceTest {
                 ticket.getPrice(), "Ticket Price is bad");
     }
 
-    @Test
+    @DisplayName("Calculate Car Fare When Parking Time equal or greater than 1 Day")
     @Order(7)
+    @ParameterizedTest(name = "For {0} Day(s) Car Parking Time")
+    @CsvSource({"1, 24", "2, 48", "3, 72" })
+    public void calculateFareCarWithMoreThanADayParkingTime(int dayTime, double priceRatio){
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  24 * 60 * 60 * 1000) );//24 hours parking time should give 24 * parking fare per hour
+        inTime.setTime( System.currentTimeMillis() - ((24 * dayTime) * 60 * 60 * 1000));//24 hours parking time should give 24 * parking fare per hour
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
 
@@ -146,10 +146,29 @@ public class FareCalculatorServiceTest {
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
-        assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
+        assertEquals(priceRatio * Fare.CAR_RATE_PER_HOUR ,
+                ticket.getPrice(), "Ticket Price is bad");
     }
 
-    @DisplayName("free Fare Car When Short Parking Time")
+    @DisplayName("Calculate Bike Fare When Parking Time equal or greater than 1 Day")
+    @Order(8)
+    @ParameterizedTest(name = "For {0} Day(s) Bike Parking Time")
+    @CsvSource({"1, 24", "2, 48", "3, 72" })
+    public void calculateFareBikeWithMoreThanADayParkingTime(int dayTime, double priceRatio){
+        Date inTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - ((24 * dayTime) * 60 * 60 * 1000));//24 hours parking time should give 24 * parking fare per hour
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        fareCalculatorService.calculateFare(ticket);
+        assertEquals(priceRatio * Fare.BIKE_RATE_PER_HOUR,
+                ticket.getPrice(), "Ticket Price is bad");
+    }
+
+    @DisplayName("free Car Fare When Short Parking Time")
     @Order(1)
     @ParameterizedTest(name = "For {0} Minute(s) Car Parking Time, Price should be 0")
     @ValueSource(ints = { 1, 15, 29 })
@@ -166,7 +185,7 @@ public class FareCalculatorServiceTest {
         assertEquals(0, ticket.getPrice(), "Ticket Price is bad");
     }
 
-    @DisplayName("free Fare Bike When Short Parking Time")
+    @DisplayName("free Bike Fare When Short Parking Time")
     @Order(2)
     @ParameterizedTest(name = "For {0} Minute(s) Bike Parking Time, Price should be 0")
     @ValueSource(ints = { 1, 15, 29 })
