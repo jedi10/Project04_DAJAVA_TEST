@@ -5,7 +5,7 @@ import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.FareCalculatorService;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FareCalculatorServiceTest {
 
     private static FareCalculatorService fareCalculatorService;
@@ -33,6 +34,7 @@ public class FareCalculatorServiceTest {
     }
 
     @DisplayName("Calculate Car Fare When Parking Time equal or greater than 60 Minutes")
+    @Order(5)
     @ParameterizedTest(name = "For {0} Minute(s) Car Parking Time")
     @CsvSource({"60, 1",  "90, 1.5", "120, 2" })
     public void calculateFareCar(int minuteTime, double priceRatio){
@@ -50,6 +52,7 @@ public class FareCalculatorServiceTest {
     }
 
     @DisplayName("Calculate Bike Fare When Parking Time equal or greater than 60 Minutes")
+    @Order(6)
     @ParameterizedTest(name = "For {0} Minute(s) Bike Parking Time")
     @CsvSource({"60, 1",  "90, 1.5", "120, 2" })
     public void calculateFareBike(int minuteTime, double priceRatio){
@@ -66,6 +69,7 @@ public class FareCalculatorServiceTest {
                 ticket.getPrice(), "Ticket Price is bad");
     }
 
+    @Order(8)
     @Test
     public void calculateFareUnknownType(){
         Date inTime = new Date();
@@ -79,6 +83,7 @@ public class FareCalculatorServiceTest {
         assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
 
+    @Order(9)
     @Test
     public void calculateFareBikeWithFutureInTime(){
         Date inTime = new Date();
@@ -93,6 +98,7 @@ public class FareCalculatorServiceTest {
     }
 
     @DisplayName("Calculate Bike Fare When Parking Time between 30-60 Minutes")
+    @Order(4)
     @ParameterizedTest(name = "For {0} Minute(s) Bike Parking Time, Price is not 0")
     @CsvSource({"30, 0.5",  "45, 0.75", "54, 0.9" })
     public void calculateFareBikeWithLessThanOneHourParkingTime(int minuteTime, double priceRatio){
@@ -111,6 +117,7 @@ public class FareCalculatorServiceTest {
     }
 
     @DisplayName("Calculate Car Fare When Parking Time between 30-60 Minutes")
+    @Order(3)
     @ParameterizedTest(name = "For {0} Minute(s) Car Parking Time, Price is not 0")
     @CsvSource({"30, 0.5",  "45, 0.75", "54, 0.9" })
     public void calculateFareCarWithLessThanOneHourParkingTime(int minuteTime, double priceRatio){
@@ -129,7 +136,7 @@ public class FareCalculatorServiceTest {
     }
 
     @Test
-    public void calculateFareCarWithMoreThanADayParkingTime(){
+    @Order(7)
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  24 * 60 * 60 * 1000) );//24 hours parking time should give 24 * parking fare per hour
         Date outTime = new Date();
@@ -143,6 +150,7 @@ public class FareCalculatorServiceTest {
     }
 
     @DisplayName("free Fare Car When Short Parking Time")
+    @Order(1)
     @ParameterizedTest(name = "For {0} Minute(s) Car Parking Time, Price should be 0")
     @ValueSource(ints = { 1, 15, 29 })
     public void calculateFareCarWithLessThan30MinParkingTime(int arg){
@@ -159,6 +167,7 @@ public class FareCalculatorServiceTest {
     }
 
     @DisplayName("free Fare Bike When Short Parking Time")
+    @Order(2)
     @ParameterizedTest(name = "For {0} Minute(s) Bike Parking Time, Price should be 0")
     @ValueSource(ints = { 1, 15, 29 })
     public void calculateFareBikeWithLessThan30MinParkingTime(int arg){
