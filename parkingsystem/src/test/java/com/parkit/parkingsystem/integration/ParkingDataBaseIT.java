@@ -4,8 +4,12 @@ import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
+import com.parkit.parkingsystem.model.ParkingSpot;
+import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
+//import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +27,8 @@ public class ParkingDataBaseIT {
     private static TicketDAO ticketDAO;
     private static DataBasePrepareService dataBasePrepareService;
 
+    private final static String vehiculeRegNumber = "ABCDEF";
+
     @Mock
     private static InputReaderUtil inputReaderUtil;
 
@@ -38,7 +44,7 @@ public class ParkingDataBaseIT {
     @BeforeEach
     private void setUpPerTest() throws Exception {
         when(inputReaderUtil.readSelection()).thenReturn(1);
-        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn(vehiculeRegNumber);
         dataBasePrepareService.clearDataBaseEntries();
     }
 
@@ -52,6 +58,21 @@ public class ParkingDataBaseIT {
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
         //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
+        //Get Ticket by vehicleRegNumber
+        Ticket ticket = ticketDAO.getTicket(vehiculeRegNumber);
+        assertNotNull(ticket,
+                "Request don't return anything: no ticket");
+        assertTrue(ticket instanceof Ticket,
+                "Returned Object is not a Ticket ");
+        assertEquals(vehiculeRegNumber, ticket.getVehicleRegNumber(),
+                "Vehicule Registration Number is not the same");
+        ParkingSpot parkingSpot = ticket.getParkingSpot();
+        assertNotNull(parkingSpot,
+                "Ticket don't have any parking spot (null)");
+        assertTrue(parkingSpot instanceof ParkingSpot,
+                "Returned object is not a parking Spot");
+        assertFalse(parkingSpot.isAvailable(),
+                "Availability of parking spot has not been updated");
     }
 
     @Test
