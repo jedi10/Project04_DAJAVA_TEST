@@ -11,10 +11,8 @@ import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 //import org.junit.Assert;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,6 +23,8 @@ import java.util.Date;
 
 import static org.mockito.Mockito.when;
 
+@DisplayName("Integration Test Parking with DBB")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {
 
@@ -59,11 +59,13 @@ public class ParkingDataBaseIT {
 
     }
 
+    @DisplayName("Parking a car")
+    @Order(1)
     @Test
     public void testParkingACar(){
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
+
         //Get Ticket by vehicleRegNumber
         Ticket ticket = ticketDAO.getTicket(vehiculeRegNumber);
         assertNotNull(ticket,
@@ -72,6 +74,7 @@ public class ParkingDataBaseIT {
                 "Returned Object is not a Ticket ");
         assertEquals(vehiculeRegNumber, ticket.getVehicleRegNumber(),
                 "Vehicule Registration Number is not the same");
+
         ParkingSpot parkingSpot = ticket.getParkingSpot();
         assertNotNull(parkingSpot,
                 "Ticket don't have any parking spot (null)");
@@ -81,13 +84,15 @@ public class ParkingDataBaseIT {
                 "Availability of parking spot has not been updated");
     }
 
+    @DisplayName("Exit a Car from Parking")
+    @Order(2)
     @Test
     public void testParkingLotExit(){
         //GIVEN
         testParkingACar();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 
-        //Create a Ticket with a proper InTime
+        //Create a Ticket with a proper Time Property
         Ticket ticket = ticketDAO.getTicket(vehiculeRegNumber);
         assertNotNull(ticket,
                 "Request don't return anything: no ticket");
@@ -101,7 +106,6 @@ public class ParkingDataBaseIT {
 
         //WHEN
         parkingService.processExitingVehicle();
-        //TODO: check that the fare generated and out time are populated correctly in the database
 
         //THEN
         ticket = ticketDAO.getTicket(vehiculeRegNumber);
