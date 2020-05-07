@@ -56,7 +56,9 @@ public class ParkingDataBaseIT {
 
     @AfterAll
     private static void tearDown(){
-
+        dataBasePrepareService = null;
+        parkingSpotDAO = null;
+        ticketDAO = null;
     }
 
     @DisplayName("Parking a car")
