@@ -75,10 +75,12 @@ public class TicketDAO {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
             ps.setDouble(1, ticket.getPrice());
-            ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
-            ps.setInt(3,ticket.getId());
-            ps.execute();
-            return true;
+            ps.setTimestamp(2, new Timestamp(ticket.getInTime().getTime()));
+            ps.setTimestamp(3, new Timestamp(ticket.getOutTime().getTime()));
+            ps.setInt(4,ticket.getId());
+            int updateRowCount = ps.executeUpdate();
+            dataBaseConfig.closePreparedStatement(ps);
+            return (updateRowCount == 1);
         }catch (Exception ex){
             logger.error("Error saving ticket info",ex);
         }finally {
