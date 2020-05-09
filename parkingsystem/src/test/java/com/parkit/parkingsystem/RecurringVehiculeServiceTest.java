@@ -8,6 +8,9 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -20,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class RecurringVehiculeServiceTest {
     private static RecurringVehiculeService recurringVehiculeService;
     private static RecurringVehicule recurringVehicule;
@@ -29,7 +33,7 @@ public class RecurringVehiculeServiceTest {
 
     @BeforeAll
     private static void setUp() {
-        recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
+
     }
 
     @BeforeEach
@@ -41,16 +45,14 @@ public class RecurringVehiculeServiceTest {
         recurringVehicule = new RecurringVehicule(vehRegNumber, Date.from(now()));
         listRecurringVehicule.add(recurringVehicule);
         when(recurringVehiculeDAO.getListOfVehiculeRegNumber()).thenReturn(listRecurringVehicule);
-        when(recurringVehiculeDAO.addVehiculeRegNumber()).thenReturn(true);
-        when(recurringVehiculeDAO.updateVehiculeRegNumber()).thenReturn(true);
+        when(recurringVehiculeDAO.addVehiculeRegNumber(recurringVehicule)).thenReturn(true);
+        when(recurringVehiculeDAO.updateVehiculeRegNumber(recurringVehicule)).thenReturn(true);
+        recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
     }
 
     //a car leave parking. Price is calculating. Want to check if discount available.
     @Test
     public void checkRecurringVehicule(){
-        //GIVEN
-        //vehiculeRegNumber
-
 
         //WHEN
         //give vehiculeRegNumber to a class service which return true if present or false if not
@@ -63,8 +65,6 @@ public class RecurringVehiculeServiceTest {
 
     @Test
     public void addRecurringVehicule(){
-        //GIVEN
-        //vehiculeRegNumber
 
         //WHEN
         //give vehiculeRegNumber to a class service which can save it in Model Class vehiculeRegList
@@ -77,8 +77,6 @@ public class RecurringVehiculeServiceTest {
     }
     @Test
     public void updateRecurringVehicule(){
-        //GIVEN
-        //vehiculeRegNumber
 
         //WHEN
         //give vehiculeRegNumber to a class service which can save it in Model Class vehiculeRegList
@@ -87,6 +85,5 @@ public class RecurringVehiculeServiceTest {
         //THEN
         //assert vehicule is reccorded
         assertTrue(vehiculeUpdateIsOK, "Vehicule update is OK");
-
     }
 }
