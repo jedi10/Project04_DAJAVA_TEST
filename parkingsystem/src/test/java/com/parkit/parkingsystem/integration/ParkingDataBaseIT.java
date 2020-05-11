@@ -23,7 +23,7 @@ import java.util.Date;
 
 import static org.mockito.Mockito.when;
 
-@DisplayName("Integration Test Parking with DBB")
+@DisplayName("Integration Test with DBB: Parking/Exit a Car")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {
@@ -65,18 +65,27 @@ public class ParkingDataBaseIT {
     @Order(1)
     @Test
     public void testParkingACar(){
+        //GIVEN
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+
+
+        //WHEN
         parkingService.processIncomingVehicle();
 
-        //Get Ticket by vehicleRegNumber
+        //THEN
         Ticket ticket = ticketDAO.getTicket(vehiculeRegNumber);
         assertNotNull(ticket,
                 "Request don't return anything: no ticket");
         assertTrue(ticket instanceof Ticket,
                 "Returned Object is not a Ticket ");
+        //*********************************************
+        //*******TEST Vehicule Number in DBB **********
+        //*********************************************
         assertEquals(vehiculeRegNumber, ticket.getVehicleRegNumber(),
                 "Vehicule Registration Number is not the same");
-
+        //*********************************************
+        //***TEST Parking Spot Availability in DBB ****
+        //*********************************************
         ParkingSpot parkingSpot = ticket.getParkingSpot();
         assertNotNull(parkingSpot,
                 "Ticket don't have any parking spot (null)");
@@ -93,18 +102,22 @@ public class ParkingDataBaseIT {
         //GIVEN
         testParkingACar();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-
-        //Create a Ticket with a proper Time Property
+        //*********************************************
+        //******Update In Time Ticket Property*********
+        //*********************************************
         Ticket ticket = ticketDAO.getTicket(vehiculeRegNumber);
         assertNotNull(ticket,
                 "Request don't return anything: no ticket");
         assertTrue(ticket instanceof Ticket,
                 "Returned Object is not a Ticket ");
-
         ticket.setInTime(Date.from(Instant.now().minus(Duration.ofHours(1))));
         ticket.setOutTime(ticket.getInTime());
         boolean updateTicket = ticketDAO.updateTicket(ticket);
-        assertTrue(updateTicket,"Tests can't go further because ticket Time is not updated");
+        assertTrue(updateTicket,
+                "Tests can't go further because ticket Time is not updated");
+        System.out.println("Updated in-time for vehicle number:"
+                +ticket.getVehicleRegNumber()+" is:"
+                +ticket.getInTime());
 
         //WHEN
         parkingService.processExitingVehicle();
@@ -115,16 +128,21 @@ public class ParkingDataBaseIT {
                 "Request don't return anything: no ticket");
         assertTrue(ticket instanceof Ticket,
                 "Returned Object is not a Ticket ");
-        assertNotNull(ticket.getPrice(),
-                "Price is null");
-        assertEquals(Fare.CAR_RATE_PER_HOUR, ticket.getPrice(),
-                "Price is not the proper one");
-
+        //*********************************************
+        //******TEST Out Time Registered on DBB *******
+        //*********************************************
         assertNotNull(ticket.getOutTime(),
                 "Out Time is null");
         Instant expectedOutTime  = ticket.getInTime().toInstant().plus(Duration.ofHours(1));
         assertEquals(expectedOutTime, ticket.getOutTime().toInstant(),
                 "OutTime is not the expected one");
+        //*********************************************
+        //*******TEST Price of Parking Service ********
+        //*********************************************
+        assertNotNull(ticket.getPrice(),
+                "Price is null");
+        assertEquals(Fare.CAR_RATE_PER_HOUR, ticket.getPrice(),
+                "Price is not the proper one");
 
     }
 
