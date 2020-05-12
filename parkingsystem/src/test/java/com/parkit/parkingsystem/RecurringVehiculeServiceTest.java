@@ -7,10 +7,13 @@ import com.parkit.parkingsystem.service.RecurringVehiculeService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -62,7 +65,7 @@ public class RecurringVehiculeServiceTest {
         boolean vehiculeIsRecurring = recurringVehiculeService.checkRecurringVehicule(recurringVehicule);
 
         //THEN
-        //assert presence return true
+        verify(recurringVehiculeDAO, Mockito.times(1)).getListOfVehiculeRegNumber();
         assertTrue(vehiculeIsRecurring, "Vehicule is not recurring. Should be.");
     }
 
@@ -76,8 +79,9 @@ public class RecurringVehiculeServiceTest {
         boolean vehiculeAddIsOK = recurringVehiculeService.addRecurringVehicule(recurringVehicule);
 
         //THEN
-        //assert vehicule is reccorded
-        assertTrue(vehiculeAddIsOK, "Vehicule save is OK");
+        verify(recurringVehiculeDAO, Mockito.times(1))
+                .addVehiculeRegNumber(any(RecurringVehicule.class));
+        assertTrue(vehiculeAddIsOK, "Vehicule is not recorded in DBB (Stub)");
 
     }
 
@@ -91,7 +95,8 @@ public class RecurringVehiculeServiceTest {
         boolean vehiculeUpdateIsOK = recurringVehiculeService.updateRecurringVehicule(recurringVehicule);
 
         //THEN
-        //assert vehicule is reccorded
-        assertTrue(vehiculeUpdateIsOK, "Vehicule update is OK");
+        verify(recurringVehiculeDAO, Mockito.times(1))
+                .updateVehiculeRegNumber(any(RecurringVehicule.class));
+        assertTrue(vehiculeUpdateIsOK, "Vehicule is not update in DBB (Stub)");
     }
 }
