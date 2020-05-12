@@ -65,8 +65,9 @@ public class RecurringVehiculeServiceTest {
         boolean vehiculeIsRecurring = recurringVehiculeService.checkRecurringVehicule(recurringVehicule);
 
         //THEN
+        assertTrue(vehiculeIsRecurring,
+                "Vehicule is not recurring: checkRecurringVehicule method doesn't work");
         verify(recurringVehiculeDAO, Mockito.times(1)).getListOfVehiculeRegNumber();
-        assertTrue(vehiculeIsRecurring, "Vehicule is not recurring. Should be.");
     }
 
     @DisplayName("Add Recurring Vehicule")
@@ -79,10 +80,9 @@ public class RecurringVehiculeServiceTest {
         boolean vehiculeAddIsOK = recurringVehiculeService.addRecurringVehicule(recurringVehicule);
 
         //THEN
+        assertTrue(vehiculeAddIsOK, "Vehicule is not recorded in DBB (Stub)");
         verify(recurringVehiculeDAO, Mockito.times(1))
                 .addVehiculeRegNumber(any(RecurringVehicule.class));
-        assertTrue(vehiculeAddIsOK, "Vehicule is not recorded in DBB (Stub)");
-
     }
 
     @DisplayName("Update Recurring Vehicule")
@@ -95,8 +95,8 @@ public class RecurringVehiculeServiceTest {
         boolean vehiculeUpdateIsOK = recurringVehiculeService.updateRecurringVehicule(recurringVehicule);
 
         //THEN
+        assertTrue(vehiculeUpdateIsOK, "Vehicule is not update in DBB (Stub)");
         verify(recurringVehiculeDAO, Mockito.times(1))
                 .updateVehiculeRegNumber(any(RecurringVehicule.class));
-        assertTrue(vehiculeUpdateIsOK, "Vehicule is not update in DBB (Stub)");
     }
 }
