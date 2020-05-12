@@ -43,7 +43,7 @@ public class FareCalculatorServiceTest {
         //GIVEN
         ticket = new Ticket();
         recurringVehicule = new RecurringVehicule("ABCDEFG", Date.from(now()));
-        when(recurringVehiculeService.checkRecurringVehicule(recurringVehicule)).thenReturn(true);
+        //when(recurringVehiculeService.checkRecurringVehicule(recurringVehicule)).thenReturn(true);
     }
 
     @DisplayName("Calculate Car Fare When Parking Time equal or greater than 60 Minutes")
@@ -218,6 +218,7 @@ public class FareCalculatorServiceTest {
         assertEquals(0, ticket.getPrice(), "Ticket Price is bad");
     }
 
+    @Disabled
     @DisplayName("Calculate Car Fare When Discount for Recurring")
     @Test
     @Order(11)
@@ -241,6 +242,7 @@ public class FareCalculatorServiceTest {
                 ticket.getPrice(), "Ticket Price is bad");
     }
 
+    @Disabled
     @DisplayName("Calculate Bike Fare When Discount for Recurring")
     @Test
     @Order(12)

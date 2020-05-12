@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class RecurringVehiculeServiceTest {
     private static RecurringVehiculeService recurringVehiculeService;
@@ -51,6 +52,8 @@ public class RecurringVehiculeServiceTest {
     }
 
     //a car leave parking. Price is calculating. Want to check if discount available.
+    @DisplayName("Check Recurring Vehicule")
+    @Order(1)
     @Test
     public void checkRecurringVehicule(){
 
@@ -63,6 +66,8 @@ public class RecurringVehiculeServiceTest {
         assertTrue(vehiculeIsRecurring, "Vehicule is not recurring. Should be.");
     }
 
+    @DisplayName("Add Recurring Vehicule")
+    @Order(2)
     @Test
     public void addRecurringVehicule(){
 
@@ -75,6 +80,9 @@ public class RecurringVehiculeServiceTest {
         assertTrue(vehiculeAddIsOK, "Vehicule save is OK");
 
     }
+
+    @DisplayName("Update Recurring Vehicule")
+    @Order(3)
     @Test
     public void updateRecurringVehicule(){
 
