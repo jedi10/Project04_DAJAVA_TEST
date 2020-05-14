@@ -42,7 +42,7 @@ public class FareCalculatorServiceTest {
     private void setUpPerTest() {
         //GIVEN
         ticket = new Ticket();
-        recurringVehicule = new RecurringVehicule("ABCDEFG", Date.from(now()));
+        recurringVehicule = new RecurringVehicule("ABCDEFG", now());
         //when(recurringVehiculeService.checkRecurringVehicule(recurringVehicule)).thenReturn(true);
     }
 

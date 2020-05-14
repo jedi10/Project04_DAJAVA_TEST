@@ -9,6 +9,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
@@ -32,13 +33,13 @@ public class RecurringVehiculeDAOTest {
         recurringVehiculeDAO.dataBaseConfig = dataBaseTestConfig;
         dataBasePrepareService = new DataBasePrepareService();
 
-        Date lastVisit = Date.from(now().minus(Duration.ofHours(1)));
+        Instant lastVisit = now().minus(Duration.ofHours(1));
         recurringVehiculeTest = new RecurringVehicule( vehiculeRegNumber, lastVisit);
     }
 
     @AfterAll
     private void setUpPerTest() throws Exception {
-        dataBasePrepareService.clearDataBaseEntries();
+        //dataBasePrepareService.clearDataBaseEntries();
     }
 
     @Order(1)
@@ -75,7 +76,7 @@ public class RecurringVehiculeDAOTest {
     @Test
     public void getListOfRecurrentVehicule(){
         //GIVEN
-        RecurringVehicule recurringVehiculeTest2 = new RecurringVehicule("ABCDEF", Date.from(now().minus(Duration.ofHours(1))));
+        RecurringVehicule recurringVehiculeTest2 = new RecurringVehicule("ABCDEF", now().minus(Duration.ofHours(1)));
         RecurringVehicule lineCreation = recurringVehiculeDAO.addRecurrentVehicule(recurringVehiculeTest2);
 
         //WHEN
@@ -94,7 +95,7 @@ public class RecurringVehiculeDAOTest {
     public void updateRecurrentVehicule(){
         //GIVEN
         RecurringVehicule recurringVehiculeDBB_before = recurringVehiculeDAO.getRecurringVehicule(vehiculeRegNumber);
-        Date dateNew = Date.from(now());
+        Instant dateNew = now();
         recurringVehiculeDBB_before.setLastVisit(dateNew);
 
         //WHEN
@@ -105,7 +106,7 @@ public class RecurringVehiculeDAOTest {
         assertEquals(1, updateRecurrentVehicle, "Update has not been executed properly");
         assertNotNull(recurringVehiculeDBB_before, "DBB doesn't return Recurring Vehicule");
         assertNotNull(recurringVehiculeDBB_after, "DBB doesn't return Recurring Vehicule");
-        assertTrue(recurringVehiculeDBB_before.getLastVisit().equals(recurringVehiculeDBB_after.getLastVisit()),
+        assertEquals(recurringVehiculeDBB_before.getLastVisit().getEpochSecond(), recurringVehiculeDBB_after.getLastVisit().getEpochSecond(),
                 "DBB Recurrent Vehicle Date isn't updated in DBB");
     }
 }

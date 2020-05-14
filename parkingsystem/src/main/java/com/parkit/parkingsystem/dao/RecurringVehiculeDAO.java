@@ -34,7 +34,7 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
             while(rs.next()){
                 recurringVehicule = new RecurringVehicule(
                         rs.getString(2),
-                        rs.getTimestamp(3));
+                        rs.getTimestamp(3).toInstant());
                 recurringVehicule.setId(rs.getInt(1));
                 recurringVehiculeList.add(recurringVehicule);
             }
@@ -61,7 +61,7 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
             if(rs.next()){
                 recurringVehicule = new RecurringVehicule(
                         rs.getString(2),
-                        rs.getTimestamp(3));
+                        rs.getTimestamp(3).toInstant());
                 recurringVehicule.setId(rs.getInt(1));
             } else if (!rs.isBeforeFirst() ) {
                 //System.out.println("No data");
@@ -88,7 +88,7 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
                     Statement.RETURN_GENERATED_KEYS);
             //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
             ps.setString(1, recurringVehicule.getVehicleRegNumber());
-            ps.setTimestamp(2, new Timestamp(recurringVehicule.getLastVisit().getTime()));
+            ps.setTimestamp(2, Timestamp.from(recurringVehicule.getLastVisit()));
             //https://www.codota.com/code/java/classes/java.sql.PreparedStatement
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
@@ -122,7 +122,7 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
             PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_RECURRING_VEHICLE);
             //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
             ps.setString(1, recurringVehicule.getVehicleRegNumber());
-            ps.setTimestamp(2, new Timestamp(recurringVehicule.getLastVisit().getTime()));
+            ps.setTimestamp(2, Timestamp.from(recurringVehicule.getLastVisit()));
             ps.setInt(3,recurringVehicule.getId());
             //https://stackoverflow.com/questions/23088708/prepared-statement-returns-false-but-row-is-inserted
             result = ps.executeUpdate();

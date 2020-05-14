@@ -45,11 +45,11 @@ public class RecurringVehiculeServiceTest {
         //GIVEN
         String vehRegNumber = "ABCDEFG";
         List<RecurringVehicule> listRecurringVehicule = new ArrayList<>();
-        listRecurringVehicule.add(new RecurringVehicule("MPLOKIJ", Date.from(now())));
-        recurringVehicule = new RecurringVehicule(vehRegNumber, Date.from(now()));
+        listRecurringVehicule.add(new RecurringVehicule("MPLOKIJ", now()));
+        recurringVehicule = new RecurringVehicule(vehRegNumber, now());
         listRecurringVehicule.add(recurringVehicule);
         when(recurringVehiculeDAO.getListOfRecurrentVehicule()).thenReturn(listRecurringVehicule);
-        when(recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule)).thenReturn(new RecurringVehicule("ABCDEF", Date.from(now())));
+        when(recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule)).thenReturn(new RecurringVehicule("ABCDEF", now()));
         when(recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule)).thenReturn(1);
         recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
     }

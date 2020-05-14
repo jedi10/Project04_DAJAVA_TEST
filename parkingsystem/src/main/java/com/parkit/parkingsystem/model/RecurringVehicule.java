@@ -1,15 +1,15 @@
 package com.parkit.parkingsystem.model;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.Objects;
 
 public class RecurringVehicule {
 
     private int id;
     private String vehicleRegNumber;
-    private Date lastVisit;
+    private Instant lastVisit;
 
-    public RecurringVehicule(String vehicleRegNumber, Date lastVisit) {
+    public RecurringVehicule(String vehicleRegNumber, Instant lastVisit) {
         this.vehicleRegNumber = vehicleRegNumber;
         this.lastVisit = lastVisit;
     }
@@ -30,11 +30,11 @@ public class RecurringVehicule {
         this.vehicleRegNumber = vehicleRegNumber;
     }
 
-    public Date getLastVisit() {
+    public Instant getLastVisit() {
         return lastVisit;
     }
 
-    public void setLastVisit(Date lastVisit) {
+    public void setLastVisit(Instant lastVisit) {
         this.lastVisit = lastVisit;
     }
 
