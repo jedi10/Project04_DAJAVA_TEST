@@ -11,6 +11,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class RecurringVehiculeDAOTest {
 
     @AfterAll
     private void setUpPerTest() throws Exception {
-        //dataBasePrepareService.clearDataBaseEntries();
+        dataBasePrepareService.clearDataBaseEntries();
     }
 
     @Order(1)
@@ -106,7 +107,8 @@ public class RecurringVehiculeDAOTest {
         assertEquals(1, updateRecurrentVehicle, "Update has not been executed properly");
         assertNotNull(recurringVehiculeDBB_before, "DBB doesn't return Recurring Vehicule");
         assertNotNull(recurringVehiculeDBB_after, "DBB doesn't return Recurring Vehicule");
-        assertEquals(recurringVehiculeDBB_before.getLastVisit().getEpochSecond(), recurringVehiculeDBB_after.getLastVisit().getEpochSecond(),
+        assertEquals(recurringVehiculeDBB_before.getLastVisit().truncatedTo(ChronoUnit.SECONDS),
+                recurringVehiculeDBB_after.getLastVisit().truncatedTo(ChronoUnit.SECONDS),
                 "DBB Recurrent Vehicle Date isn't updated in DBB");
     }
 }

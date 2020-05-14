@@ -12,6 +12,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +92,7 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
                     DBConstants.SAVE_RECURRING_VEHICLE,
                     Statement.RETURN_GENERATED_KEYS);
             //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
+            //OffsetDateTime odt = OffsetDateTime.ofInstant(recurringVehicule.getLastVisit(), ZoneOffset.UTC);
             ps.setString(1, recurringVehicule.getVehicleRegNumber());
             ps.setTimestamp(2, Timestamp.from(recurringVehicule.getLastVisit()));
             //https://www.codota.com/code/java/classes/java.sql.PreparedStatement
@@ -134,3 +140,8 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
         return result;
     }
 }
+
+
+
+////https://stackoverflow.com/questions/42766674/java-convert-java-time-instant-to-java-sql-timestamp-without-zone-offset
+//https://stackoverflow.com/questions/43259722/java-date-and-timestamp-from-instance-of-zoneddatetime-utc
