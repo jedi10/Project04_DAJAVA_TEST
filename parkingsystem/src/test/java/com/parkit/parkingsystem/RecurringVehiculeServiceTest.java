@@ -49,8 +49,8 @@ public class RecurringVehiculeServiceTest {
         recurringVehicule = new RecurringVehicule(vehRegNumber, Date.from(now()));
         listRecurringVehicule.add(recurringVehicule);
         when(recurringVehiculeDAO.getListOfRecurrentVehicule()).thenReturn(listRecurringVehicule);
-        when(recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule)).thenReturn(true);
-        when(recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule)).thenReturn(true);
+        when(recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule)).thenReturn(new RecurringVehicule("ABCDEF", Date.from(now())));
+        when(recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule)).thenReturn(1);
         recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
     }
 
@@ -77,10 +77,10 @@ public class RecurringVehiculeServiceTest {
 
         //WHEN
         //give vehiculeRegNumber to a class service which can save it in Model Class vehiculeRegList
-        boolean vehiculeAddIsOK = recurringVehiculeService.addRecurringVehicule(recurringVehicule);
+        RecurringVehicule vehiculeAdded = recurringVehiculeService.addRecurringVehicule(recurringVehicule);
 
         //THEN
-        assertTrue(vehiculeAddIsOK, "Vehicule is not recorded in DBB (Stub)");
+        assertNotNull(vehiculeAdded, "Vehicule is not recorded in DBB (Stub)");
         verify(recurringVehiculeDAO, Mockito.times(1))
                 .addRecurrentVehicule(any(RecurringVehicule.class));
     }
@@ -92,10 +92,10 @@ public class RecurringVehiculeServiceTest {
 
         //WHEN
         //give vehiculeRegNumber to a class service which can save it in Model Class vehiculeRegList
-        boolean vehiculeUpdateIsOK = recurringVehiculeService.updateRecurringVehicule(recurringVehicule);
+        int vehiculeUpdate = recurringVehiculeService.updateRecurringVehicule(recurringVehicule);
 
         //THEN
-        assertTrue(vehiculeUpdateIsOK, "Vehicule is not update in DBB (Stub)");
+        assertEquals(1, vehiculeUpdate, "Vehicule is not update in DBB (Stub)");
         verify(recurringVehiculeDAO, Mockito.times(1))
                 .updateRecurrentVehicule(any(RecurringVehicule.class));
     }

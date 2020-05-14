@@ -24,14 +24,14 @@ public class RecurringVehiculeService {
         return result;
     }
 
-    public boolean addRecurringVehicule(RecurringVehicule recurringVehicule) {
-        boolean result = false;
+    public RecurringVehicule addRecurringVehicule(RecurringVehicule recurringVehicule) {
+        RecurringVehicule result = null;
         result = recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule);
         return result;
     }
 
-    public boolean updateRecurringVehicule(RecurringVehicule recurringVehicule) {
-        boolean result = false;
+    public int updateRecurringVehicule(RecurringVehicule recurringVehicule) {
+        int result = 0;
         result = recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule);
         return result;
     }

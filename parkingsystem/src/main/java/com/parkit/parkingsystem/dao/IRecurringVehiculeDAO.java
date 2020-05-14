@@ -10,8 +10,8 @@ public interface IRecurringVehiculeDAO {
 
     public RecurringVehicule getRecurringVehicule(String vehicleRegNumber);
 
-    public boolean addRecurrentVehicule(RecurringVehicule recurringVehicule);
+    public RecurringVehicule addRecurrentVehicule(RecurringVehicule recurringVehicule);
 
-    public boolean updateRecurrentVehicule(RecurringVehicule recurringVehicule);
+    public int updateRecurrentVehicule(RecurringVehicule recurringVehicule);
 
 }
