@@ -48,9 +48,9 @@ public class RecurringVehiculeServiceTest {
         listRecurringVehicule.add(new RecurringVehicule("MPLOKIJ", Date.from(now())));
         recurringVehicule = new RecurringVehicule(vehRegNumber, Date.from(now()));
         listRecurringVehicule.add(recurringVehicule);
-        when(recurringVehiculeDAO.getListOfVehiculeRegNumber()).thenReturn(listRecurringVehicule);
-        when(recurringVehiculeDAO.addVehiculeRegNumber(recurringVehicule)).thenReturn(true);
-        when(recurringVehiculeDAO.updateVehiculeRegNumber(recurringVehicule)).thenReturn(true);
+        when(recurringVehiculeDAO.getListOfRecurrentVehicule()).thenReturn(listRecurringVehicule);
+        when(recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule)).thenReturn(true);
+        when(recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule)).thenReturn(true);
         recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
     }
 
@@ -67,7 +67,7 @@ public class RecurringVehiculeServiceTest {
         //THEN
         assertTrue(vehiculeIsRecurring,
                 "Vehicule is not recurring: checkRecurringVehicule method doesn't work");
-        verify(recurringVehiculeDAO, Mockito.times(1)).getListOfVehiculeRegNumber();
+        verify(recurringVehiculeDAO, Mockito.times(1)).getListOfRecurrentVehicule();
     }
 
     @DisplayName("Add Recurring Vehicule")
@@ -82,7 +82,7 @@ public class RecurringVehiculeServiceTest {
         //THEN
         assertTrue(vehiculeAddIsOK, "Vehicule is not recorded in DBB (Stub)");
         verify(recurringVehiculeDAO, Mockito.times(1))
-                .addVehiculeRegNumber(any(RecurringVehicule.class));
+                .addRecurrentVehicule(any(RecurringVehicule.class));
     }
 
     @DisplayName("Update Recurring Vehicule")
@@ -97,6 +97,6 @@ public class RecurringVehiculeServiceTest {
         //THEN
         assertTrue(vehiculeUpdateIsOK, "Vehicule is not update in DBB (Stub)");
         verify(recurringVehiculeDAO, Mockito.times(1))
-                .updateVehiculeRegNumber(any(RecurringVehicule.class));
+                .updateRecurrentVehicule(any(RecurringVehicule.class));
     }
 }

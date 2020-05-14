@@ -15,7 +15,7 @@ public class RecurringVehiculeService {
 
     public boolean checkRecurringVehicule(RecurringVehicule vehiculeToCheck) {
         boolean result = false;
-        List<RecurringVehicule> recurringvehiculeList =  recurringVehiculeDAO.getListOfVehiculeRegNumber();
+        List<RecurringVehicule> recurringvehiculeList =  recurringVehiculeDAO.getListOfRecurrentVehicule();
         for (RecurringVehicule each :  recurringvehiculeList ){
             if (each.equals(vehiculeToCheck)){
                 result = true;
@@ -26,13 +26,13 @@ public class RecurringVehiculeService {
 
     public boolean addRecurringVehicule(RecurringVehicule recurringVehicule) {
         boolean result = false;
-        result = recurringVehiculeDAO.addVehiculeRegNumber(recurringVehicule);
+        result = recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule);
         return result;
     }
 
     public boolean updateRecurringVehicule(RecurringVehicule recurringVehicule) {
         boolean result = false;
-        result = recurringVehiculeDAO.updateVehiculeRegNumber(recurringVehicule);
+        result = recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule);
         return result;
     }
 }

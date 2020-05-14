@@ -6,10 +6,12 @@ import java.util.List;
 
 public interface IRecurringVehiculeDAO {
 
-    public List<RecurringVehicule> getListOfVehiculeRegNumber();
+    public List<RecurringVehicule> getListOfRecurrentVehicule();
 
-    public boolean addVehiculeRegNumber(RecurringVehicule recurringVehicule);
+    public RecurringVehicule getRecurringVehicule(String vehicleRegNumber);
 
-    public boolean updateVehiculeRegNumber(RecurringVehicule recurringVehicule);
+    public boolean addRecurrentVehicule(RecurringVehicule recurringVehicule);
+
+    public boolean updateRecurrentVehicule(RecurringVehicule recurringVehicule);
 
 }
