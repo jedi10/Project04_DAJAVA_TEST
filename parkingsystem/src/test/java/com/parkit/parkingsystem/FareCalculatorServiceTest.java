@@ -6,6 +6,7 @@ import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.RecurringVehicule;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.FareCalculatorService;
+import com.parkit.parkingsystem.service.IRecurringVehiculeService;
 import com.parkit.parkingsystem.service.RecurringVehiculeService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,7 @@ import java.util.Date;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FareCalculatorServiceTest {
 
     private static FareCalculatorService fareCalculatorService;
@@ -30,12 +32,11 @@ public class FareCalculatorServiceTest {
     private RecurringVehicule recurringVehicule;
 
     @Mock
-    private static RecurringVehiculeService recurringVehiculeService;
+    private IRecurringVehiculeService recurringVehiculeService;
 
     @BeforeAll
-    private static void setUp() {
-        fareCalculatorService = new FareCalculatorService();
-        fareCalculatorService.setRecurringVehiculeService(recurringVehiculeService);
+    private void setUp() {
+
     }
 
     @BeforeEach
@@ -43,7 +44,6 @@ public class FareCalculatorServiceTest {
         //GIVEN
         ticket = new Ticket();
         recurringVehicule = new RecurringVehicule("ABCDEFG", now());
-        //when(recurringVehiculeService.checkRecurringVehicule(recurringVehicule)).thenReturn(true);
     }
 
     @DisplayName("Calculate Car Fare When Parking Time equal or greater than 60 Minutes")
@@ -218,7 +218,7 @@ public class FareCalculatorServiceTest {
         assertEquals(0, ticket.getPrice(), "Ticket Price is bad");
     }
 
-    @Disabled
+
     @DisplayName("Calculate Car Fare When Discount for Recurring")
     @Test
     @Order(11)
@@ -229,20 +229,24 @@ public class FareCalculatorServiceTest {
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
 
+        fareCalculatorService = new FareCalculatorService();
+        when(recurringVehiculeService.applyDiscount("ABCDEFG")).thenReturn(true);
+        fareCalculatorService.setRecurringVehiculeService(recurringVehiculeService);
+
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
+        ticket.setVehicleRegNumber("ABCDEFG");
         ticket.setParkingSpot(parkingSpot);
-        double discount = 0.95;
 
         //WHEN
         fareCalculatorService.calculateFare(ticket);
 
         //THEN
-        assertEquals( discount * Fare.CAR_RATE_PER_HOUR,
+        assertEquals( Fare.RECURRENT_DISCOUNT * Fare.CAR_RATE_PER_HOUR,
                 ticket.getPrice(), "Ticket Price is bad");
     }
 
-    @Disabled
+
     @DisplayName("Calculate Bike Fare When Discount for Recurring")
     @Test
     @Order(12)
@@ -253,16 +257,20 @@ public class FareCalculatorServiceTest {
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
 
+        fareCalculatorService = new FareCalculatorService();
+        when(recurringVehiculeService.applyDiscount("ABCDEFG")).thenReturn(true);
+        fareCalculatorService.setRecurringVehiculeService(recurringVehiculeService);
+
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
+        ticket.setVehicleRegNumber("ABCDEFG");
         ticket.setParkingSpot(parkingSpot);
-        double discount = 0.95;
 
         //WHEN
         fareCalculatorService.calculateFare(ticket);
 
         //THEN
-        assertEquals( discount * Fare.BIKE_RATE_PER_HOUR,
+        assertEquals( Fare.RECURRENT_DISCOUNT * Fare.BIKE_RATE_PER_HOUR,
                 ticket.getPrice(), "Ticket Price is bad");
     }
 

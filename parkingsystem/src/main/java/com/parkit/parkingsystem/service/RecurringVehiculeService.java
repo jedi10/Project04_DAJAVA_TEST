@@ -9,7 +9,7 @@ import java.util.List;
 
 import static java.time.Instant.now;
 
-public class RecurringVehiculeService {
+public class RecurringVehiculeService implements IRecurringVehiculeService {
 
     private static final Logger logger = LogManager.getLogger("RecurringVehiculeService");
 
@@ -19,6 +19,7 @@ public class RecurringVehiculeService {
         this.recurringVehiculeDAO = recurringVehiculeDAO;
     }
 
+    @Override
     public boolean applyDiscount(String vehicleRegNumber){
         boolean result = false;
         RecurringVehicule recurringVehicule = checkRecurringVehicule(vehicleRegNumber);
@@ -34,6 +35,7 @@ public class RecurringVehiculeService {
         return result;
     }
 
+    @Override
     public RecurringVehicule checkRecurringVehicule(String vehicleRegNumber) {
         RecurringVehicule result = null;
 
@@ -43,6 +45,7 @@ public class RecurringVehiculeService {
         return result;
     }
 
+    @Override
     public RecurringVehicule addRecurringVehicule(RecurringVehicule recurringVehicule) {
         RecurringVehicule result = null;
         result = recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule);
@@ -52,6 +55,7 @@ public class RecurringVehiculeService {
         return result;
     }
 
+    @Override
     public int updateRecurringVehicule(RecurringVehicule recurringVehicule) {
         int result = 0;
         result = recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule);

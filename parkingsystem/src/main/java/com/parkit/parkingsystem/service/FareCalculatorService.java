@@ -8,14 +8,16 @@ import java.time.Instant;
 
 import static com.parkit.parkingsystem.constants.Fare.RECURRENT_DISCOUNT;
 
-public class FareCalculatorService {
+public class FareCalculatorService implements IFareCalculatorService {
 
-    private RecurringVehiculeService recurringVehiculeService;
+    private IRecurringVehiculeService recurringVehiculeService;
 
-    public void setRecurringVehiculeService(RecurringVehiculeService recurringVehiculeService) {
+    @Override
+    public void setRecurringVehiculeService(IRecurringVehiculeService recurringVehiculeService) {
         this.recurringVehiculeService = recurringVehiculeService;
     }
 
+    @Override
     public void calculateFare(Ticket ticket){
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
@@ -31,13 +33,13 @@ public class FareCalculatorService {
             switch (ticket.getParkingSpot().getParkingType()){
                 case CAR: {
                     double price = durationMinute * (Fare.CAR_RATE_PER_HOUR/60);
-                    price = recurrent_discount(price, ticket.getVehicleRegNumber());
+                    price = recurrentDiscount(price, ticket.getVehicleRegNumber());
                     ticket.setPrice(price);
                     break;
                 }
                 case BIKE: {
                     double price = durationMinute * (Fare.BIKE_RATE_PER_HOUR/60);
-                    price = recurrent_discount(price, ticket.getVehicleRegNumber());
+                    price = recurrentDiscount(price, ticket.getVehicleRegNumber());
                     ticket.setPrice(price);
                     break;
                 }
@@ -48,7 +50,7 @@ public class FareCalculatorService {
         }
     }
 
-    private double recurrent_discount(double price, String vehicleRegNumber){
+    private double recurrentDiscount(double price, String vehicleRegNumber){
         if(recurringVehiculeService.applyDiscount(vehicleRegNumber)){
             price = price * Fare.RECURRENT_DISCOUNT;
         }
