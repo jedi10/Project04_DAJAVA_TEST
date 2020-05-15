@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RecurringVehiculeServiceTest {
     private static RecurringVehiculeService recurringVehiculeService;
     private static RecurringVehicule recurringVehicule;
+    private static String vehRegNumber = "ABCDEFG";
 
     @Mock
     private static IRecurringVehiculeDAO recurringVehiculeDAO;
@@ -43,12 +44,9 @@ public class RecurringVehiculeServiceTest {
     @BeforeEach
     private void setUpPerTest() {
         //GIVEN
-        String vehRegNumber = "ABCDEFG";
-        List<RecurringVehicule> listRecurringVehicule = new ArrayList<>();
-        listRecurringVehicule.add(new RecurringVehicule("MPLOKIJ", now()));
         recurringVehicule = new RecurringVehicule(vehRegNumber, now());
-        listRecurringVehicule.add(recurringVehicule);
-        when(recurringVehiculeDAO.getListOfRecurrentVehicule()).thenReturn(listRecurringVehicule);
+        when(recurringVehiculeDAO.getRecurringVehicule(vehRegNumber)).thenReturn(recurringVehicule);
+        //when(recurringVehiculeDAO.getListOfRecurrentVehicule()).thenReturn(listRecurringVehicule);
         when(recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule)).thenReturn(new RecurringVehicule("ABCDEF", now()));
         when(recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule)).thenReturn(1);
         recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
@@ -62,12 +60,14 @@ public class RecurringVehiculeServiceTest {
 
         //WHEN
         //give vehiculeRegNumber to a class service which return true if present or false if not
-        boolean vehiculeIsRecurring = recurringVehiculeService.checkRecurringVehicule(recurringVehicule);
+        RecurringVehicule vehiculeIsRecurring = recurringVehiculeService.checkRecurringVehicule(vehRegNumber);
 
         //THEN
-        assertTrue(vehiculeIsRecurring,
+        assertNotNull(vehiculeIsRecurring,
                 "Vehicule is not recurring: checkRecurringVehicule method doesn't work");
-        verify(recurringVehiculeDAO, Mockito.times(1)).getListOfRecurrentVehicule();
+        assertEquals(recurringVehicule, vehiculeIsRecurring,
+                "Vehicule is not recurring: checkRecurringVehicule method doesn't work");
+        verify(recurringVehiculeDAO, Mockito.times(1)).getRecurringVehicule(any(String.class));
     }
 
     @DisplayName("Add Recurring Vehicule")

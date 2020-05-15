@@ -13,14 +13,12 @@ public class RecurringVehiculeService {
         this.recurringVehiculeDAO = recurringVehiculeDAO;
     }
 
-    public boolean checkRecurringVehicule(RecurringVehicule vehiculeToCheck) {
-        boolean result = false;
-        List<RecurringVehicule> recurringvehiculeList =  recurringVehiculeDAO.getListOfRecurrentVehicule();
-        for (RecurringVehicule each :  recurringvehiculeList ){
-            if (each.equals(vehiculeToCheck)){
-                result = true;
-            };
-        }
+    public RecurringVehicule checkRecurringVehicule(String vehicleRegNumber) {
+        RecurringVehicule result = null;
+
+        result =  recurringVehiculeDAO
+                .getRecurringVehicule(vehicleRegNumber);
+
         return result;
     }
 
