@@ -28,69 +28,61 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
 
     @Override
     public List<RecurringVehicule> getListOfRecurrentVehicule() {
-        Connection con = null;
         RecurringVehicule recurringVehicule = null;
         List<RecurringVehicule> recurringVehiculeList = new ArrayList<>();
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.GET_RECURRING_VEHICLE_LIST);
+        try(Connection con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(
+                    DBConstants.GET_RECURRING_VEHICLE_LIST);) {
             //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                recurringVehicule = new RecurringVehicule(
-                        rs.getString(2),
-                        rs.getTimestamp(3).toInstant());
-                recurringVehicule.setId(rs.getInt(1));
-                recurringVehiculeList.add(recurringVehicule);
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next()){
+                    recurringVehicule = new RecurringVehicule(
+                            rs.getString(2),
+                            rs.getTimestamp(3).toInstant());
+                    recurringVehicule.setId(rs.getInt(1));
+                    recurringVehiculeList.add(recurringVehicule);
+                }
             }
-            dataBaseConfig.closeResultSet(rs);
-            dataBaseConfig.closePreparedStatement(ps);
         }catch (Exception ex){
             logger.error("Error fetching next available slot",ex);
-        }finally {
-            dataBaseConfig.closeConnection(con);
         }
+
         return recurringVehiculeList;
     }
 
     @Override
     public RecurringVehicule getRecurringVehicule(String vehicleRegNumber) {
-        Connection con = null;
         RecurringVehicule recurringVehicule = null;
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.GET_RECURRING_VEHICLE);
+        try(Connection con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(
+                    DBConstants.GET_RECURRING_VEHICLE);) {
             //ID, VEHICLE_REG_NUMBER, LAST_VIST)
             ps.setString(1, vehicleRegNumber);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                recurringVehicule = new RecurringVehicule(
-                        rs.getString(2),
-                        rs.getTimestamp(3).toInstant());
-                recurringVehicule.setId(rs.getInt(1));
-            } else if (!rs.isBeforeFirst() ) {
-                //System.out.println("No data");
-                logger.error("getRecurringVehicule: No Data ");
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    recurringVehicule = new RecurringVehicule(
+                            rs.getString(2),
+                            rs.getTimestamp(3).toInstant());
+                    recurringVehicule.setId(rs.getInt(1));
+                } else if (!rs.isBeforeFirst() ) {
+                    //System.out.println("No data");
+                    logger.error("getRecurringVehicule: No Data ");
+                }
             }
-            dataBaseConfig.closeResultSet(rs);
-            dataBaseConfig.closePreparedStatement(ps);
         }catch (Exception ex){
             logger.error("Error fetching next available slot",ex);
-        }finally {
-            dataBaseConfig.closeConnection(con);
         }
+
         return recurringVehicule;
     }
 
     @Override
     public RecurringVehicule addRecurrentVehicule(RecurringVehicule recurringVehicule) {
-        Connection con = null;
         RecurringVehicule result = null;
-        try {
-            con = dataBaseConfig.getConnection();
+        try(Connection con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(
                     DBConstants.SAVE_RECURRING_VEHICLE,
-                    Statement.RETURN_GENERATED_KEYS);
+                    Statement.RETURN_GENERATED_KEYS);) {
             //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
             //OffsetDateTime odt = OffsetDateTime.ofInstant(recurringVehicule.getLastVisit(), ZoneOffset.UTC);
             ps.setString(1, recurringVehicule.getVehicleRegNumber());
@@ -110,22 +102,19 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
                     throw new SQLException("Creating Recurrent Vehicle failed, no ID obtained.");
                 }
             }
-            dataBaseConfig.closePreparedStatement(ps);
         }catch (Exception ex){
             logger.error("Error create new entry in recurring_vehicle base",ex);
-        }finally {
-            dataBaseConfig.closeConnection(con);
         }
+
         return result;
     }
 
     @Override
     public int updateRecurrentVehicule(RecurringVehicule recurringVehicule) {
-        Connection con = null;
         int result = 0;
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_RECURRING_VEHICLE);
+        try(Connection con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(
+                    DBConstants.UPDATE_RECURRING_VEHICLE);) {
             //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
             ps.setString(1, recurringVehicule.getVehicleRegNumber());
             ps.setTimestamp(2, Timestamp.from(recurringVehicule.getLastVisit()));
@@ -135,8 +124,6 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
             dataBaseConfig.closePreparedStatement(ps);
         }catch (Exception ex){
             logger.error("Error saving recurringVehicle info",ex);
-        }finally {
-            dataBaseConfig.closeConnection(con);
         }
         return result;
     }
