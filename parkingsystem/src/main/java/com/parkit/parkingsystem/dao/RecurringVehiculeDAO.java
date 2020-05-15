@@ -110,7 +110,7 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
                     throw new SQLException("Creating Recurrent Vehicle failed, no ID obtained.");
                 }
             }
-
+            dataBaseConfig.closePreparedStatement(ps);
         }catch (Exception ex){
             logger.error("Error create new entry in recurring_vehicle base",ex);
         }finally {
@@ -132,6 +132,7 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
             ps.setInt(3,recurringVehicule.getId());
             //https://stackoverflow.com/questions/23088708/prepared-statement-returns-false-but-row-is-inserted
             result = ps.executeUpdate();
+            dataBaseConfig.closePreparedStatement(ps);
         }catch (Exception ex){
             logger.error("Error saving recurringVehicle info",ex);
         }finally {
