@@ -6,6 +6,8 @@ import com.parkit.parkingsystem.model.Ticket;
 import java.time.Duration;
 import java.time.Instant;
 
+import static com.parkit.parkingsystem.constants.Fare.RECURRENT_DISCOUNT;
+
 public class FareCalculatorService {
 
     private RecurringVehiculeService recurringVehiculeService;
@@ -28,11 +30,15 @@ public class FareCalculatorService {
         if (durationMinute > Fare.FREE_PERIOD_TIME_IN_MINUTES){
             switch (ticket.getParkingSpot().getParkingType()){
                 case CAR: {
-                    ticket.setPrice(durationMinute * (Fare.CAR_RATE_PER_HOUR/60));
+                    double price = durationMinute * (Fare.CAR_RATE_PER_HOUR/60);
+                    price = recurrent_discount(price, ticket.getVehicleRegNumber());
+                    ticket.setPrice(price);
                     break;
                 }
                 case BIKE: {
-                    ticket.setPrice(durationMinute * (Fare.BIKE_RATE_PER_HOUR/60));
+                    double price = durationMinute * (Fare.BIKE_RATE_PER_HOUR/60);
+                    price = recurrent_discount(price, ticket.getVehicleRegNumber());
+                    ticket.setPrice(price);
                     break;
                 }
                 default: throw new IllegalArgumentException("Unknown Parking Type");
@@ -40,5 +46,12 @@ public class FareCalculatorService {
         } else {
             ticket.setPrice(0);
         }
+    }
+
+    private double recurrent_discount(double price, String vehicleRegNumber){
+        if(recurringVehiculeService.applyDiscount(vehicleRegNumber)){
+            price = price * Fare.RECURRENT_DISCOUNT;
+        }
+        return price;
     }
 }
