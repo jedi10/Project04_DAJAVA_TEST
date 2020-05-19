@@ -1,6 +1,7 @@
 package com.parkit.parkingsystem.integration;
 
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
+import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
@@ -21,6 +22,7 @@ public class ParkingDataBaseIT {
     private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
     private static ParkingSpotDAO parkingSpotDAO;
     private static TicketDAO ticketDAO;
+    private static RecurringVehiculeDAO recurringVehiculeDAO;
     private static DataBasePrepareService dataBasePrepareService;
 
     @Mock
@@ -45,21 +47,6 @@ public class ParkingDataBaseIT {
     @AfterAll
     private static void tearDown(){
 
-    }
-
-    @Test
-    public void testParkingACar(){
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processIncomingVehicle();
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
-    }
-
-    @Test
-    public void testParkingLotExit(){
-        testParkingACar();
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processExitingVehicle();
-        //TODO: check that the fare generated and out time are populated correctly in the database
     }
 
 }

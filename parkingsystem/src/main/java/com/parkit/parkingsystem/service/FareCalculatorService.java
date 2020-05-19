@@ -1,6 +1,8 @@
 package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.constants.Fare;
+import com.parkit.parkingsystem.dao.IRecurringVehiculeDAO;
+import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
 import com.parkit.parkingsystem.model.Ticket;
 
 import java.time.Duration;
@@ -10,8 +12,28 @@ import static com.parkit.parkingsystem.constants.Fare.RECURRENT_DISCOUNT;
 
 public class FareCalculatorService implements IFareCalculatorService {
 
-    private IRecurringVehiculeService recurringVehiculeService;
+    private IRecurringVehiculeService recurringVehiculeService;// new RecurringVehiculeService(new RecurringVehiculeDAO());
 
+    /**
+     * Constructor for Test
+      */
+    public FareCalculatorService() {
+
+    }
+
+    /**
+     * Constructor
+     * @param recurringVehiculeDAO resource DAO needed to access recurring Vehicle DBB
+     */
+    public FareCalculatorService(IRecurringVehiculeDAO recurringVehiculeDAO) {
+        this.recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
+    }
+
+    /**
+     * Setter for Recurring Vehicle Service
+     * Useful for Test to inject RecurringVehiculeService Mock
+     * @param recurringVehiculeService  Service needed to check recurring Vehicle
+     */
     @Override
     public void setRecurringVehiculeService(IRecurringVehiculeService recurringVehiculeService) {
         this.recurringVehiculeService = recurringVehiculeService;

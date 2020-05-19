@@ -15,6 +15,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import static java.time.Instant.now;
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +27,7 @@ import java.util.Date;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class FareCalculatorServiceTest {
 
     private static FareCalculatorService fareCalculatorService;
@@ -43,7 +46,11 @@ public class FareCalculatorServiceTest {
     private void setUpPerTest() {
         //GIVEN
         ticket = new Ticket();
+        fareCalculatorService = new FareCalculatorService();
         recurringVehicule = new RecurringVehicule("ABCDEFG", now());
+        when(recurringVehiculeService.applyDiscount("ABCDEFG")).thenReturn(true);
+        //Give the mock to the FareCalculatorService
+        fareCalculatorService.setRecurringVehiculeService(recurringVehiculeService);
     }
 
     @DisplayName("Calculate Car Fare When Parking Time equal or greater than 60 Minutes")
@@ -229,10 +236,6 @@ public class FareCalculatorServiceTest {
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
 
-        fareCalculatorService = new FareCalculatorService();
-        when(recurringVehiculeService.applyDiscount("ABCDEFG")).thenReturn(true);
-        fareCalculatorService.setRecurringVehiculeService(recurringVehiculeService);
-
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setVehicleRegNumber("ABCDEFG");
@@ -256,10 +259,6 @@ public class FareCalculatorServiceTest {
         inTime.setTime( System.currentTimeMillis() - ( 60 * 60 * 1000) );
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
-
-        fareCalculatorService = new FareCalculatorService();
-        when(recurringVehiculeService.applyDiscount("ABCDEFG")).thenReturn(true);
-        fareCalculatorService.setRecurringVehiculeService(recurringVehiculeService);
 
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
