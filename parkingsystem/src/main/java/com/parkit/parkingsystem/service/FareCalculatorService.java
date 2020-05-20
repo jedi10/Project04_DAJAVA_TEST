@@ -74,7 +74,9 @@ public class FareCalculatorService implements IFareCalculatorService {
 
     private double recurrentDiscount(double price, String vehicleRegNumber){
         if(recurringVehiculeService.applyDiscount(vehicleRegNumber)){
-            price = price * Fare.RECURRENT_DISCOUNT;
+            double promoScreenNumber = Math.round(price * (1-Fare.RECURRENT_DISCOUNT) * 100.00)/100.00;
+            System.out.println("You get a DISCOUNT of "+ promoScreenNumber);
+            price = Math.round(price * Fare.RECURRENT_DISCOUNT * 100.00)/100.00;
         }
         return price;
     }

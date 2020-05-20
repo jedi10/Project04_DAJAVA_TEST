@@ -23,12 +23,15 @@ public class RecurringVehiculeService implements IRecurringVehiculeService {
     public boolean applyDiscount(String vehicleRegNumber){
         boolean result = false;
         RecurringVehicule recurringVehicule = checkRecurringVehicule(vehicleRegNumber);
+        //if vehicle is already in DBB
         if (null != recurringVehicule){
             result = true;
+            //we update the date
             recurringVehicule.setLastVisit(now());
             updateRecurringVehicule(recurringVehicule);
         } else {
             result = false;
+            //We create a new line in recurrent vehicle base
             RecurringVehicule recurringVehiculeToSaveInDBB = new RecurringVehicule(vehicleRegNumber, now());
             addRecurringVehicule(recurringVehiculeToSaveInDBB);
         }
