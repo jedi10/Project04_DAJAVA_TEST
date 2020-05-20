@@ -19,6 +19,8 @@ public class ParkingService {
 
     private FareCalculatorService fareCalculatorService;
 
+    private RecurringVehiculeService recurringVehiculeService;
+
     private InputReaderUtil inputReaderUtil;
     private ParkingSpotDAO parkingSpotDAO;
     private TicketDAO ticketDAO;
@@ -29,6 +31,7 @@ public class ParkingService {
         this.parkingSpotDAO = parkingSpotDAO;
         this.ticketDAO = ticketDAO;
         this.fareCalculatorService = new FareCalculatorService(recurringVehiculeDAO);
+        this.recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
     }
 
     public void processIncomingVehicle() {
@@ -49,6 +52,11 @@ public class ParkingService {
                 ticket.setInTime(inTime);
                 ticket.setOutTime(null);
                 ticketDAO.saveTicket(ticket);
+                //we have a recurrent vehicle
+                if (null != recurringVehiculeService.checkRecurringVehicule(vehicleRegNumber)){
+                    System.out.println("Welcome back! As a recurring user of our parking lot," +
+                            " you'll benefit from a 5% discount.");
+                }
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number:"+parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:"+vehicleRegNumber+" is:"+inTime);
