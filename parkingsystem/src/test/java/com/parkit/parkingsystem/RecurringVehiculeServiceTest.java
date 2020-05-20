@@ -61,13 +61,16 @@ public class RecurringVehiculeServiceTest {
         //WHEN
         //give vehiculeRegNumber to a class service which return true if present or false if not
         RecurringVehicule vehiculeIsRecurring = recurringVehiculeService.checkRecurringVehicule(vehRegNumber);
+        RecurringVehicule vehiculeNotRecurring = recurringVehiculeService.checkRecurringVehicule("MPLOKIJ");
 
         //THEN
+        assertNull(vehiculeNotRecurring,
+                "Vehicule is not recurring: checkRecurringVehicule should return null");
         assertNotNull(vehiculeIsRecurring,
-                "Vehicule is not recurring: checkRecurringVehicule method doesn't work");
+                "Vehicule is recurring: checkRecurringVehicule method should return an object");
         assertEquals(recurringVehicule, vehiculeIsRecurring,
-                "Vehicule is not recurring: checkRecurringVehicule method doesn't work");
-        verify(recurringVehiculeDAO, Mockito.times(1)).getRecurringVehicule(any(String.class));
+                "Vehicule is recurring: checkRecurringVehicule method should return a recurring vehicle");
+        verify(recurringVehiculeDAO, Mockito.times(2)).getRecurringVehicule(any(String.class));
     }
 
     @DisplayName("Add Recurring Vehicule")
