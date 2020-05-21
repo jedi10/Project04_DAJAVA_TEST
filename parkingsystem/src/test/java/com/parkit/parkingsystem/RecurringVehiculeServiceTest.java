@@ -13,25 +13,25 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.time.Instant.now;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/**
+ * A vehicle leaves parking. Price is calculating. Want to check if discount available.
+ */
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class RecurringVehiculeServiceTest {
     private static RecurringVehiculeService recurringVehiculeService;
     private static RecurringVehicule recurringVehicule;
-    private static String vehRegNumber = "ABCDEFG";
+    private static String recurrentVehRegNumber = "ABCDEFG";
+    private static String notRecurrentVehRegNumber = "MPLOKIJ";
 
     @Mock
     private static IRecurringVehiculeDAO recurringVehiculeDAO;
@@ -44,24 +44,25 @@ public class RecurringVehiculeServiceTest {
     @BeforeEach
     private void setUpPerTest() {
         //GIVEN
-        recurringVehicule = new RecurringVehicule(vehRegNumber, now());
-        when(recurringVehiculeDAO.getRecurringVehicule(vehRegNumber)).thenReturn(recurringVehicule);
+        recurringVehicule = new RecurringVehicule(recurrentVehRegNumber, now());
+        when(recurringVehiculeDAO.getRecurringVehicule(recurrentVehRegNumber)).thenReturn(recurringVehicule);
+        when(recurringVehiculeDAO.getRecurringVehicule(notRecurrentVehRegNumber)).thenReturn(null);
         //when(recurringVehiculeDAO.getListOfRecurrentVehicule()).thenReturn(listRecurringVehicule);
         when(recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule)).thenReturn(new RecurringVehicule("ABCDEF", now()));
         when(recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule)).thenReturn(1);
         recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
     }
 
-    //a car leave parking. Price is calculating. Want to check if discount available.
+
     @DisplayName("Check Recurring Vehicule")
     @Order(1)
     @Test
     public void checkRecurringVehicule(){
 
         //WHEN
-        //give vehiculeRegNumber to a class service which return true if present or false if not
-        RecurringVehicule vehiculeIsRecurring = recurringVehiculeService.checkRecurringVehicule(vehRegNumber);
-        RecurringVehicule vehiculeNotRecurring = recurringVehiculeService.checkRecurringVehicule("MPLOKIJ");
+        //give vehiculeRegNumber to a class service which return Object if present or null if not
+        RecurringVehicule vehiculeIsRecurring = recurringVehiculeService.checkRecurringVehicule(recurrentVehRegNumber);
+        RecurringVehicule vehiculeNotRecurring = recurringVehiculeService.checkRecurringVehicule(notRecurrentVehRegNumber);
 
         //THEN
         assertNull(vehiculeNotRecurring,
@@ -79,7 +80,6 @@ public class RecurringVehiculeServiceTest {
     public void addRecurringVehicule(){
 
         //WHEN
-        //give vehiculeRegNumber to a class service which can save it in Model Class vehiculeRegList
         RecurringVehicule vehiculeAdded = recurringVehiculeService.addRecurringVehicule(recurringVehicule);
 
         //THEN
@@ -94,7 +94,6 @@ public class RecurringVehiculeServiceTest {
     public void updateRecurringVehicule(){
 
         //WHEN
-        //give vehiculeRegNumber to a class service which can save it in Model Class vehiculeRegList
         int vehiculeUpdate = recurringVehiculeService.updateRecurringVehicule(recurringVehicule);
 
         //THEN
@@ -102,4 +101,24 @@ public class RecurringVehiculeServiceTest {
         verify(recurringVehiculeDAO, Mockito.times(1))
                 .updateRecurrentVehicule(any(RecurringVehicule.class));
     }
+
+    @DisplayName("Apply Discount for Recurring vehicle")
+    @Order(4)
+    @Test
+    public void applyDiscount(){
+
+        //WHEN
+        boolean discount = recurringVehiculeService.applyDiscount(recurrentVehRegNumber);
+        boolean nodiscount = recurringVehiculeService.applyDiscount(notRecurrentVehRegNumber);
+
+        //THEN
+        assertFalse(nodiscount, "Vehicle shouldn't have a discount");
+        verify(recurringVehiculeDAO, Mockito.times(1))
+                .addRecurrentVehicule(any(RecurringVehicule.class));
+        assertTrue(discount, "Vehicle should have a discount");
+        verify(recurringVehiculeDAO, Mockito.times(1))
+                .updateRecurrentVehicule(any(RecurringVehicule.class));
+    }
+
+
 }
