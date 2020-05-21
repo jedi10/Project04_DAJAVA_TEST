@@ -127,6 +127,16 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
         }
         return result;
     }
+
+    @Override
+    public void setDataBaseConfig(DataBaseConfig dataBaseConfig) {
+        this.dataBaseConfig = dataBaseConfig;
+    }
+
+    @Override
+    public DataBaseConfig getDataBaseConfig() {
+        return this.dataBaseConfig;
+    }
 }
 
 
