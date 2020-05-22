@@ -63,6 +63,8 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
                     recurringVehicule = new RecurringVehicule(
                             rs.getString(2),
                             rs.getTimestamp(3).toInstant());
+                    //https://stackoverflow.com/questions/26065928/timestamps-and-time-zone-conversions-in-java-and-mysql
+                    //https://stackoverflow.com/questions/47198806/how-to-store-a-java-instant-in-a-mysql-database
                     recurringVehicule.setId(rs.getInt(1));
                 } else if (!rs.isBeforeFirst() ) {
                     //System.out.println("No data");
