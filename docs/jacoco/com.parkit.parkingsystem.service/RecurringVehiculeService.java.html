@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecurringVehiculeService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">parking-system</a> &gt; <a href="index.source.html" class="el_package">com.parkit.parkingsystem.service</a> &gt; <span class="el_source">RecurringVehiculeService.java</span></div><h1>RecurringVehiculeService.java</h1><pre class="source lang-java linenums">package com.parkit.parkingsystem.service;
+
+import com.parkit.parkingsystem.dao.IRecurringVehiculeDAO;
+import com.parkit.parkingsystem.model.RecurringVehicule;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.List;
+
+import static java.time.Instant.now;
+
+public class RecurringVehiculeService implements IRecurringVehiculeService {
+
+<span class="fc" id="L14">    private static final Logger logger = LogManager.getLogger(&quot;RecurringVehiculeService&quot;);</span>
+
+    private IRecurringVehiculeDAO recurringVehiculeDAO;
+
+<span class="fc" id="L18">    public RecurringVehiculeService(IRecurringVehiculeDAO recurringVehiculeDAO) {</span>
+<span class="fc" id="L19">        this.recurringVehiculeDAO = recurringVehiculeDAO;</span>
+<span class="fc" id="L20">    }</span>
+
+    @Override
+    public boolean applyDiscount(String vehicleRegNumber){
+<span class="fc" id="L24">        boolean result = false;</span>
+<span class="fc" id="L25">        RecurringVehicule recurringVehicule = checkRecurringVehicule(vehicleRegNumber);</span>
+        //if vehicle is already in DBB
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (null != recurringVehicule){</span>
+<span class="fc" id="L28">            result = true;</span>
+            //we update the date
+<span class="fc" id="L30">            recurringVehicule.setLastVisit(now());</span>
+<span class="fc" id="L31">            updateRecurringVehicule(recurringVehicule);</span>
+        } else {
+<span class="fc" id="L33">            result = false;</span>
+            //We create a new line in recurrent vehicle base
+<span class="fc" id="L35">            RecurringVehicule recurringVehiculeToSaveInDBB = new RecurringVehicule(vehicleRegNumber, now());</span>
+<span class="fc" id="L36">            addRecurringVehicule(recurringVehiculeToSaveInDBB);</span>
+        }
+<span class="fc" id="L38">        return result;</span>
+    }
+
+    @Override
+    public RecurringVehicule checkRecurringVehicule(String vehicleRegNumber) {
+<span class="fc" id="L43">        RecurringVehicule result = null;</span>
+
+<span class="fc" id="L45">        result =  recurringVehiculeDAO</span>
+<span class="fc" id="L46">                .getRecurringVehicule(vehicleRegNumber);</span>
+
+<span class="fc" id="L48">        return result;</span>
+    }
+
+    @Override
+    public RecurringVehicule addRecurringVehicule(RecurringVehicule recurringVehicule) {
+<span class="fc" id="L53">        RecurringVehicule result = null;</span>
+<span class="fc" id="L54">        result = recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule);</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (null == result){</span>
+<span class="fc" id="L56">            logger.info(&quot;Creation of Recurring Vehicule in DBB failed&quot;+ recurringVehicule.toString());</span>
+        }
+<span class="fc" id="L58">        return result;</span>
+    }
+
+    @Override
+    public int updateRecurringVehicule(RecurringVehicule recurringVehicule) {
+<span class="fc" id="L63">        int result = 0;</span>
+<span class="fc" id="L64">        result = recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule);</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (0 == result){</span>
+<span class="nc" id="L66">            logger.info(&quot;Update of Recurring Vehicule in DBB failed&quot;+ recurringVehicule.toString());</span>
+        }
+<span class="fc" id="L68">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
