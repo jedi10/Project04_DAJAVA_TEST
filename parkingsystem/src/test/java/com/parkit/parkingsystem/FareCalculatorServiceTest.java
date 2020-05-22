@@ -3,32 +3,55 @@ package com.parkit.parkingsystem;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
+import com.parkit.parkingsystem.model.RecurringVehicule;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.FareCalculatorService;
+import com.parkit.parkingsystem.service.IRecurringVehiculeService;
+import com.parkit.parkingsystem.service.RecurringVehiculeService;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
+import static java.time.Instant.now;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
 @DisplayName("Calculate Car/Bike Fare")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class FareCalculatorServiceTest {
 
     private static FareCalculatorService fareCalculatorService;
     private Ticket ticket;
+    private RecurringVehicule recurringVehicule;
+
+    @Mock
+    private IRecurringVehiculeService recurringVehiculeService;
 
     @BeforeAll
-    private static void setUp() {
-        fareCalculatorService = new FareCalculatorService();
+    private void setUp() {
+
     }
 
     @BeforeEach
     private void setUpPerTest() {
+        //GIVEN
         ticket = new Ticket();
+        fareCalculatorService = new FareCalculatorService();
+        recurringVehicule = new RecurringVehicule("ABCDEFG", now());
+        when(recurringVehiculeService.applyDiscount("ABCDEFG")).thenReturn(true);
+        //Give the mock to the FareCalculatorService
+        fareCalculatorService.setRecurringVehiculeService(recurringVehiculeService);
     }
 
     @DisplayName("Car Fare When Short Parking Time, less 30 Minutes")
@@ -220,4 +243,53 @@ public class FareCalculatorServiceTest {
         //WHEN-THEN
         assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
     }
+
+
+    @DisplayName("Calculate Car Fare When Discount for Recurring")
+    @Test
+    @Order(11)
+    public void calculateFareCarWithDiscountRecurringVehicule(){
+        //GIVEN
+        Date inTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - ( 60 * 60 * 1000) );
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setVehicleRegNumber("ABCDEFG");
+        ticket.setParkingSpot(parkingSpot);
+
+        //WHEN
+        fareCalculatorService.calculateFare(ticket);
+
+        //THEN
+        assertEquals( Math.round(Fare.RECURRENT_DISCOUNT * Fare.CAR_RATE_PER_HOUR * 100.00)/100.00,
+                ticket.getPrice(), "Ticket Price is bad");
+    }
+
+
+    @DisplayName("Calculate Bike Fare When Discount for Recurring")
+    @Test
+    @Order(12)
+    public void calculateFareBikeWithDiscountRecurringVehicule(){
+        //GIVEN
+        Date inTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - ( 60 * 60 * 1000) );
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setVehicleRegNumber("ABCDEFG");
+        ticket.setParkingSpot(parkingSpot);
+
+        //WHEN
+        fareCalculatorService.calculateFare(ticket);
+
+        //THEN
+        assertEquals( Math.round(Fare.RECURRENT_DISCOUNT * Fare.BIKE_RATE_PER_HOUR * 100.00)/100.00,
+                ticket.getPrice(), "Ticket Price is bad");
+    }
+
 }

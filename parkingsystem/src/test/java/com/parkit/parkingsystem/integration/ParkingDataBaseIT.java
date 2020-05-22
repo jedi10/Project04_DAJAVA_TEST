@@ -2,6 +2,7 @@ package com.parkit.parkingsystem.integration;
 
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
+import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
@@ -31,6 +32,7 @@ public class ParkingDataBaseIT {
     private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
     private static ParkingSpotDAO parkingSpotDAO;
     private static TicketDAO ticketDAO;
+    private static RecurringVehiculeDAO recurringVehiculeDAO;
     private static DataBasePrepareService dataBasePrepareService;
 
     private final static String vehiculeRegNumber = "ABCDEF";
@@ -40,10 +42,12 @@ public class ParkingDataBaseIT {
 
     @BeforeAll
     private static void setUp() throws Exception{
-        parkingSpotDAO = new ParkingSpotDAO();
-        parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
         ticketDAO = new TicketDAO();
         ticketDAO.dataBaseConfig = dataBaseTestConfig;
+        parkingSpotDAO = new ParkingSpotDAO();
+        parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
+        recurringVehiculeDAO = new RecurringVehiculeDAO();
+        recurringVehiculeDAO.dataBaseConfig = dataBaseTestConfig;
         dataBasePrepareService = new DataBasePrepareService();
     }
 
@@ -66,14 +70,13 @@ public class ParkingDataBaseIT {
     @Test
     public void testParkingACar(){
         //GIVEN
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-
-
+        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO,
+                ticketDAO, recurringVehiculeDAO);
         //WHEN
         parkingService.processIncomingVehicle();
 
         //THEN
-        Ticket ticket = ticketDAO.getTicket(vehiculeRegNumber);
+        Ticket ticket = ticketDAO.getTicket(vehiculeRegNumber, true);
         assertNotNull(ticket,
                 "Request don't return anything: no ticket");
         assertTrue(ticket instanceof Ticket,
@@ -101,18 +104,19 @@ public class ParkingDataBaseIT {
     public void testParkingLotExit(){
         //GIVEN
         testParkingACar();
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO,
+                ticketDAO, recurringVehiculeDAO);
         //*********************************************
         //******Update In Time Ticket Property*********
         //*********************************************
-        Ticket ticket = ticketDAO.getTicket(vehiculeRegNumber);
+        Ticket ticket = ticketDAO.getTicket(vehiculeRegNumber, true);
         assertNotNull(ticket,
                 "Request don't return anything: no ticket");
         assertTrue(ticket instanceof Ticket,
                 "Returned Object is not a Ticket ");
         ticket.setInTime(Date.from(Instant.now().minus(Duration.ofHours(1))));
-        ticket.setOutTime(ticket.getInTime());
-        boolean updateTicket = ticketDAO.updateTicket(ticket);
+        //ticket.setOutTime(ticket.getInTime());
+        boolean updateTicket = ticketDAO.updateTicket(ticket, false);
         assertTrue(updateTicket,
                 "Tests can't go further because ticket Time is not updated");
         System.out.println("Updated in-time for vehicle number:"
@@ -123,7 +127,7 @@ public class ParkingDataBaseIT {
         parkingService.processExitingVehicle();
 
         //THEN
-        ticket = ticketDAO.getTicket(vehiculeRegNumber);
+        ticket = ticketDAO.getTicket(vehiculeRegNumber, false);
         assertNotNull(ticket,
                 "Request don't return anything: no ticket");
         assertTrue(ticket instanceof Ticket,
