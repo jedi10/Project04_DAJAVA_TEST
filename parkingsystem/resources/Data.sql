@@ -4,7 +4,7 @@ use prod;
 
 create table parking(
 PARKING_NUMBER int PRIMARY KEY,
-AVAILABLE bool NOT NULL,
+AVAILABLE boolean NOT NULL,
 TYPE varchar(10) NOT NULL
 );
 
@@ -23,6 +23,12 @@ insert into parking(PARKING_NUMBER,AVAILABLE,TYPE) values(2,true,'CAR');
 insert into parking(PARKING_NUMBER,AVAILABLE,TYPE) values(3,true,'CAR');
 insert into parking(PARKING_NUMBER,AVAILABLE,TYPE) values(4,true,'BIKE');
 insert into parking(PARKING_NUMBER,AVAILABLE,TYPE) values(5,true,'BIKE');
+
+create table recurring_vehicle(
+ ID int PRIMARY KEY AUTO_INCREMENT,
+ VEHICLE_REG_NUMBER varchar(10) NOT NULL,
+ LAST_VISIT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, NOT NULL,
+ UNIQUE KEY (VEHICLE_REG_NUMBER));
 commit;
 
 /* Setting up TEST DB */
@@ -31,7 +37,7 @@ use test;
 
 create table parking(
 PARKING_NUMBER int PRIMARY KEY,
-AVAILABLE bool NOT NULL,
+AVAILABLE boolean NOT NULL,
 TYPE varchar(10) NOT NULL
 );
 
@@ -50,4 +56,10 @@ insert into parking(PARKING_NUMBER,AVAILABLE,TYPE) values(2,true,'CAR');
 insert into parking(PARKING_NUMBER,AVAILABLE,TYPE) values(3,true,'CAR');
 insert into parking(PARKING_NUMBER,AVAILABLE,TYPE) values(4,true,'BIKE');
 insert into parking(PARKING_NUMBER,AVAILABLE,TYPE) values(5,true,'BIKE');
+
+create table recurring_vehicle(
+ ID int PRIMARY KEY AUTO_INCREMENT,
+ VEHICLE_REG_NUMBER varchar(10) NOT NULL,
+ LAST_VISIT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+ UNIQUE KEY (VEHICLE_REG_NUMBER));
 commit;

@@ -1,7 +1,9 @@
 package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.constants.ParkingType;
+import com.parkit.parkingsystem.dao.IRecurringVehiculeDAO;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
+import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
@@ -15,16 +17,21 @@ public class ParkingService {
 
     private static final Logger logger = LogManager.getLogger("ParkingService");
 
-    private static FareCalculatorService fareCalculatorService = new FareCalculatorService();
+    private FareCalculatorService fareCalculatorService;
+
+    private RecurringVehiculeService recurringVehiculeService;
 
     private InputReaderUtil inputReaderUtil;
     private ParkingSpotDAO parkingSpotDAO;
-    private  TicketDAO ticketDAO;
+    private TicketDAO ticketDAO;
 
-    public ParkingService(InputReaderUtil inputReaderUtil, ParkingSpotDAO parkingSpotDAO, TicketDAO ticketDAO){
+    public ParkingService(InputReaderUtil inputReaderUtil, ParkingSpotDAO parkingSpotDAO,
+                          TicketDAO ticketDAO, IRecurringVehiculeDAO recurringVehiculeDAO ){
         this.inputReaderUtil = inputReaderUtil;
         this.parkingSpotDAO = parkingSpotDAO;
         this.ticketDAO = ticketDAO;
+        this.fareCalculatorService = new FareCalculatorService(recurringVehiculeDAO);
+        this.recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);
     }
 
     public void processIncomingVehicle() {
@@ -45,6 +52,11 @@ public class ParkingService {
                 ticket.setInTime(inTime);
                 ticket.setOutTime(null);
                 ticketDAO.saveTicket(ticket);
+                //we have a recurrent vehicle
+                if (null != recurringVehiculeService.checkRecurringVehicule(vehicleRegNumber)){
+                    System.out.println("Welcome back! As a recurring user of our parking lot," +
+                            " you'll benefit from a 5% discount.");
+                }
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number:"+parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:"+vehicleRegNumber+" is:"+inTime);
@@ -100,11 +112,11 @@ public class ParkingService {
     public void processExitingVehicle() {
         try{
             String vehicleRegNumber = getVehichleRegNumber();
-            Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
+            Ticket ticket = ticketDAO.getTicket(vehicleRegNumber, true);
             Date outTime = new Date();
             ticket.setOutTime(outTime);
             fareCalculatorService.calculateFare(ticket);
-            if(ticketDAO.updateTicket(ticket)) {
+            if(ticketDAO.updateTicket(ticket, true)) {
                 ParkingSpot parkingSpot = ticket.getParkingSpot();
                 parkingSpot.setAvailable(true);
                 parkingSpotDAO.updateParking(parkingSpot);

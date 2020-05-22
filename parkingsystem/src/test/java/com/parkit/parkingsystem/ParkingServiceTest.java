@@ -1,7 +1,9 @@
 package com.parkit.parkingsystem;
 
 import com.parkit.parkingsystem.constants.ParkingType;
+import com.parkit.parkingsystem.dao.IRecurringVehiculeDAO;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
+import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
@@ -29,6 +31,8 @@ public class ParkingServiceTest {
     private static ParkingSpotDAO parkingSpotDAO;
     @Mock
     private static TicketDAO ticketDAO;
+    @Mock
+    private static IRecurringVehiculeDAO recurringVehiculeDAO;
 
     @BeforeEach
     private void setUpPerTest() {
@@ -40,12 +44,13 @@ public class ParkingServiceTest {
             ticket.setInTime(new Date(System.currentTimeMillis() - (60*60*1000)));
             ticket.setParkingSpot(parkingSpot);
             ticket.setVehicleRegNumber("ABCDEF");
-            when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
-            when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
+            when(ticketDAO.getTicket(anyString(), anyBoolean())).thenReturn(ticket);
+            when(ticketDAO.updateTicket(any(Ticket.class), anyBoolean())).thenReturn(true);
 
             when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
 
-            parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+            parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO,
+                    ticketDAO, recurringVehiculeDAO);
         } catch (Exception e) {
             e.printStackTrace();
             throw  new RuntimeException("Failed to set up test mock objects");

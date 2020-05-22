@@ -40,12 +40,17 @@ public class TicketDAO {
         }
     }
 
-    public Ticket getTicket(String vehicleRegNumber) {
+    public Ticket getTicket(String vehicleRegNumber, boolean onExit) {
         Connection con = null;
         Ticket ticket = null;
         try {
             con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.GET_TICKET);
+            PreparedStatement ps = null;
+            if (onExit){
+                ps = con.prepareStatement(DBConstants.GET_TICKET_ON_EXIT);
+            } else {
+                ps = con.prepareStatement(DBConstants.GET_TICKET);
+            }
             //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
             ps.setString(1,vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
@@ -69,15 +74,20 @@ public class TicketDAO {
         }
     }
 
-    public boolean updateTicket(Ticket ticket) {
+    public boolean updateTicket(Ticket ticket, boolean onExit) {
         Connection con = null;
         try {
             con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
+            PreparedStatement ps;
+            if (onExit){
+                ps = con.prepareStatement(DBConstants.UPDATE_TICKET_ON_EXIT);
+                ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
+            } else {
+                ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
+                ps.setTimestamp(2, new Timestamp(ticket.getInTime().getTime()));
+            }
             ps.setDouble(1, ticket.getPrice());
-            ps.setTimestamp(2, new Timestamp(ticket.getInTime().getTime()));
-            ps.setTimestamp(3, new Timestamp(ticket.getOutTime().getTime()));
-            ps.setInt(4,ticket.getId());
+            ps.setInt(3,ticket.getId());
             int updateRowCount = ps.executeUpdate();
             dataBaseConfig.closePreparedStatement(ps);
             return (updateRowCount == 1);

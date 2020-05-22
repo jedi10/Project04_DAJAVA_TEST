@@ -9,12 +9,16 @@ import java.sql.*;
 public class DataBaseTestConfig extends DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseTestConfig");
+    private static final String MYSQL_URL= "jdbc:mysql://localhost:3306/test";
+    //https://mariadb.com/kb/en/java-connector-using-maven/
+    //https://sqlpro.developpez.com/tutoriel/dangers-mysql-mariadb/#LXV
+    private static final String MARIA_URL= "jdbc:mariadb://localhost:3306/test";
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/test","root","");
+                MYSQL_URL,"root","");
     }
 
     public void closeConnection(Connection con){
