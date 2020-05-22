@@ -61,7 +61,7 @@
     0%
   </span>
   <span class="absValue">
-    (0/ 28)
+    (0/ 29)
   </span>
 </td>
 </tr>
@@ -75,61 +75,64 @@
 <div class="sourceCode"><i>1</i>&nbsp;package com.parkit.parkingsystem.service;
 <i>2</i>&nbsp;
 <i>3</i>&nbsp;import com.parkit.parkingsystem.dao.ParkingSpotDAO;
-<i>4</i>&nbsp;import com.parkit.parkingsystem.dao.TicketDAO;
-<i>5</i>&nbsp;import com.parkit.parkingsystem.util.InputReaderUtil;
-<i>6</i>&nbsp;import org.apache.logging.log4j.LogManager;
-<i>7</i>&nbsp;import org.apache.logging.log4j.Logger;
-<i>8</i>&nbsp;
-<b class="nc"><i>9</i>&nbsp;public class InteractiveShell {</b>
-<i>10</i>&nbsp;
-<b class="nc"><i>11</i>&nbsp;    private static final Logger logger = LogManager.getLogger(&quot;InteractiveShell&quot;);</b>
-<i>12</i>&nbsp;
-<i>13</i>&nbsp;    public static void loadInterface(){
-<b class="nc"><i>14</i>&nbsp;        logger.info(&quot;App initialized!!!&quot;);</b>
-<b class="nc"><i>15</i>&nbsp;        System.out.println(&quot;Welcome to Parking System!&quot;);</b>
-<i>16</i>&nbsp;
-<b class="nc"><i>17</i>&nbsp;        boolean continueApp = true;</b>
-<b class="nc"><i>18</i>&nbsp;        InputReaderUtil inputReaderUtil = new InputReaderUtil();</b>
-<b class="nc"><i>19</i>&nbsp;        ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();</b>
-<b class="nc"><i>20</i>&nbsp;        TicketDAO ticketDAO = new TicketDAO();</b>
-<b class="nc"><i>21</i>&nbsp;        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);</b>
-<i>22</i>&nbsp;
-<b class="nc"><i>23</i>&nbsp;        while(continueApp){</b>
-<b class="nc"><i>24</i>&nbsp;            loadMenu();</b>
-<b class="nc"><i>25</i>&nbsp;            int option = inputReaderUtil.readSelection();</b>
-<b class="nc"><i>26</i>&nbsp;            switch(option){</b>
-<i>27</i>&nbsp;                case 1: {
-<b class="nc"><i>28</i>&nbsp;                    parkingService.processIncomingVehicle();</b>
-<b class="nc"><i>29</i>&nbsp;                    break;</b>
-<i>30</i>&nbsp;                }
-<i>31</i>&nbsp;                case 2: {
-<b class="nc"><i>32</i>&nbsp;                    parkingService.processExitingVehicle();</b>
-<b class="nc"><i>33</i>&nbsp;                    break;</b>
-<i>34</i>&nbsp;                }
-<i>35</i>&nbsp;                case 3: {
-<b class="nc"><i>36</i>&nbsp;                    System.out.println(&quot;Exiting from the system!&quot;);</b>
-<b class="nc"><i>37</i>&nbsp;                    continueApp = false;</b>
-<b class="nc"><i>38</i>&nbsp;                    break;</b>
-<i>39</i>&nbsp;                }
-<b class="nc"><i>40</i>&nbsp;                default: System.out.println(&quot;Unsupported option. Please enter a number corresponding to the provided menu&quot;);</b>
-<i>41</i>&nbsp;            }
-<b class="nc"><i>42</i>&nbsp;        }</b>
-<b class="nc"><i>43</i>&nbsp;    }</b>
-<i>44</i>&nbsp;
-<i>45</i>&nbsp;    private static void loadMenu(){
-<b class="nc"><i>46</i>&nbsp;        System.out.println(&quot;Please select an option. Simply enter the number to choose an action&quot;);</b>
-<b class="nc"><i>47</i>&nbsp;        System.out.println(&quot;1 New Vehicle Entering - Allocate Parking Space&quot;);</b>
-<b class="nc"><i>48</i>&nbsp;        System.out.println(&quot;2 Vehicle Exiting - Generate Ticket Price&quot;);</b>
-<b class="nc"><i>49</i>&nbsp;        System.out.println(&quot;3 Shutdown System&quot;);</b>
-<b class="nc"><i>50</i>&nbsp;    }</b>
-<i>51</i>&nbsp;
-<i>52</i>&nbsp;}
+<i>4</i>&nbsp;import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
+<i>5</i>&nbsp;import com.parkit.parkingsystem.dao.TicketDAO;
+<i>6</i>&nbsp;import com.parkit.parkingsystem.util.InputReaderUtil;
+<i>7</i>&nbsp;import org.apache.logging.log4j.LogManager;
+<i>8</i>&nbsp;import org.apache.logging.log4j.Logger;
+<i>9</i>&nbsp;
+<b class="nc"><i>10</i>&nbsp;public class InteractiveShell {</b>
+<i>11</i>&nbsp;
+<b class="nc"><i>12</i>&nbsp;    private static final Logger logger = LogManager.getLogger(&quot;InteractiveShell&quot;);</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    public static void loadInterface(){
+<b class="nc"><i>15</i>&nbsp;        logger.info(&quot;App initialized!!!&quot;);</b>
+<b class="nc"><i>16</i>&nbsp;        System.out.println(&quot;Welcome to Parking System!&quot;);</b>
+<i>17</i>&nbsp;
+<b class="nc"><i>18</i>&nbsp;        boolean continueApp = true;</b>
+<b class="nc"><i>19</i>&nbsp;        InputReaderUtil inputReaderUtil = new InputReaderUtil();</b>
+<b class="nc"><i>20</i>&nbsp;        ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();</b>
+<b class="nc"><i>21</i>&nbsp;        TicketDAO ticketDAO = new TicketDAO();</b>
+<b class="nc"><i>22</i>&nbsp;        RecurringVehiculeDAO recurringVehiculeDAO = new RecurringVehiculeDAO();</b>
+<b class="nc"><i>23</i>&nbsp;        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO,</b>
+<i>24</i>&nbsp;                ticketDAO, recurringVehiculeDAO);
+<i>25</i>&nbsp;
+<b class="nc"><i>26</i>&nbsp;        while(continueApp){</b>
+<b class="nc"><i>27</i>&nbsp;            loadMenu();</b>
+<b class="nc"><i>28</i>&nbsp;            int option = inputReaderUtil.readSelection();</b>
+<b class="nc"><i>29</i>&nbsp;            switch(option){</b>
+<i>30</i>&nbsp;                case 1: {
+<b class="nc"><i>31</i>&nbsp;                    parkingService.processIncomingVehicle();</b>
+<b class="nc"><i>32</i>&nbsp;                    break;</b>
+<i>33</i>&nbsp;                }
+<i>34</i>&nbsp;                case 2: {
+<b class="nc"><i>35</i>&nbsp;                    parkingService.processExitingVehicle();</b>
+<b class="nc"><i>36</i>&nbsp;                    break;</b>
+<i>37</i>&nbsp;                }
+<i>38</i>&nbsp;                case 3: {
+<b class="nc"><i>39</i>&nbsp;                    System.out.println(&quot;Exiting from the system!&quot;);</b>
+<b class="nc"><i>40</i>&nbsp;                    continueApp = false;</b>
+<b class="nc"><i>41</i>&nbsp;                    break;</b>
+<i>42</i>&nbsp;                }
+<b class="nc"><i>43</i>&nbsp;                default: System.out.println(&quot;Unsupported option. Please enter a number corresponding to the provided menu&quot;);</b>
+<i>44</i>&nbsp;            }
+<b class="nc"><i>45</i>&nbsp;        }</b>
+<b class="nc"><i>46</i>&nbsp;    }</b>
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    private static void loadMenu(){
+<b class="nc"><i>49</i>&nbsp;        System.out.println(&quot;Please select an option. Simply enter the number to choose an action&quot;);</b>
+<b class="nc"><i>50</i>&nbsp;        System.out.println(&quot;1 New Vehicle Entering - Allocate Parking Space&quot;);</b>
+<b class="nc"><i>51</i>&nbsp;        System.out.println(&quot;2 Vehicle Exiting - Generate Ticket Price&quot;);</b>
+<b class="nc"><i>52</i>&nbsp;        System.out.println(&quot;3 Shutdown System&quot;);</b>
+<b class="nc"><i>53</i>&nbsp;    }</b>
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-01 18:26</div>
+    <div style="float:right;">generated on 2020-05-22 15:59</div>
 </div>
 </body>
 </html>

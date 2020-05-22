@@ -1,0 +1,78 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: IRecurringVehiculeDAO</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.parkit.parkingsystem.dao</a> ]
+</div>
+
+<h1>Coverage Summary for Class: IRecurringVehiculeDAO (com.parkit.parkingsystem.dao)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IRecurringVehiculeDAO$MockitoMock$1302363577</td>
+  </tr>
+  <tr>
+    <td class="name">IRecurringVehiculeDAO$MockitoMock$1302363577$auxiliary$BrNftjJJ</td>
+  </tr>
+  <tr>
+    <td class="name">IRecurringVehiculeDAO$MockitoMock$1302363577$auxiliary$IwipXgb6</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.parkit.parkingsystem.dao;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.parkit.parkingsystem.config.DataBaseConfig;
+<i>4</i>&nbsp;import com.parkit.parkingsystem.model.RecurringVehicule;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.List;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public interface IRecurringVehiculeDAO {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    public List&lt;RecurringVehicule&gt; getListOfRecurrentVehicule();
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    public RecurringVehicule getRecurringVehicule(String vehicleRegNumber);
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    public RecurringVehicule addRecurrentVehicule(RecurringVehicule recurringVehicule);
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    public int updateRecurrentVehicule(RecurringVehicule recurringVehicule);
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    public void setDataBaseConfig(DataBaseConfig dataBaseConfig);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    public DataBaseConfig getDataBaseConfig();
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-22 15:59</div>
+</div>
+</body>
+</html>
