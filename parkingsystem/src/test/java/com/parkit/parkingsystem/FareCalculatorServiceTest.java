@@ -3,7 +3,6 @@ package com.parkit.parkingsystem;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
-import com.parkit.parkingsystem.model.RecurringVehicule;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.FareCalculatorService;
 import com.parkit.parkingsystem.service.IRecurringVehiculeService;
@@ -18,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import static java.time.Instant.now;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +31,6 @@ public class FareCalculatorServiceTest {
 
     private static FareCalculatorService fareCalculatorService;
     private Ticket ticket;
-    private RecurringVehicule recurringVehicule;
 
     @Mock
     private IRecurringVehiculeService recurringVehiculeService;
@@ -48,7 +45,6 @@ public class FareCalculatorServiceTest {
         //GIVEN
         ticket = new Ticket();
         fareCalculatorService = new FareCalculatorService();
-        recurringVehicule = new RecurringVehicule("ABCDEFG", now());
         when(recurringVehiculeService.applyDiscount("ABCDEFG")).thenReturn(true);
         //Give the mock to the FareCalculatorService
         fareCalculatorService.setRecurringVehiculeService(recurringVehiculeService);
