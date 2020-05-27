@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import com.parkit.parkingsystem.constants.AppType;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.dao.IRecurringVehiculeDAO;
 import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
@@ -69,6 +70,10 @@ public class FareCalculatorService implements IFareCalculatorService {
             }
         } else {
             ticket.setPrice(0);
+            if (AppType.PRESENTATION) {
+                //Force Record of vehicle in recurrent vehicle table
+                recurrentDiscount(0, ticket.getVehicleRegNumber());
+            }
         }
     }
 
