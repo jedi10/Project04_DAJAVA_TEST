@@ -68,7 +68,7 @@ public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
                     recurringVehicule.setId(rs.getInt(1));
                 } else if (!rs.isBeforeFirst() ) {
                     //System.out.println("No data");
-                    logger.error("getRecurringVehicule: No Data ");
+                    logger.warn("getRecurringVehicule: No Data ");
                 }
             }
         }catch (Exception ex){
