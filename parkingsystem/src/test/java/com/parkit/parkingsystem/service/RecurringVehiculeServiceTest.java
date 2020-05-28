@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.model.RecurringVehicule;
 import com.parkit.parkingsystem.dao.IRecurringVehiculeDAO;
