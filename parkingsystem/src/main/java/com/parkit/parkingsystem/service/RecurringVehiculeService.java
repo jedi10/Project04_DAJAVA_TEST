@@ -9,12 +9,26 @@ import java.util.List;
 
 import static java.time.Instant.now;
 
+/**
+ * <b>Simple brute force implementation of Interface IRecurringVehiculeService</b>
+ * @see IRecurringVehiculeService
+ * @author Jedy10
+ * @since beta1.0.0
+ */
 public class RecurringVehiculeService implements IRecurringVehiculeService {
 
     private static final Logger logger = LogManager.getLogger("RecurringVehiculeService");
 
+    /**
+     * <b>Resource needed to the class methods</b>
+     * <p>work with recurrentVehicle Table in DBB</p>
+     */
     private IRecurringVehiculeDAO recurringVehiculeDAO;
 
+    /**
+     * <b>Constructor</b>
+     * @param recurringVehiculeDAO resource needed to the class
+     */
     public RecurringVehiculeService(IRecurringVehiculeDAO recurringVehiculeDAO) {
         this.recurringVehiculeDAO = recurringVehiculeDAO;
     }
@@ -30,7 +44,6 @@ public class RecurringVehiculeService implements IRecurringVehiculeService {
             recurringVehicule.setLastVisit(now());
             updateRecurringVehicule(recurringVehicule);
         } else {
-            result = false;
             //We create a new line in recurrent vehicle base
             RecurringVehicule recurringVehiculeToSaveInDBB = new RecurringVehicule(vehicleRegNumber, now());
             addRecurringVehicule(recurringVehiculeToSaveInDBB);
@@ -53,7 +66,7 @@ public class RecurringVehiculeService implements IRecurringVehiculeService {
         RecurringVehicule result = null;
         result = recurringVehiculeDAO.addRecurrentVehicule(recurringVehicule);
         if (null == result){
-            logger.info("Creation of Recurring Vehicule in DBB failed"+ recurringVehicule.toString());
+            logger.error("Creation of Recurring Vehicule in DBB failed"+ recurringVehicule.toString());
         }
         return result;
     }
@@ -63,7 +76,7 @@ public class RecurringVehiculeService implements IRecurringVehiculeService {
         int result = 0;
         result = recurringVehiculeDAO.updateRecurrentVehicule(recurringVehicule);
         if (0 == result){
-            logger.info("Update of Recurring Vehicule in DBB failed"+ recurringVehicule.toString());
+            logger.error("Update of Recurring Vehicule in DBB failed"+ recurringVehicule.toString());
         }
         return result;
     }

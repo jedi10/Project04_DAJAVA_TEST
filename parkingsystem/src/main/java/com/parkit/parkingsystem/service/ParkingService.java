@@ -19,6 +19,11 @@ public class ParkingService {
 
     private FareCalculatorService fareCalculatorService;
 
+    /**
+     * <b>Service is usefull to determined if a vehicle is recurrent or not</b>
+     * <p>linked with fareCalculator Service to determined if a discount could be applied or not</p>
+     * @see RecurringVehiculeService
+     */
     private RecurringVehiculeService recurringVehiculeService;
 
     private InputReaderUtil inputReaderUtil;

@@ -112,7 +112,8 @@
                 <!-- The Failsafe Plugin is designed to run integration tests while the
                 Surefire Plugin is designed to run unit tests.
                 Generate surefire report with IT test: mvn verify site
-                https://www.commentcamarche.net/faq/45463-generer-des-rapports-sur-la-qualite-d-un-projet-->
+                https://www.commentcamarche.net/faq/45463-generer-des-rapports-sur-la-qualite-d-un-projet
+                https://confluence.atlassian.com/clover/using-with-surefire-and-failsafe-plugins-294489218.html-->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>3.0.0-M4</version>

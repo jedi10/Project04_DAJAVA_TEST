@@ -5,6 +5,10 @@ import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+/**
+ * <b>Integration Tests needs somme DBB Service</b>
+ * <p>Datas in Test DBB table have to be erased</p>
+ */
 public class DataBasePrepareService {
 
     DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();

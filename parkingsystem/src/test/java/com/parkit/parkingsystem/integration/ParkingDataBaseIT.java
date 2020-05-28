@@ -24,7 +24,10 @@ import java.util.Date;
 
 import static org.mockito.Mockito.when;
 
-@DisplayName("Integration Test with DBB: Parking/Exit a Car")
+/**
+ * <b>Integration Tests with DBB: Parking/Exit a Car</b>
+ */
+@DisplayName("Integration Tests with DBB: Parking/Exit a Car")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {

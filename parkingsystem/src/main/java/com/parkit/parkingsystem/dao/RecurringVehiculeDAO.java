@@ -20,6 +20,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <b>Simple brute force implementation of Interface IRecurringVehiculeDAO</b>
+ * @see IRecurringVehiculeDAO
+ * @author Jedy10
+ * @since beta1.0.0
+ */
 public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {
 
     private static final Logger logger = LogManager.getLogger("RecurringVehiculeDAO");
