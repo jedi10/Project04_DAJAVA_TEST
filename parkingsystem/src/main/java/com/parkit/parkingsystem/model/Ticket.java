@@ -2,6 +2,7 @@ package com.parkit.parkingsystem.model;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 public class Ticket {
     private int id;
@@ -44,18 +45,26 @@ public class Ticket {
     }
 
     public Date getInTime() {
-        return inTime;
+        return this.inTime == null ? null : new Date(this.inTime.getTime());
     }
 
     public void setInTime(Date inTime) {
-        this.inTime = inTime;
+        this.inTime = Optional.ofNullable(inTime)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
+                //new Date(inTime.getTime());
     }
 
     public Date getOutTime() {
-        return outTime;
+        return this.outTime == null ? null : new Date(this.outTime.getTime());
     }
 
     public void setOutTime(Date outTime) {
-        this.outTime = outTime;
+        this.outTime = Optional.ofNullable(outTime)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
+                //new Date(outTime.getTime());
     }
 }
