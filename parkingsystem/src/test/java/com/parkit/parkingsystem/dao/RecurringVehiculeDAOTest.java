@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.dao;
 
 import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
@@ -78,7 +78,7 @@ public class RecurringVehiculeDAOTest {
     public void getListOfRecurrentVehicule(){
         //GIVEN
         RecurringVehicule recurringVehiculeTest2 = new RecurringVehicule("ABCDEF", now().minus(Duration.ofHours(1)));
-        RecurringVehicule lineCreation = recurringVehiculeDAO.addRecurrentVehicule(recurringVehiculeTest2);
+        recurringVehiculeDAO.addRecurrentVehicule(recurringVehiculeTest2);
 
         //WHEN
         List<RecurringVehicule> recurringVehiculeList = recurringVehiculeDAO.getListOfRecurrentVehicule();

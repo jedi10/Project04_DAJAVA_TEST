@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import com.parkit.parkingsystem.constants.AppType;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.dao.IRecurringVehiculeDAO;
 import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
@@ -10,8 +11,17 @@ import java.time.Instant;
 
 import static com.parkit.parkingsystem.constants.Fare.RECURRENT_DISCOUNT;
 
+/**
+ * <b>Simple brute force implementation of Interface IFareCalculatorService</b>
+ *  @see IFareCalculatorService
+ *  @author Jedy10
+ *  @since beta1.0.0
+ */
 public class FareCalculatorService implements IFareCalculatorService {
 
+    /**
+     * @see FareCalculatorService#setRecurringVehiculeService(IRecurringVehiculeService)
+     */
     private IRecurringVehiculeService recurringVehiculeService;// new RecurringVehiculeService(new RecurringVehiculeDAO());
 
     /**
@@ -30,8 +40,8 @@ public class FareCalculatorService implements IFareCalculatorService {
     }
 
     /**
-     * Setter for Recurring Vehicle Service
-     * Useful for Test to inject RecurringVehiculeService Mock
+     * <b>Setter for Recurring Vehicle Service</b>
+     * <p>Useful for Test to inject RecurringVehiculeService Mock</p>
      * @param recurringVehiculeService  Service needed to check recurring Vehicle
      */
     @Override
@@ -69,9 +79,23 @@ public class FareCalculatorService implements IFareCalculatorService {
             }
         } else {
             ticket.setPrice(0);
+            if (AppType.PRESENTATION) {
+                //Force Record of vehicle in recurrent vehicle table
+                recurrentDiscount(0, ticket.getVehicleRegNumber());
+            }
         }
     }
 
+    /**
+     * <b>needed to know if a vehicle is recurrent and can have a discount</b>
+     * <ul>
+     *     <li>return same price if vehicle is not recurrent</li>
+     *     <li>return discounted price if vehicle is recurrent</li>
+     * </ul>
+     * @param price price for the vehicle calcul on elapsed time in parking
+     * @param vehicleRegNumber vehicle number
+     * @return price discounted if recurrent vehicle
+     */
     private double recurrentDiscount(double price, String vehicleRegNumber){
         if(recurringVehiculeService.applyDiscount(vehicleRegNumber)){
             double promoScreenNumber = Math.round(price * (1-Fare.RECURRENT_DISCOUNT) * 100.00)/100.00;

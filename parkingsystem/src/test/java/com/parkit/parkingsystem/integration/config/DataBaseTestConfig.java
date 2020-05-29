@@ -6,6 +6,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
+/**
+ * <b>Integration Tests need a specific connexion to a Test DBB</b>
+ * <p>Integration Tests don't use production BDD</p>
+ */
 public class DataBaseTestConfig extends DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseTestConfig");

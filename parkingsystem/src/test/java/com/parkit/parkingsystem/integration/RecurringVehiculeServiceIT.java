@@ -15,6 +15,10 @@ import java.time.temporal.ChronoUnit;
 import static java.time.Instant.now;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * <b>Integration Tests for Recurring vehicle Service</b>
+ */
+@DisplayName("Integration Tests with DBB on Recurring Vehicle Service")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RecurringVehiculeServiceIT {
 

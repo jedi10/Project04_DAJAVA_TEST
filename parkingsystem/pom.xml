@@ -14,6 +14,10 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <log4j.version>2.12.1</log4j.version>
+        <!--
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>-->
     </properties>
 
     <dependencies>
@@ -79,14 +83,70 @@
             <version>3.0.0</version>
         </dependency>
     </dependencies>
+    <reporting>
+        <plugins>
+            <!--https://gleclaire.github.io/findbugs-maven-plugin/usage.html-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.5</version>
+                <configuration>
+                    <xmlOutput>true</xmlOutput>
+                    <!-- Optional directory to put findbugs xdoc xml report -->
+                    <xmlOutputDirectory>target/site/findbugs</xmlOutputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- The Surefire Report Plugin generates reports for unit and integration tests.
+                   https://www.commentcamarche.net/faq/45463-generer-des-rapports-sur-la-qualite-d-un-projet-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <build>
         <plugins>
+            <plugin>
+                <!-- The Failsafe Plugin is designed to run integration tests while the
+                Surefire Plugin is designed to run unit tests.
+                Generate surefire report with IT test: mvn verify site
+                https://www.commentcamarche.net/faq/45463-generer-des-rapports-sur-la-qualite-d-un-projet
+                https://confluence.atlassian.com/clover/using-with-surefire-and-failsafe-plugins-294489218.html-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.0.0-M4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--Needed for FindBugs
+            https://stackoverflow.com/questions/51091539/maven-site-plugins-3-3-java-lang-classnotfoundexception-org-apache-maven-doxia
+            https://stackoverflow.com/questions/18734650/maven-report-plugin-org-apache-maven-pluginsmaven-project-info-reports-plugin
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.9.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+            <!--END Needed for FindBugs-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
@@ -109,7 +169,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.21.0</version>
+                <version>3.0.0-M3</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
