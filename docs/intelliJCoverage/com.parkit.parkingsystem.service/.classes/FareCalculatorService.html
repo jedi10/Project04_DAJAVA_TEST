@@ -47,10 +47,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    96,8%
+    96,9%
   </span>
   <span class="absValue">
-    (30/ 31)
+    (31/ 32)
   </span>
 </td>
 </tr>
@@ -85,10 +85,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    96,9%
+    97%
   </span>
   <span class="absValue">
-    (31/ 32)
+    (32/ 33)
   </span>
 </td>
 </tr>
@@ -100,93 +100,117 @@
 
 <div class="sourceCode"><i>1</i>&nbsp;package com.parkit.parkingsystem.service;
 <i>2</i>&nbsp;
-<i>3</i>&nbsp;import com.parkit.parkingsystem.constants.Fare;
-<i>4</i>&nbsp;import com.parkit.parkingsystem.dao.IRecurringVehiculeDAO;
-<i>5</i>&nbsp;import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
-<i>6</i>&nbsp;import com.parkit.parkingsystem.model.Ticket;
-<i>7</i>&nbsp;
-<i>8</i>&nbsp;import java.time.Duration;
-<i>9</i>&nbsp;import java.time.Instant;
-<i>10</i>&nbsp;
-<i>11</i>&nbsp;import static com.parkit.parkingsystem.constants.Fare.RECURRENT_DISCOUNT;
-<i>12</i>&nbsp;
-<i>13</i>&nbsp;public class FareCalculatorService implements IFareCalculatorService {
-<i>14</i>&nbsp;
-<i>15</i>&nbsp;    private IRecurringVehiculeService recurringVehiculeService;// new RecurringVehiculeService(new RecurringVehiculeDAO());
-<i>16</i>&nbsp;
-<i>17</i>&nbsp;    /**
-<i>18</i>&nbsp;     * Constructor for Test
-<i>19</i>&nbsp;      */
-<b class="fc"><i>20</i>&nbsp;    public FareCalculatorService() {</b>
+<i>3</i>&nbsp;import com.parkit.parkingsystem.constants.AppType;
+<i>4</i>&nbsp;import com.parkit.parkingsystem.constants.Fare;
+<i>5</i>&nbsp;import com.parkit.parkingsystem.dao.IRecurringVehiculeDAO;
+<i>6</i>&nbsp;import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
+<i>7</i>&nbsp;import com.parkit.parkingsystem.model.Ticket;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.time.Duration;
+<i>10</i>&nbsp;import java.time.Instant;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import static com.parkit.parkingsystem.constants.Fare.RECURRENT_DISCOUNT;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;/**
+<i>15</i>&nbsp; * &lt;b&gt;Simple brute force implementation of Interface IFareCalculatorService&lt;/b&gt;
+<i>16</i>&nbsp; *  @see IFareCalculatorService
+<i>17</i>&nbsp; *  @author Jedy10
+<i>18</i>&nbsp; *  @since beta1.0.0
+<i>19</i>&nbsp; */
+<i>20</i>&nbsp;public class FareCalculatorService implements IFareCalculatorService {
 <i>21</i>&nbsp;
-<b class="fc"><i>22</i>&nbsp;    }</b>
-<i>23</i>&nbsp;
-<i>24</i>&nbsp;    /**
-<i>25</i>&nbsp;     * Constructor
-<i>26</i>&nbsp;     * @param recurringVehiculeDAO resource DAO needed to access recurring Vehicle DBB
-<i>27</i>&nbsp;     */
-<b class="fc"><i>28</i>&nbsp;    public FareCalculatorService(IRecurringVehiculeDAO recurringVehiculeDAO) {</b>
-<b class="fc"><i>29</i>&nbsp;        this.recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);</b>
-<b class="fc"><i>30</i>&nbsp;    }</b>
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * @see FareCalculatorService#setRecurringVehiculeService(IRecurringVehiculeService)
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    private IRecurringVehiculeService recurringVehiculeService;// new RecurringVehiculeService(new RecurringVehiculeDAO());
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * Constructor for Test
+<i>29</i>&nbsp;      */
+<b class="fc"><i>30</i>&nbsp;    public FareCalculatorService() {</b>
 <i>31</i>&nbsp;
-<i>32</i>&nbsp;    /**
-<i>33</i>&nbsp;     * Setter for Recurring Vehicle Service
-<i>34</i>&nbsp;     * Useful for Test to inject RecurringVehiculeService Mock
-<i>35</i>&nbsp;     * @param recurringVehiculeService  Service needed to check recurring Vehicle
-<i>36</i>&nbsp;     */
-<i>37</i>&nbsp;    @Override
-<i>38</i>&nbsp;    public void setRecurringVehiculeService(IRecurringVehiculeService recurringVehiculeService) {
-<b class="fc"><i>39</i>&nbsp;        this.recurringVehiculeService = recurringVehiculeService;</b>
+<b class="fc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    /**
+<i>35</i>&nbsp;     * Constructor
+<i>36</i>&nbsp;     * @param recurringVehiculeDAO resource DAO needed to access recurring Vehicle DBB
+<i>37</i>&nbsp;     */
+<b class="fc"><i>38</i>&nbsp;    public FareCalculatorService(IRecurringVehiculeDAO recurringVehiculeDAO) {</b>
+<b class="fc"><i>39</i>&nbsp;        this.recurringVehiculeService = new RecurringVehiculeService(recurringVehiculeDAO);</b>
 <b class="fc"><i>40</i>&nbsp;    }</b>
 <i>41</i>&nbsp;
-<i>42</i>&nbsp;    @Override
-<i>43</i>&nbsp;    public void calculateFare(Ticket ticket){
-<b class="fc"><i>44</i>&nbsp;        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){</b>
-<b class="fc"><i>45</i>&nbsp;            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot;+ticket.getOutTime().toString());</b>
-<i>46</i>&nbsp;        }
-<i>47</i>&nbsp;
-<b class="fc"><i>48</i>&nbsp;        Instant inInstant = ticket.getInTime().toInstant();</b>
-<b class="fc"><i>49</i>&nbsp;        Instant outInstant = ticket.getOutTime().toInstant();</b>
-<i>50</i>&nbsp;
-<b class="fc"><i>51</i>&nbsp;        Duration duration = Duration.between(inInstant, outInstant);</b>
-<b class="fc"><i>52</i>&nbsp;        long durationMinute = duration.toMinutes();</b>
-<i>53</i>&nbsp;
-<b class="fc"><i>54</i>&nbsp;        if (durationMinute &gt; Fare.FREE_PERIOD_TIME_IN_MINUTES){</b>
-<b class="fc"><i>55</i>&nbsp;            switch (ticket.getParkingSpot().getParkingType()){</b>
-<i>56</i>&nbsp;                case CAR: {
-<b class="fc"><i>57</i>&nbsp;                    double price = durationMinute * (Fare.CAR_RATE_PER_HOUR/60);</b>
-<b class="fc"><i>58</i>&nbsp;                    price = recurrentDiscount(price, ticket.getVehicleRegNumber());</b>
-<b class="fc"><i>59</i>&nbsp;                    ticket.setPrice(price);</b>
-<b class="fc"><i>60</i>&nbsp;                    break;</b>
-<i>61</i>&nbsp;                }
-<i>62</i>&nbsp;                case BIKE: {
-<b class="fc"><i>63</i>&nbsp;                    double price = durationMinute * (Fare.BIKE_RATE_PER_HOUR/60);</b>
-<b class="fc"><i>64</i>&nbsp;                    price = recurrentDiscount(price, ticket.getVehicleRegNumber());</b>
-<b class="fc"><i>65</i>&nbsp;                    ticket.setPrice(price);</b>
-<b class="fc"><i>66</i>&nbsp;                    break;</b>
-<i>67</i>&nbsp;                }
-<b class="nc"><i>68</i>&nbsp;                default: throw new IllegalArgumentException(&quot;Unknown Parking Type&quot;);</b>
-<i>69</i>&nbsp;            }
-<i>70</i>&nbsp;        } else {
-<b class="fc"><i>71</i>&nbsp;            ticket.setPrice(0);</b>
-<i>72</i>&nbsp;        }
-<b class="fc"><i>73</i>&nbsp;    }</b>
-<i>74</i>&nbsp;
-<i>75</i>&nbsp;    private double recurrentDiscount(double price, String vehicleRegNumber){
-<b class="fc"><i>76</i>&nbsp;        if(recurringVehiculeService.applyDiscount(vehicleRegNumber)){</b>
-<b class="fc"><i>77</i>&nbsp;            double promoScreenNumber = Math.round(price * (1-Fare.RECURRENT_DISCOUNT) * 100.00)/100.00;</b>
-<b class="fc"><i>78</i>&nbsp;            System.out.println(&quot;You get a DISCOUNT of &quot;+ promoScreenNumber);</b>
-<b class="fc"><i>79</i>&nbsp;            price = Math.round(price * Fare.RECURRENT_DISCOUNT * 100.00)/100.00;</b>
-<i>80</i>&nbsp;        }
-<b class="fc"><i>81</i>&nbsp;        return price;</b>
-<i>82</i>&nbsp;    }
-<i>83</i>&nbsp;}
+<i>42</i>&nbsp;    /**
+<i>43</i>&nbsp;     * &lt;b&gt;Setter for Recurring Vehicle Service&lt;/b&gt;
+<i>44</i>&nbsp;     * &lt;p&gt;Useful for Test to inject RecurringVehiculeService Mock&lt;/p&gt;
+<i>45</i>&nbsp;     * @param recurringVehiculeService  Service needed to check recurring Vehicle
+<i>46</i>&nbsp;     */
+<i>47</i>&nbsp;    @Override
+<i>48</i>&nbsp;    public void setRecurringVehiculeService(IRecurringVehiculeService recurringVehiculeService) {
+<b class="fc"><i>49</i>&nbsp;        this.recurringVehiculeService = recurringVehiculeService;</b>
+<b class="fc"><i>50</i>&nbsp;    }</b>
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    @Override
+<i>53</i>&nbsp;    public void calculateFare(Ticket ticket){
+<b class="fc"><i>54</i>&nbsp;        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){</b>
+<b class="fc"><i>55</i>&nbsp;            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot;+ticket.getOutTime().toString());</b>
+<i>56</i>&nbsp;        }
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;        Instant inInstant = ticket.getInTime().toInstant();</b>
+<b class="fc"><i>59</i>&nbsp;        Instant outInstant = ticket.getOutTime().toInstant();</b>
+<i>60</i>&nbsp;
+<b class="fc"><i>61</i>&nbsp;        Duration duration = Duration.between(inInstant, outInstant);</b>
+<b class="fc"><i>62</i>&nbsp;        long durationMinute = duration.toMinutes();</b>
+<i>63</i>&nbsp;
+<b class="fc"><i>64</i>&nbsp;        if (durationMinute &gt; Fare.FREE_PERIOD_TIME_IN_MINUTES){</b>
+<b class="fc"><i>65</i>&nbsp;            switch (ticket.getParkingSpot().getParkingType()){</b>
+<i>66</i>&nbsp;                case CAR: {
+<b class="fc"><i>67</i>&nbsp;                    double price = durationMinute * (Fare.CAR_RATE_PER_HOUR/60);</b>
+<b class="fc"><i>68</i>&nbsp;                    price = recurrentDiscount(price, ticket.getVehicleRegNumber());</b>
+<b class="fc"><i>69</i>&nbsp;                    ticket.setPrice(price);</b>
+<b class="fc"><i>70</i>&nbsp;                    break;</b>
+<i>71</i>&nbsp;                }
+<i>72</i>&nbsp;                case BIKE: {
+<b class="fc"><i>73</i>&nbsp;                    double price = durationMinute * (Fare.BIKE_RATE_PER_HOUR/60);</b>
+<b class="fc"><i>74</i>&nbsp;                    price = recurrentDiscount(price, ticket.getVehicleRegNumber());</b>
+<b class="fc"><i>75</i>&nbsp;                    ticket.setPrice(price);</b>
+<b class="fc"><i>76</i>&nbsp;                    break;</b>
+<i>77</i>&nbsp;                }
+<b class="nc"><i>78</i>&nbsp;                default: throw new IllegalArgumentException(&quot;Unknown Parking Type&quot;);</b>
+<i>79</i>&nbsp;            }
+<i>80</i>&nbsp;        } else {
+<b class="fc"><i>81</i>&nbsp;            ticket.setPrice(0);</b>
+<i>82</i>&nbsp;            if (AppType.PRESENTATION) {
+<i>83</i>&nbsp;                //Force Record of vehicle in recurrent vehicle table
+<b class="fc"><i>84</i>&nbsp;                recurrentDiscount(0, ticket.getVehicleRegNumber());</b>
+<i>85</i>&nbsp;            }
+<i>86</i>&nbsp;        }
+<b class="fc"><i>87</i>&nbsp;    }</b>
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    /**
+<i>90</i>&nbsp;     * &lt;b&gt;needed to know if a vehicle is recurrent and can have a discount&lt;/b&gt;
+<i>91</i>&nbsp;     * &lt;ul&gt;
+<i>92</i>&nbsp;     *     &lt;li&gt;return same price if vehicle is not recurrent&lt;/li&gt;
+<i>93</i>&nbsp;     *     &lt;li&gt;return discounted price if vehicle is recurrent&lt;/li&gt;
+<i>94</i>&nbsp;     * &lt;/ul&gt;
+<i>95</i>&nbsp;     * @param price price for the vehicle calcul on elapsed time in parking
+<i>96</i>&nbsp;     * @param vehicleRegNumber vehicle number
+<i>97</i>&nbsp;     * @return price discounted if recurrent vehicle
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    private double recurrentDiscount(double price, String vehicleRegNumber){
+<b class="fc"><i>100</i>&nbsp;        if(recurringVehiculeService.applyDiscount(vehicleRegNumber)){</b>
+<b class="fc"><i>101</i>&nbsp;            double promoScreenNumber = Math.round(price * (1-Fare.RECURRENT_DISCOUNT) * 100.00)/100.00;</b>
+<b class="fc"><i>102</i>&nbsp;            System.out.println(&quot;You get a DISCOUNT of &quot;+ promoScreenNumber);</b>
+<b class="fc"><i>103</i>&nbsp;            price = Math.round(price * Fare.RECURRENT_DISCOUNT * 100.00)/100.00;</b>
+<i>104</i>&nbsp;        }
+<b class="fc"><i>105</i>&nbsp;        return price;</b>
+<i>106</i>&nbsp;    }
+<i>107</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>

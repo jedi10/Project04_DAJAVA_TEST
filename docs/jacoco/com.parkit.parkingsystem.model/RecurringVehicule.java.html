@@ -3,52 +3,87 @@
 import java.time.Instant;
 import java.util.Objects;
 
+/**
+ * &lt;b&gt;Mutable Model for Recurrent Vehicle&lt;/b&gt;
+ * @author Jedy10
+ * @since beta1.0.0
+ */
 public class RecurringVehicule {
 
     private int id;
+    /**
+     * vehicle number
+     * @see RecurringVehicule#getVehicleRegNumber()
+     */
     private String vehicleRegNumber;
+
+    /**
+     * last visit date for a recurrent vehicle
+     * @see RecurringVehicule#getLastVisit()
+     */
     private Instant lastVisit;
 
-<span class="fc" id="L12">    public RecurringVehicule(String vehicleRegNumber, Instant lastVisit) {</span>
-<span class="fc" id="L13">        this.vehicleRegNumber = vehicleRegNumber;</span>
-<span class="fc" id="L14">        this.lastVisit = lastVisit;</span>
-<span class="fc" id="L15">    }</span>
+    /**
+     *
+     * @param vehicleRegNumber number of vehicle (String)
+     * @param lastVisit date of last visit (Instant)
+     */
+<span class="fc" id="L31">    public RecurringVehicule(String vehicleRegNumber, Instant lastVisit) {</span>
+<span class="fc" id="L32">        this.vehicleRegNumber = vehicleRegNumber;</span>
+<span class="fc" id="L33">        this.lastVisit = lastVisit;</span>
+<span class="fc" id="L34">    }</span>
 
     public int getId() {
-<span class="fc" id="L18">        return id;</span>
+<span class="nc" id="L37">        return id;</span>
     }
 
     public void setId(int id) {
-<span class="fc" id="L22">        this.id = id;</span>
-<span class="fc" id="L23">    }</span>
+<span class="nc" id="L41">        this.id = id;</span>
+<span class="nc" id="L42">    }</span>
 
+    /**
+     * Get vehicle number
+     * @return vehicle number (String)
+     * @see RecurringVehicule#vehicleRegNumber
+     */
     public String getVehicleRegNumber() {
-<span class="fc" id="L26">        return vehicleRegNumber;</span>
+<span class="nc" id="L50">        return vehicleRegNumber;</span>
     }
 
     public void setVehicleRegNumber(String vehicleRegNumber) {
-<span class="nc" id="L30">        this.vehicleRegNumber = vehicleRegNumber;</span>
-<span class="nc" id="L31">    }</span>
+<span class="nc" id="L54">        this.vehicleRegNumber = vehicleRegNumber;</span>
+<span class="nc" id="L55">    }</span>
 
+    /**
+     * Get Last Visit Date
+     * @return last visit Date
+     * @see RecurringVehicule#lastVisit
+     */
     public Instant getLastVisit() {
-<span class="fc" id="L34">        return lastVisit;</span>
+<span class="nc" id="L63">        return lastVisit;</span>
     }
 
     public void setLastVisit(Instant lastVisit) {
-<span class="fc" id="L38">        this.lastVisit = lastVisit;</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L67">        this.lastVisit = lastVisit;</span>
+<span class="fc" id="L68">    }</span>
 
+    /**
+     * equal is tested only on vehicleRegNumber
+     * @see RecurringVehicule#vehicleRegNumber
+     * @param o object to compare
+     * @return true if given object is equal
+     */
     @Override
     public boolean equals(Object o) {
-<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L44" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
-<span class="fc" id="L45">        RecurringVehicule that = (RecurringVehicule) o;</span>
-<span class="fc" id="L46">        return vehicleRegNumber.equals(that.vehicleRegNumber);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L79" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="fc" id="L80">        RecurringVehicule that = (RecurringVehicule) o;</span>
+<span class="fc" id="L81">        return vehicleRegNumber.equals(that.vehicleRegNumber);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="fc" id="L51">        return Objects.hash(vehicleRegNumber);</span>
+<span class="fc" id="L86">        return Objects.hash(vehicleRegNumber);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

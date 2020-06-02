@@ -47,27 +47,27 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    80,6%
+    81,8%
   </span>
   <span class="absValue">
-    (25/ 31)
+    (27/ 33)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">ParkingSpotDAO$MockitoMock$958173022</td>
+    <td class="name">ParkingSpotDAO$MockitoMock$63614677</td>
   </tr>
   <tr>
-    <td class="name">ParkingSpotDAO$MockitoMock$958173022$auxiliary$A8zbzJHv</td>
+    <td class="name">ParkingSpotDAO$MockitoMock$63614677$auxiliary$0W80ePhD</td>
   </tr>
   <tr>
-    <td class="name">ParkingSpotDAO$MockitoMock$958173022$auxiliary$n8xTItpG</td>
+    <td class="name">ParkingSpotDAO$MockitoMock$63614677$auxiliary$7WzJQI8Q</td>
   </tr>
   <tr>
-    <td class="name">ParkingSpotDAO$MockitoMock$958173022$auxiliary$om7K0s3u</td>
+    <td class="name">ParkingSpotDAO$MockitoMock$63614677$auxiliary$BZFPX4Xs</td>
   </tr>
   <tr>
-    <td class="name">ParkingSpotDAO$MockitoMock$958173022$auxiliary$Zh3WbwPX</td>
+    <td class="name">ParkingSpotDAO$MockitoMock$63614677$auxiliary$muANBBHi</td>
   </tr>
 <tr>
   <td class="name"><strong>total</strong></td>
@@ -81,10 +81,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    80,6%
+    81,8%
   </span>
   <span class="absValue">
-    (25/ 31)
+    (27/ 33)
   </span>
 </td>
 </tr>
@@ -114,51 +114,53 @@
 <i>18</i>&nbsp;
 <i>19</i>&nbsp;    public int getNextAvailableSlot(ParkingType parkingType){
 <b class="fc"><i>20</i>&nbsp;        Connection con = null;</b>
-<b class="fc"><i>21</i>&nbsp;        int result=-1;</b>
-<i>22</i>&nbsp;        try {
-<b class="fc"><i>23</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
-<b class="fc"><i>24</i>&nbsp;            PreparedStatement ps = con.prepareStatement(DBConstants.GET_NEXT_PARKING_SPOT);</b>
-<b class="fc"><i>25</i>&nbsp;            ps.setString(1, parkingType.toString());</b>
-<b class="fc"><i>26</i>&nbsp;            ResultSet rs = ps.executeQuery();</b>
-<b class="fc"><i>27</i>&nbsp;            if(rs.next()){</b>
-<b class="fc"><i>28</i>&nbsp;                result = rs.getInt(1);;</b>
-<i>29</i>&nbsp;            }
-<b class="fc"><i>30</i>&nbsp;            dataBaseConfig.closeResultSet(rs);</b>
-<b class="fc"><i>31</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
+<b class="fc"><i>21</i>&nbsp;        PreparedStatement ps = null;</b>
+<b class="fc"><i>22</i>&nbsp;        ResultSet rs = null;</b>
+<b class="fc"><i>23</i>&nbsp;        int result=-1;</b>
+<i>24</i>&nbsp;        try {
+<b class="fc"><i>25</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
+<b class="fc"><i>26</i>&nbsp;            ps = con.prepareStatement(DBConstants.GET_NEXT_PARKING_SPOT);</b>
+<b class="fc"><i>27</i>&nbsp;            ps.setString(1, parkingType.toString());</b>
+<b class="fc"><i>28</i>&nbsp;            rs = ps.executeQuery();</b>
+<b class="fc"><i>29</i>&nbsp;            if(rs.next()){</b>
+<b class="fc"><i>30</i>&nbsp;                result = rs.getInt(1);;</b>
+<i>31</i>&nbsp;            }
 <b class="nc"><i>32</i>&nbsp;        }catch (Exception ex){</b>
 <b class="nc"><i>33</i>&nbsp;            logger.error(&quot;Error fetching next available slot&quot;,ex);</b>
 <i>34</i>&nbsp;        }finally {
-<b class="fc"><i>35</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
-<b class="fc"><i>36</i>&nbsp;        }</b>
-<b class="fc"><i>37</i>&nbsp;        return result;</b>
-<i>38</i>&nbsp;    }
-<i>39</i>&nbsp;
-<i>40</i>&nbsp;    public boolean updateParking(ParkingSpot parkingSpot){
-<i>41</i>&nbsp;        //update the availability fo that parking slot
-<b class="fc"><i>42</i>&nbsp;        Connection con = null;</b>
-<i>43</i>&nbsp;        try {
-<b class="fc"><i>44</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
-<b class="fc"><i>45</i>&nbsp;            PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_PARKING_SPOT);</b>
-<b class="fc"><i>46</i>&nbsp;            ps.setBoolean(1, parkingSpot.isAvailable());</b>
-<b class="fc"><i>47</i>&nbsp;            ps.setInt(2, parkingSpot.getId());</b>
-<b class="fc"><i>48</i>&nbsp;            int updateRowCount = ps.executeUpdate();</b>
-<b class="fc"><i>49</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
-<b class="fc"><i>50</i>&nbsp;            return (updateRowCount == 1);</b>
-<b class="nc"><i>51</i>&nbsp;        }catch (Exception ex){</b>
-<b class="nc"><i>52</i>&nbsp;            logger.error(&quot;Error updating parking info&quot;,ex);</b>
-<b class="nc"><i>53</i>&nbsp;            return false;</b>
-<i>54</i>&nbsp;        }finally {
-<b class="fc"><i>55</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
-<b class="nc"><i>56</i>&nbsp;        }</b>
-<i>57</i>&nbsp;    }
-<i>58</i>&nbsp;
-<i>59</i>&nbsp;}
+<b class="fc"><i>35</i>&nbsp;            dataBaseConfig.closeResultSet(rs);</b>
+<b class="fc"><i>36</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
+<b class="fc"><i>37</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
+<b class="fc"><i>38</i>&nbsp;        }</b>
+<b class="fc"><i>39</i>&nbsp;        return result;</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    public boolean updateParking(ParkingSpot parkingSpot){
+<i>43</i>&nbsp;        //update the availability fo that parking slot
+<b class="fc"><i>44</i>&nbsp;        Connection con = null;</b>
+<i>45</i>&nbsp;        try {
+<b class="fc"><i>46</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
+<b class="fc"><i>47</i>&nbsp;            PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_PARKING_SPOT);</b>
+<b class="fc"><i>48</i>&nbsp;            ps.setBoolean(1, parkingSpot.isAvailable());</b>
+<b class="fc"><i>49</i>&nbsp;            ps.setInt(2, parkingSpot.getId());</b>
+<b class="fc"><i>50</i>&nbsp;            int updateRowCount = ps.executeUpdate();</b>
+<b class="fc"><i>51</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
+<b class="fc"><i>52</i>&nbsp;            return (updateRowCount == 1);</b>
+<b class="nc"><i>53</i>&nbsp;        }catch (Exception ex){</b>
+<b class="nc"><i>54</i>&nbsp;            logger.error(&quot;Error updating parking info&quot;,ex);</b>
+<b class="nc"><i>55</i>&nbsp;            return false;</b>
+<i>56</i>&nbsp;        }finally {
+<b class="fc"><i>57</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
+<b class="nc"><i>58</i>&nbsp;        }</b>
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>

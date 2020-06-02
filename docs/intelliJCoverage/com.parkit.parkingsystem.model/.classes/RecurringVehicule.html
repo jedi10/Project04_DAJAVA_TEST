@@ -77,60 +77,95 @@
 <i>3</i>&nbsp;import java.time.Instant;
 <i>4</i>&nbsp;import java.util.Objects;
 <i>5</i>&nbsp;
-<i>6</i>&nbsp;public class RecurringVehicule {
-<i>7</i>&nbsp;
-<i>8</i>&nbsp;    private int id;
-<i>9</i>&nbsp;    private String vehicleRegNumber;
-<i>10</i>&nbsp;    private Instant lastVisit;
-<i>11</i>&nbsp;
-<b class="fc"><i>12</i>&nbsp;    public RecurringVehicule(String vehicleRegNumber, Instant lastVisit) {</b>
-<b class="fc"><i>13</i>&nbsp;        this.vehicleRegNumber = vehicleRegNumber;</b>
-<b class="fc"><i>14</i>&nbsp;        this.lastVisit = lastVisit;</b>
-<b class="fc"><i>15</i>&nbsp;    }</b>
-<i>16</i>&nbsp;
-<i>17</i>&nbsp;    public int getId() {
-<b class="fc"><i>18</i>&nbsp;        return id;</b>
-<i>19</i>&nbsp;    }
-<i>20</i>&nbsp;
-<i>21</i>&nbsp;    public void setId(int id) {
-<b class="fc"><i>22</i>&nbsp;        this.id = id;</b>
-<b class="fc"><i>23</i>&nbsp;    }</b>
-<i>24</i>&nbsp;
-<i>25</i>&nbsp;    public String getVehicleRegNumber() {
-<b class="fc"><i>26</i>&nbsp;        return vehicleRegNumber;</b>
-<i>27</i>&nbsp;    }
-<i>28</i>&nbsp;
-<i>29</i>&nbsp;    public void setVehicleRegNumber(String vehicleRegNumber) {
-<b class="nc"><i>30</i>&nbsp;        this.vehicleRegNumber = vehicleRegNumber;</b>
-<b class="nc"><i>31</i>&nbsp;    }</b>
-<i>32</i>&nbsp;
-<i>33</i>&nbsp;    public Instant getLastVisit() {
-<b class="fc"><i>34</i>&nbsp;        return lastVisit;</b>
-<i>35</i>&nbsp;    }
-<i>36</i>&nbsp;
-<i>37</i>&nbsp;    public void setLastVisit(Instant lastVisit) {
-<b class="fc"><i>38</i>&nbsp;        this.lastVisit = lastVisit;</b>
-<b class="fc"><i>39</i>&nbsp;    }</b>
-<i>40</i>&nbsp;
-<i>41</i>&nbsp;    @Override
-<i>42</i>&nbsp;    public boolean equals(Object o) {
-<b class="fc"><i>43</i>&nbsp;        if (this == o) return true;</b>
-<b class="fc"><i>44</i>&nbsp;        if (o == null || getClass() != o.getClass()) return false;</b>
-<b class="fc"><i>45</i>&nbsp;        RecurringVehicule that = (RecurringVehicule) o;</b>
-<b class="fc"><i>46</i>&nbsp;        return vehicleRegNumber.equals(that.vehicleRegNumber);</b>
-<i>47</i>&nbsp;    }
-<i>48</i>&nbsp;
-<i>49</i>&nbsp;    @Override
-<i>50</i>&nbsp;    public int hashCode() {
-<b class="fc"><i>51</i>&nbsp;        return Objects.hash(vehicleRegNumber);</b>
-<i>52</i>&nbsp;    }
-<i>53</i>&nbsp;}
+<i>6</i>&nbsp;/**
+<i>7</i>&nbsp; * &lt;b&gt;Mutable Model for Recurrent Vehicle&lt;/b&gt;
+<i>8</i>&nbsp; * @author Jedy10
+<i>9</i>&nbsp; * @since beta1.0.0
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;public class RecurringVehicule {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    private int id;
+<i>14</i>&nbsp;    /**
+<i>15</i>&nbsp;     * vehicle number
+<i>16</i>&nbsp;     * @see RecurringVehicule#getVehicleRegNumber()
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    private String vehicleRegNumber;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * last visit date for a recurrent vehicle
+<i>22</i>&nbsp;     * @see RecurringVehicule#getLastVisit()
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    private Instant lastVisit;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     *
+<i>28</i>&nbsp;     * @param vehicleRegNumber number of vehicle (String)
+<i>29</i>&nbsp;     * @param lastVisit date of last visit (Instant)
+<i>30</i>&nbsp;     */
+<b class="fc"><i>31</i>&nbsp;    public RecurringVehicule(String vehicleRegNumber, Instant lastVisit) {</b>
+<b class="fc"><i>32</i>&nbsp;        this.vehicleRegNumber = vehicleRegNumber;</b>
+<b class="fc"><i>33</i>&nbsp;        this.lastVisit = lastVisit;</b>
+<b class="fc"><i>34</i>&nbsp;    }</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    public int getId() {
+<b class="fc"><i>37</i>&nbsp;        return id;</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    public void setId(int id) {
+<b class="fc"><i>41</i>&nbsp;        this.id = id;</b>
+<b class="fc"><i>42</i>&nbsp;    }</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Get vehicle number
+<i>46</i>&nbsp;     * @return vehicle number (String)
+<i>47</i>&nbsp;     * @see RecurringVehicule#vehicleRegNumber
+<i>48</i>&nbsp;     */
+<i>49</i>&nbsp;    public String getVehicleRegNumber() {
+<b class="fc"><i>50</i>&nbsp;        return vehicleRegNumber;</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    public void setVehicleRegNumber(String vehicleRegNumber) {
+<b class="nc"><i>54</i>&nbsp;        this.vehicleRegNumber = vehicleRegNumber;</b>
+<b class="nc"><i>55</i>&nbsp;    }</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    /**
+<i>58</i>&nbsp;     * Get Last Visit Date
+<i>59</i>&nbsp;     * @return last visit Date
+<i>60</i>&nbsp;     * @see RecurringVehicule#lastVisit
+<i>61</i>&nbsp;     */
+<i>62</i>&nbsp;    public Instant getLastVisit() {
+<b class="fc"><i>63</i>&nbsp;        return lastVisit;</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    public void setLastVisit(Instant lastVisit) {
+<b class="fc"><i>67</i>&nbsp;        this.lastVisit = lastVisit;</b>
+<b class="fc"><i>68</i>&nbsp;    }</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    /**
+<i>71</i>&nbsp;     * equal is tested only on vehicleRegNumber
+<i>72</i>&nbsp;     * @see RecurringVehicule#vehicleRegNumber
+<i>73</i>&nbsp;     * @param o object to compare
+<i>74</i>&nbsp;     * @return true if given object is equal
+<i>75</i>&nbsp;     */
+<i>76</i>&nbsp;    @Override
+<i>77</i>&nbsp;    public boolean equals(Object o) {
+<b class="fc"><i>78</i>&nbsp;        if (this == o) return true;</b>
+<b class="fc"><i>79</i>&nbsp;        if (o == null || getClass() != o.getClass()) return false;</b>
+<b class="fc"><i>80</i>&nbsp;        RecurringVehicule that = (RecurringVehicule) o;</b>
+<b class="fc"><i>81</i>&nbsp;        return vehicleRegNumber.equals(that.vehicleRegNumber);</b>
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;    @Override
+<i>85</i>&nbsp;    public int hashCode() {
+<b class="fc"><i>86</i>&nbsp;        return Objects.hash(vehicleRegNumber);</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>

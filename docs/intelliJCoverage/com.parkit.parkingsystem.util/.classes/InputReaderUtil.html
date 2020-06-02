@@ -47,27 +47,27 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    11,8%
+    12,5%
   </span>
   <span class="absValue">
-    (2/ 17)
+    (2/ 16)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">InputReaderUtil$MockitoMock$1592144281</td>
+    <td class="name">InputReaderUtil$MockitoMock$1889521395</td>
   </tr>
   <tr>
-    <td class="name">InputReaderUtil$MockitoMock$1592144281$auxiliary$a1S7E3ZR</td>
+    <td class="name">InputReaderUtil$MockitoMock$1889521395$auxiliary$0yVJ4zDn</td>
   </tr>
   <tr>
-    <td class="name">InputReaderUtil$MockitoMock$1592144281$auxiliary$hiys620i</td>
+    <td class="name">InputReaderUtil$MockitoMock$1889521395$auxiliary$djBfKLgU</td>
   </tr>
   <tr>
-    <td class="name">InputReaderUtil$MockitoMock$1592144281$auxiliary$QvOl9p40</td>
+    <td class="name">InputReaderUtil$MockitoMock$1889521395$auxiliary$eUNx5ELB</td>
   </tr>
   <tr>
-    <td class="name">InputReaderUtil$MockitoMock$1592144281$auxiliary$Weh6ozY6</td>
+    <td class="name">InputReaderUtil$MockitoMock$1889521395$auxiliary$uKZk30N4</td>
   </tr>
 <tr>
   <td class="name"><strong>total</strong></td>
@@ -81,10 +81,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    11,8%
+    12,5%
   </span>
   <span class="absValue">
-    (2/ 17)
+    (2/ 16)
   </span>
 </td>
 </tr>
@@ -99,17 +99,17 @@
 <i>3</i>&nbsp;import org.apache.logging.log4j.LogManager;
 <i>4</i>&nbsp;import org.apache.logging.log4j.Logger;
 <i>5</i>&nbsp;
-<i>6</i>&nbsp;import java.util.Scanner;
-<i>7</i>&nbsp;
-<b class="nc"><i>8</i>&nbsp;public class InputReaderUtil {</b>
-<i>9</i>&nbsp;
-<b class="fc"><i>10</i>&nbsp;    private static Scanner scan = new Scanner(System.in);</b>
-<b class="fc"><i>11</i>&nbsp;    private static final Logger logger = LogManager.getLogger(&quot;InputReaderUtil&quot;);</b>
-<i>12</i>&nbsp;
-<i>13</i>&nbsp;    public int readSelection() {
-<i>14</i>&nbsp;        try {
-<b class="nc"><i>15</i>&nbsp;            int input = Integer.parseInt(scan.nextLine());</b>
-<b class="nc"><i>16</i>&nbsp;            return input;</b>
+<i>6</i>&nbsp;import java.nio.charset.StandardCharsets;
+<i>7</i>&nbsp;import java.util.Scanner;
+<i>8</i>&nbsp;
+<b class="nc"><i>9</i>&nbsp;public class InputReaderUtil {</b>
+<i>10</i>&nbsp;
+<b class="fc"><i>11</i>&nbsp;    private static Scanner scan = new Scanner(System.in, &quot;UTF-8&quot;);</b>
+<b class="fc"><i>12</i>&nbsp;    private static final Logger logger = LogManager.getLogger(&quot;InputReaderUtil&quot;);</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    public int readSelection() {
+<i>15</i>&nbsp;        try {
+<b class="nc"><i>16</i>&nbsp;            return Integer.parseInt(scan.nextLine());</b>
 <b class="nc"><i>17</i>&nbsp;        }catch(Exception e){</b>
 <b class="nc"><i>18</i>&nbsp;            logger.error(&quot;Error while reading user input from Shell&quot;, e);</b>
 <b class="nc"><i>19</i>&nbsp;            System.out.println(&quot;Error reading input. Please enter valid number for proceeding further&quot;);</b>
@@ -138,7 +138,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>
