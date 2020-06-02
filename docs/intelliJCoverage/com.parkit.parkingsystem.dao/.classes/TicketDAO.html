@@ -47,30 +47,30 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    86%
+    87,3%
   </span>
   <span class="absValue">
-    (49/ 57)
+    (55/ 63)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">TicketDAO$MockitoMock$339314898</td>
+    <td class="name">TicketDAO$MockitoMock$878707169</td>
   </tr>
   <tr>
-    <td class="name">TicketDAO$MockitoMock$339314898$auxiliary$6bN66NQq</td>
+    <td class="name">TicketDAO$MockitoMock$878707169$auxiliary$D6PuLD6L</td>
   </tr>
   <tr>
-    <td class="name">TicketDAO$MockitoMock$339314898$auxiliary$gS0e5Mi8</td>
+    <td class="name">TicketDAO$MockitoMock$878707169$auxiliary$QgaQJyQE</td>
   </tr>
   <tr>
-    <td class="name">TicketDAO$MockitoMock$339314898$auxiliary$RJCd4R9V</td>
+    <td class="name">TicketDAO$MockitoMock$878707169$auxiliary$re2rRz6t</td>
   </tr>
   <tr>
-    <td class="name">TicketDAO$MockitoMock$339314898$auxiliary$s3olul0d</td>
+    <td class="name">TicketDAO$MockitoMock$878707169$auxiliary$uCSRp3a7</td>
   </tr>
   <tr>
-    <td class="name">TicketDAO$MockitoMock$339314898$auxiliary$uuoBXLwB</td>
+    <td class="name">TicketDAO$MockitoMock$878707169$auxiliary$YfxM0vMX</td>
   </tr>
 <tr>
   <td class="name"><strong>total</strong></td>
@@ -84,10 +84,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    86%
+    87,3%
   </span>
   <span class="absValue">
-    (49/ 57)
+    (55/ 63)
   </span>
 </td>
 </tr>
@@ -120,90 +120,94 @@
 <i>21</i>&nbsp;
 <i>22</i>&nbsp;    public boolean saveTicket(Ticket ticket){
 <b class="fc"><i>23</i>&nbsp;        Connection con = null;</b>
-<i>24</i>&nbsp;        try {
-<b class="fc"><i>25</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
-<b class="fc"><i>26</i>&nbsp;            PreparedStatement ps = con.prepareStatement(DBConstants.SAVE_TICKET);</b>
-<i>27</i>&nbsp;            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-<i>28</i>&nbsp;            //ps.setInt(1,ticket.getId());
-<b class="fc"><i>29</i>&nbsp;            ps.setInt(1,ticket.getParkingSpot().getId());</b>
-<b class="fc"><i>30</i>&nbsp;            ps.setString(2, ticket.getVehicleRegNumber());</b>
-<b class="fc"><i>31</i>&nbsp;            ps.setDouble(3, ticket.getPrice());</b>
-<b class="fc"><i>32</i>&nbsp;            ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));</b>
-<b class="fc"><i>33</i>&nbsp;            ps.setTimestamp(5, (ticket.getOutTime() == null)?null: (new Timestamp(ticket.getOutTime().getTime())) );</b>
-<b class="fc"><i>34</i>&nbsp;            return ps.execute();</b>
-<b class="nc"><i>35</i>&nbsp;        }catch (Exception ex){</b>
-<b class="nc"><i>36</i>&nbsp;            logger.error(&quot;Error fetching next available slot&quot;,ex);</b>
-<i>37</i>&nbsp;        }finally {
-<b class="fc"><i>38</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
-<b class="fc"><i>39</i>&nbsp;            return false;</b>
-<i>40</i>&nbsp;        }
-<i>41</i>&nbsp;    }
-<i>42</i>&nbsp;
-<i>43</i>&nbsp;    public Ticket getTicket(String vehicleRegNumber, boolean onExit) {
-<b class="fc"><i>44</i>&nbsp;        Connection con = null;</b>
-<b class="fc"><i>45</i>&nbsp;        Ticket ticket = null;</b>
-<i>46</i>&nbsp;        try {
-<b class="fc"><i>47</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
-<b class="fc"><i>48</i>&nbsp;            PreparedStatement ps = null;</b>
-<b class="fc"><i>49</i>&nbsp;            if (onExit){</b>
-<b class="fc"><i>50</i>&nbsp;                ps = con.prepareStatement(DBConstants.GET_TICKET_ON_EXIT);</b>
-<i>51</i>&nbsp;            } else {
-<b class="fc"><i>52</i>&nbsp;                ps = con.prepareStatement(DBConstants.GET_TICKET);</b>
-<i>53</i>&nbsp;            }
-<i>54</i>&nbsp;            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-<b class="fc"><i>55</i>&nbsp;            ps.setString(1,vehicleRegNumber);</b>
-<b class="fc"><i>56</i>&nbsp;            ResultSet rs = ps.executeQuery();</b>
-<b class="fc"><i>57</i>&nbsp;            if(rs.next()){</b>
-<b class="fc"><i>58</i>&nbsp;                ticket = new Ticket();</b>
-<b class="fc"><i>59</i>&nbsp;                ParkingSpot parkingSpot = new ParkingSpot(rs.getInt(1), ParkingType.valueOf(rs.getString(6)),false);</b>
-<b class="fc"><i>60</i>&nbsp;                ticket.setParkingSpot(parkingSpot);</b>
-<b class="fc"><i>61</i>&nbsp;                ticket.setId(rs.getInt(2));</b>
-<b class="fc"><i>62</i>&nbsp;                ticket.setVehicleRegNumber(vehicleRegNumber);</b>
-<b class="fc"><i>63</i>&nbsp;                ticket.setPrice(rs.getDouble(3));</b>
-<b class="fc"><i>64</i>&nbsp;                ticket.setInTime(rs.getTimestamp(4));</b>
-<b class="fc"><i>65</i>&nbsp;                ticket.setOutTime(rs.getTimestamp(5));</b>
-<i>66</i>&nbsp;            }
-<b class="fc"><i>67</i>&nbsp;            dataBaseConfig.closeResultSet(rs);</b>
-<b class="fc"><i>68</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
-<b class="nc"><i>69</i>&nbsp;        }catch (Exception ex){</b>
-<b class="nc"><i>70</i>&nbsp;            logger.error(&quot;Error fetching next available slot&quot;,ex);</b>
-<i>71</i>&nbsp;        }finally {
-<b class="fc"><i>72</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
-<b class="fc"><i>73</i>&nbsp;            return ticket;</b>
-<i>74</i>&nbsp;        }
-<i>75</i>&nbsp;    }
-<i>76</i>&nbsp;
-<i>77</i>&nbsp;    public boolean updateTicket(Ticket ticket, boolean onExit) {
-<b class="fc"><i>78</i>&nbsp;        Connection con = null;</b>
-<i>79</i>&nbsp;        try {
-<b class="fc"><i>80</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
-<i>81</i>&nbsp;            PreparedStatement ps;
-<b class="fc"><i>82</i>&nbsp;            if (onExit){</b>
-<b class="fc"><i>83</i>&nbsp;                ps = con.prepareStatement(DBConstants.UPDATE_TICKET_ON_EXIT);</b>
-<b class="fc"><i>84</i>&nbsp;                ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));</b>
-<i>85</i>&nbsp;            } else {
-<b class="fc"><i>86</i>&nbsp;                ps = con.prepareStatement(DBConstants.UPDATE_TICKET);</b>
-<b class="fc"><i>87</i>&nbsp;                ps.setTimestamp(2, new Timestamp(ticket.getInTime().getTime()));</b>
-<i>88</i>&nbsp;            }
-<b class="fc"><i>89</i>&nbsp;            ps.setDouble(1, ticket.getPrice());</b>
-<b class="fc"><i>90</i>&nbsp;            ps.setInt(3,ticket.getId());</b>
-<b class="fc"><i>91</i>&nbsp;            int updateRowCount = ps.executeUpdate();</b>
-<b class="fc"><i>92</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
-<b class="fc"><i>93</i>&nbsp;            return (updateRowCount == 1);</b>
-<b class="nc"><i>94</i>&nbsp;        }catch (Exception ex){</b>
-<b class="nc"><i>95</i>&nbsp;            logger.error(&quot;Error saving ticket info&quot;,ex);</b>
-<i>96</i>&nbsp;        }finally {
-<b class="fc"><i>97</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
-<b class="nc"><i>98</i>&nbsp;        }</b>
-<b class="nc"><i>99</i>&nbsp;        return false;</b>
-<i>100</i>&nbsp;    }
-<i>101</i>&nbsp;}
+<b class="fc"><i>24</i>&nbsp;        PreparedStatement ps = null;</b>
+<b class="fc"><i>25</i>&nbsp;        boolean result = false;</b>
+<i>26</i>&nbsp;        try {
+<b class="fc"><i>27</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
+<b class="fc"><i>28</i>&nbsp;            ps = con.prepareStatement(DBConstants.SAVE_TICKET);</b>
+<i>29</i>&nbsp;            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
+<i>30</i>&nbsp;            //ps.setInt(1,ticket.getId());
+<b class="fc"><i>31</i>&nbsp;            ps.setInt(1,ticket.getParkingSpot().getId());</b>
+<b class="fc"><i>32</i>&nbsp;            ps.setString(2, ticket.getVehicleRegNumber());</b>
+<b class="fc"><i>33</i>&nbsp;            ps.setDouble(3, ticket.getPrice());</b>
+<b class="fc"><i>34</i>&nbsp;            ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));</b>
+<b class="fc"><i>35</i>&nbsp;            ps.setTimestamp(5, (ticket.getOutTime() == null)?null: (new Timestamp(ticket.getOutTime().getTime())) );</b>
+<b class="fc"><i>36</i>&nbsp;            result = ps.execute();</b>
+<b class="nc"><i>37</i>&nbsp;        }catch (Exception ex){</b>
+<b class="nc"><i>38</i>&nbsp;            logger.error(&quot;Error fetching next available slot&quot;,ex);</b>
+<i>39</i>&nbsp;        }finally {
+<b class="fc"><i>40</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
+<b class="fc"><i>41</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
+<b class="fc"><i>42</i>&nbsp;        }</b>
+<b class="fc"><i>43</i>&nbsp;        return result;</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    public Ticket getTicket(String vehicleRegNumber, boolean onExit) {
+<b class="fc"><i>47</i>&nbsp;        Connection con = null;</b>
+<b class="fc"><i>48</i>&nbsp;        PreparedStatement ps = null;</b>
+<b class="fc"><i>49</i>&nbsp;        ResultSet rs = null;</b>
+<b class="fc"><i>50</i>&nbsp;        Ticket ticket = null;</b>
+<i>51</i>&nbsp;        try {
+<b class="fc"><i>52</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
+<b class="fc"><i>53</i>&nbsp;            if (onExit){</b>
+<b class="fc"><i>54</i>&nbsp;                ps = con.prepareStatement(DBConstants.GET_TICKET_ON_EXIT);</b>
+<i>55</i>&nbsp;            } else {
+<b class="fc"><i>56</i>&nbsp;                ps = con.prepareStatement(DBConstants.GET_TICKET);</b>
+<i>57</i>&nbsp;            }
+<i>58</i>&nbsp;            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
+<b class="fc"><i>59</i>&nbsp;            ps.setString(1,vehicleRegNumber);</b>
+<b class="fc"><i>60</i>&nbsp;            rs = ps.executeQuery();</b>
+<b class="fc"><i>61</i>&nbsp;            if(rs.next()){</b>
+<b class="fc"><i>62</i>&nbsp;                ticket = new Ticket();</b>
+<b class="fc"><i>63</i>&nbsp;                ParkingSpot parkingSpot = new ParkingSpot(rs.getInt(1), ParkingType.valueOf(rs.getString(6)),false);</b>
+<b class="fc"><i>64</i>&nbsp;                ticket.setParkingSpot(parkingSpot);</b>
+<b class="fc"><i>65</i>&nbsp;                ticket.setId(rs.getInt(2));</b>
+<b class="fc"><i>66</i>&nbsp;                ticket.setVehicleRegNumber(vehicleRegNumber);</b>
+<b class="fc"><i>67</i>&nbsp;                ticket.setPrice(rs.getDouble(3));</b>
+<b class="fc"><i>68</i>&nbsp;                ticket.setInTime(rs.getTimestamp(4));</b>
+<b class="fc"><i>69</i>&nbsp;                ticket.setOutTime(rs.getTimestamp(5));</b>
+<i>70</i>&nbsp;            }
+<b class="nc"><i>71</i>&nbsp;        }catch (Exception ex){</b>
+<b class="nc"><i>72</i>&nbsp;            logger.error(&quot;Error fetching next available slot&quot;,ex);</b>
+<i>73</i>&nbsp;        }finally {
+<b class="fc"><i>74</i>&nbsp;            dataBaseConfig.closeResultSet(rs);</b>
+<b class="fc"><i>75</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
+<b class="fc"><i>76</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
+<b class="fc"><i>77</i>&nbsp;        }</b>
+<b class="fc"><i>78</i>&nbsp;        return ticket;</b>
+<i>79</i>&nbsp;    }
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    public boolean updateTicket(Ticket ticket, boolean onExit) {
+<b class="fc"><i>82</i>&nbsp;        Connection con = null;</b>
+<i>83</i>&nbsp;        try {
+<b class="fc"><i>84</i>&nbsp;            con = dataBaseConfig.getConnection();</b>
+<i>85</i>&nbsp;            PreparedStatement ps;
+<b class="fc"><i>86</i>&nbsp;            if (onExit){</b>
+<b class="fc"><i>87</i>&nbsp;                ps = con.prepareStatement(DBConstants.UPDATE_TICKET_ON_EXIT);</b>
+<b class="fc"><i>88</i>&nbsp;                ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));</b>
+<i>89</i>&nbsp;            } else {
+<b class="fc"><i>90</i>&nbsp;                ps = con.prepareStatement(DBConstants.UPDATE_TICKET);</b>
+<b class="fc"><i>91</i>&nbsp;                ps.setTimestamp(2, new Timestamp(ticket.getInTime().getTime()));</b>
+<i>92</i>&nbsp;            }
+<b class="fc"><i>93</i>&nbsp;            ps.setDouble(1, ticket.getPrice());</b>
+<b class="fc"><i>94</i>&nbsp;            ps.setInt(3,ticket.getId());</b>
+<b class="fc"><i>95</i>&nbsp;            int updateRowCount = ps.executeUpdate();</b>
+<b class="fc"><i>96</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
+<b class="fc"><i>97</i>&nbsp;            return (updateRowCount == 1);</b>
+<b class="nc"><i>98</i>&nbsp;        }catch (Exception ex){</b>
+<b class="nc"><i>99</i>&nbsp;            logger.error(&quot;Error saving ticket info&quot;,ex);</b>
+<i>100</i>&nbsp;        }finally {
+<b class="fc"><i>101</i>&nbsp;            dataBaseConfig.closeConnection(con);</b>
+<b class="nc"><i>102</i>&nbsp;        }</b>
+<b class="nc"><i>103</i>&nbsp;        return false;</b>
+<i>104</i>&nbsp;    }
+<i>105</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>

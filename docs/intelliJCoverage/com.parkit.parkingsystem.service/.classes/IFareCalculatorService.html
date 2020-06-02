@@ -40,17 +40,34 @@
 <i>2</i>&nbsp;
 <i>3</i>&nbsp;import com.parkit.parkingsystem.model.Ticket;
 <i>4</i>&nbsp;
-<i>5</i>&nbsp;public interface IFareCalculatorService {
-<i>6</i>&nbsp;    void setRecurringVehiculeService(IRecurringVehiculeService recurringVehiculeService);
-<i>7</i>&nbsp;
-<i>8</i>&nbsp;    void calculateFare(Ticket ticket);
-<i>9</i>&nbsp;}
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * &lt;b&gt;All needed to calcul price for parking a vehicle&lt;/b&gt;
+<i>7</i>&nbsp; */
+<i>8</i>&nbsp;public interface IFareCalculatorService {
+<i>9</i>&nbsp;    /**
+<i>10</i>&nbsp;     * &lt;b&gt;Setter for Recurring Vehicle Service&lt;/b&gt;
+<i>11</i>&nbsp;     * &lt;p&gt;Useful for Test to inject RecurringVehiculeService Mock&lt;/p&gt;
+<i>12</i>&nbsp;     * @param recurringVehiculeService  Service needed to check recurring Vehicle
+<i>13</i>&nbsp;     */
+<i>14</i>&nbsp;    void setRecurringVehiculeService(IRecurringVehiculeService recurringVehiculeService);
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    /**
+<i>17</i>&nbsp;     * &lt;b&gt;Calcul of the parking price&lt;/b&gt;
+<i>18</i>&nbsp;     * &lt;ul&gt;
+<i>19</i>&nbsp;     *     &lt;li&gt;First 29 minutes are free; &lt;/li&gt;
+<i>20</i>&nbsp;     *     &lt;li&gt;Car and Bike have different price; &lt;/li&gt;
+<i>21</i>&nbsp;     *     &lt;li&gt;Recurrent Vehicle have a discount&lt;/li&gt;
+<i>22</i>&nbsp;     * &lt;/ul&gt;
+<i>23</i>&nbsp;     * @param ticket a parking ticket
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    void calculateFare(Ticket ticket);
+<i>26</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>

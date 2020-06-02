@@ -5,7 +5,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html id="htmlId">
 <head>
-  <title>Coverage Report :: Fare</title>
+  <title>Coverage Report :: AppType</title>
   <style type="text/css">
     @import "../../.css/coverage.css";
   </style>
@@ -20,7 +20,7 @@
     [ <a href="../index.html">com.parkit.parkingsystem.constants</a> ]
 </div>
 
-<h1>Coverage Summary for Class: Fare (com.parkit.parkingsystem.constants)</h1>
+<h1>Coverage Summary for Class: AppType (com.parkit.parkingsystem.constants)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -39,7 +39,7 @@
 </th>
 </tr>
 <tr>
-  <td class="name">Fare</td>
+  <td class="name">AppType</td>
 <td class="coverageStat">
   <span class="percent">
     0%
@@ -74,12 +74,22 @@
 
 <div class="sourceCode"><i>1</i>&nbsp;package com.parkit.parkingsystem.constants;
 <i>2</i>&nbsp;
-<b class="nc"><i>3</i>&nbsp;public class Fare {</b>
-<i>4</i>&nbsp;    public static final double BIKE_RATE_PER_HOUR = 1.0;
-<i>5</i>&nbsp;    public static final double CAR_RATE_PER_HOUR = 1.5;
-<i>6</i>&nbsp;    public static final int FREE_PERIOD_TIME_IN_MINUTES = 29;
-<i>7</i>&nbsp;    public static final double RECURRENT_DISCOUNT = 0.95;
-<i>8</i>&nbsp;}
+<i>3</i>&nbsp;import com.parkit.parkingsystem.model.Ticket;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * &lt;b&gt;Useful to make an easier presentation of Application&lt;/b&gt;
+<i>7</i>&nbsp; * &lt;p&gt;even vehicle which don&#39;t pay anything can be recorded as recurrent&lt;/p&gt;
+<i>8</i>&nbsp; */
+<b class="nc"><i>9</i>&nbsp;public class AppType {</b>
+<i>10</i>&nbsp;    /**
+<i>11</i>&nbsp;     * &lt;ul&gt;
+<i>12</i>&nbsp;     *     &lt;li&gt;If True, all vehicles can be recorded as recurrent; &lt;/li&gt;
+<i>13</i>&nbsp;     *     &lt;li&gt;If False, only vehicle which have already pay something can be recurrent&lt;/li&gt;
+<i>14</i>&nbsp;     * &lt;/ul&gt;
+<i>15</i>&nbsp;     * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+<i>16</i>&nbsp;     */
+<i>17</i>&nbsp;    public final static boolean PRESENTATION = true;
+<i>18</i>&nbsp;}
 </div>
 </div>
 

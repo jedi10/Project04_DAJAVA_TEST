@@ -28,13 +28,13 @@
   <th class="name">Class</th>
 </tr>
   <tr>
-    <td class="name">IRecurringVehiculeService$MockitoMock$1395033590</td>
+    <td class="name">IRecurringVehiculeService$MockitoMock$898896990</td>
   </tr>
   <tr>
-    <td class="name">IRecurringVehiculeService$MockitoMock$1395033590$auxiliary$l7oKJjFT</td>
+    <td class="name">IRecurringVehiculeService$MockitoMock$898896990$auxiliary$8lz8QC5H</td>
   </tr>
   <tr>
-    <td class="name">IRecurringVehiculeService$MockitoMock$1395033590$auxiliary$wUrlT1ED</td>
+    <td class="name">IRecurringVehiculeService$MockitoMock$898896990$auxiliary$kdU3pQJB</td>
   </tr>
 <tr>
   <td class="name"><strong>total</strong></td>
@@ -49,21 +49,54 @@
 <i>2</i>&nbsp;
 <i>3</i>&nbsp;import com.parkit.parkingsystem.model.RecurringVehicule;
 <i>4</i>&nbsp;
-<i>5</i>&nbsp;public interface IRecurringVehiculeService {
-<i>6</i>&nbsp;    boolean applyDiscount(String vehicleRegNumber);
-<i>7</i>&nbsp;
-<i>8</i>&nbsp;    RecurringVehicule checkRecurringVehicule(String vehicleRegNumber);
-<i>9</i>&nbsp;
-<i>10</i>&nbsp;    RecurringVehicule addRecurringVehicule(RecurringVehicule recurringVehicule);
-<i>11</i>&nbsp;
-<i>12</i>&nbsp;    int updateRecurringVehicule(RecurringVehicule recurringVehicule);
-<i>13</i>&nbsp;}
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * &lt;b&gt;When it is needed to deal with recurrent vehicle&lt;/b&gt;
+<i>7</i>&nbsp; * &lt;ul&gt;
+<i>8</i>&nbsp; *     &lt;li&gt;recurrent vehicle can be stored; &lt;/li&gt;
+<i>9</i>&nbsp; *     &lt;li&gt;it is possible to know if a vehicle is recurrent or not&lt;/li&gt;
+<i>10</i>&nbsp; * &lt;/ul&gt;
+<i>11</i>&nbsp; */
+<i>12</i>&nbsp;public interface IRecurringVehiculeService {
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    /**
+<i>15</i>&nbsp;     * &lt;b&gt;Is a vehicle recurrent  or not&lt;/b&gt;
+<i>16</i>&nbsp;     * &lt;ul&gt;
+<i>17</i>&nbsp;     *     &lt;li&gt;if not recurrent, is stored in DBB, return false; &lt;/li&gt;
+<i>18</i>&nbsp;     *     &lt;li&gt;if recurrent, DBB is updated (last_visit), return true&lt;/li&gt;
+<i>19</i>&nbsp;     * &lt;/ul&gt;
+<i>20</i>&nbsp;     * @param vehicleRegNumber Number of the vehicle
+<i>21</i>&nbsp;     * @return boolean (false if vehicle is not recurrent)
+<i>22</i>&nbsp;     */
+<i>23</i>&nbsp;    boolean applyDiscount(String vehicleRegNumber);
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * &lt;b&gt;Get recurrent vehicle&lt;/b&gt;
+<i>27</i>&nbsp;     * @param vehicleRegNumber Number of the vehicle
+<i>28</i>&nbsp;     * @return RecurringVehicule or null
+<i>29</i>&nbsp;     */
+<i>30</i>&nbsp;    RecurringVehicule checkRecurringVehicule(String vehicleRegNumber);
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * &lt;b&gt;Add Recurring Vehicle&lt;/b&gt;
+<i>34</i>&nbsp;     * @param recurringVehicule Recurrent Vehicle to save
+<i>35</i>&nbsp;     * @return RecurringVehicule with id or null
+<i>36</i>&nbsp;     */
+<i>37</i>&nbsp;    RecurringVehicule addRecurringVehicule(RecurringVehicule recurringVehicule);
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * &lt;b&gt;Update recurrent vehicle&lt;/b&gt;
+<i>41</i>&nbsp;     * &lt;p&gt;last_visit property can be updated&lt;/p&gt;
+<i>42</i>&nbsp;     * @param recurringVehicule Recurrent Vehicle to update
+<i>43</i>&nbsp;     * @return Number of updated line
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    int updateRecurringVehicule(RecurringVehicule recurringVehicule);
+<i>46</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>
