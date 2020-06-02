@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem.dao;
+package com.parkit.parkingsystem.integration;
 
 import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
