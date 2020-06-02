@@ -18,9 +18,13 @@ import java.util.List;
 import static java.time.Instant.now;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * <b>Integration Tests with DBB: CRUD on Recurring Vehicle</b>
+ */
+@DisplayName("Integration Tests with DBB: CRUD on Recurring Vehicle")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class RecurringVehiculeDAOTest {
+public class RecurringVehiculeDAOIT {
 
     private DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
     private RecurringVehiculeDAO recurringVehiculeDAO;
