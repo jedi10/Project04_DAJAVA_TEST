@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">parking-system</a> &gt; <a href="index.source.html" class="el_package">com.parkit.parkingsystem.constants</a> &gt; <span class="el_source">AppType.java</span></div><h1>AppType.java</h1><pre class="source lang-java linenums">package com.parkit.parkingsystem.constants;
+
+import com.parkit.parkingsystem.model.Ticket;
+
+/**
+ * &lt;b&gt;Useful to make an easier presentation of Application&lt;/b&gt;
+ * &lt;p&gt;even vehicle which don't pay anything can be recorded as recurrent&lt;/p&gt;
+ */
+<span class="nc" id="L9">public class AppType {</span>
+    /**
+     * &lt;ul&gt;
+     *     &lt;li&gt;If True, all vehicles can be recorded as recurrent; &lt;/li&gt;
+     *     &lt;li&gt;If False, only vehicle which have already pay something can be recurrent&lt;/li&gt;
+     * &lt;/ul&gt;
+     * @see com.parkit.parkingsystem.service.FareCalculatorService#calculateFare(Ticket)
+     */
+    public final static boolean PRESENTATION = true;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -61,7 +61,7 @@
     100%
   </span>
   <span class="absValue">
-    (19/ 19)
+    (25/ 25)
   </span>
 </td>
 </tr>
@@ -76,69 +76,78 @@
 <i>2</i>&nbsp;
 <i>3</i>&nbsp;import java.util.Calendar;
 <i>4</i>&nbsp;import java.util.Date;
-<i>5</i>&nbsp;
-<b class="fc"><i>6</i>&nbsp;public class Ticket {</b>
-<i>7</i>&nbsp;    private int id;
-<i>8</i>&nbsp;    private ParkingSpot parkingSpot;
-<i>9</i>&nbsp;    private String vehicleRegNumber;
-<i>10</i>&nbsp;    private double price;
-<i>11</i>&nbsp;    private Date inTime;
-<i>12</i>&nbsp;    private Date outTime;
-<i>13</i>&nbsp;
-<i>14</i>&nbsp;    public int getId() {
-<b class="fc"><i>15</i>&nbsp;        return id;</b>
-<i>16</i>&nbsp;    }
-<i>17</i>&nbsp;
-<i>18</i>&nbsp;    public void setId(int id) {
-<b class="fc"><i>19</i>&nbsp;        this.id = id;</b>
-<b class="fc"><i>20</i>&nbsp;    }</b>
-<i>21</i>&nbsp;
-<i>22</i>&nbsp;    public ParkingSpot getParkingSpot() {
-<b class="fc"><i>23</i>&nbsp;        return parkingSpot;</b>
-<i>24</i>&nbsp;    }
-<i>25</i>&nbsp;
-<i>26</i>&nbsp;    public void setParkingSpot(ParkingSpot parkingSpot) {
-<b class="fc"><i>27</i>&nbsp;        this.parkingSpot = parkingSpot;</b>
-<b class="fc"><i>28</i>&nbsp;    }</b>
-<i>29</i>&nbsp;
-<i>30</i>&nbsp;    public String getVehicleRegNumber() {
-<b class="fc"><i>31</i>&nbsp;        return vehicleRegNumber;</b>
-<i>32</i>&nbsp;    }
-<i>33</i>&nbsp;
-<i>34</i>&nbsp;    public void setVehicleRegNumber(String vehicleRegNumber) {
-<b class="fc"><i>35</i>&nbsp;        this.vehicleRegNumber = vehicleRegNumber;</b>
-<b class="fc"><i>36</i>&nbsp;    }</b>
-<i>37</i>&nbsp;
-<i>38</i>&nbsp;    public double getPrice() {
-<b class="fc"><i>39</i>&nbsp;        return price;</b>
-<i>40</i>&nbsp;    }
-<i>41</i>&nbsp;
-<i>42</i>&nbsp;    public void setPrice(double price) {
-<b class="fc"><i>43</i>&nbsp;        this.price = price;</b>
-<b class="fc"><i>44</i>&nbsp;    }</b>
-<i>45</i>&nbsp;
-<i>46</i>&nbsp;    public Date getInTime() {
-<b class="fc"><i>47</i>&nbsp;        return inTime;</b>
-<i>48</i>&nbsp;    }
-<i>49</i>&nbsp;
-<i>50</i>&nbsp;    public void setInTime(Date inTime) {
-<b class="fc"><i>51</i>&nbsp;        this.inTime = inTime;</b>
-<b class="fc"><i>52</i>&nbsp;    }</b>
-<i>53</i>&nbsp;
-<i>54</i>&nbsp;    public Date getOutTime() {
-<b class="fc"><i>55</i>&nbsp;        return outTime;</b>
-<i>56</i>&nbsp;    }
-<i>57</i>&nbsp;
-<i>58</i>&nbsp;    public void setOutTime(Date outTime) {
-<b class="fc"><i>59</i>&nbsp;        this.outTime = outTime;</b>
-<b class="fc"><i>60</i>&nbsp;    }</b>
-<i>61</i>&nbsp;}
+<i>5</i>&nbsp;import java.util.Optional;
+<i>6</i>&nbsp;
+<b class="fc"><i>7</i>&nbsp;public class Ticket {</b>
+<i>8</i>&nbsp;    private int id;
+<i>9</i>&nbsp;    private ParkingSpot parkingSpot;
+<i>10</i>&nbsp;    private String vehicleRegNumber;
+<i>11</i>&nbsp;    private double price;
+<i>12</i>&nbsp;    private Date inTime;
+<i>13</i>&nbsp;    private Date outTime;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    public int getId() {
+<b class="fc"><i>16</i>&nbsp;        return id;</b>
+<i>17</i>&nbsp;    }
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    public void setId(int id) {
+<b class="fc"><i>20</i>&nbsp;        this.id = id;</b>
+<b class="fc"><i>21</i>&nbsp;    }</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    public ParkingSpot getParkingSpot() {
+<b class="fc"><i>24</i>&nbsp;        return parkingSpot;</b>
+<i>25</i>&nbsp;    }
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    public void setParkingSpot(ParkingSpot parkingSpot) {
+<b class="fc"><i>28</i>&nbsp;        this.parkingSpot = parkingSpot;</b>
+<b class="fc"><i>29</i>&nbsp;    }</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    public String getVehicleRegNumber() {
+<b class="fc"><i>32</i>&nbsp;        return vehicleRegNumber;</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public void setVehicleRegNumber(String vehicleRegNumber) {
+<b class="fc"><i>36</i>&nbsp;        this.vehicleRegNumber = vehicleRegNumber;</b>
+<b class="fc"><i>37</i>&nbsp;    }</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    public double getPrice() {
+<b class="fc"><i>40</i>&nbsp;        return price;</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    public void setPrice(double price) {
+<b class="fc"><i>44</i>&nbsp;        this.price = price;</b>
+<b class="fc"><i>45</i>&nbsp;    }</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    public Date getInTime() {
+<b class="fc"><i>48</i>&nbsp;        return this.inTime == null ? null : new Date(this.inTime.getTime());</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    public void setInTime(Date inTime) {
+<b class="fc"><i>52</i>&nbsp;        this.inTime = Optional.ofNullable(inTime)</b>
+<b class="fc"><i>53</i>&nbsp;                .map(Date::getTime)</b>
+<b class="fc"><i>54</i>&nbsp;                .map(Date::new)</b>
+<b class="fc"><i>55</i>&nbsp;                .orElse(null);</b>
+<i>56</i>&nbsp;                //new Date(inTime.getTime());
+<b class="fc"><i>57</i>&nbsp;    }</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    public Date getOutTime() {
+<b class="fc"><i>60</i>&nbsp;        return this.outTime == null ? null : new Date(this.outTime.getTime());</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    public void setOutTime(Date outTime) {
+<b class="fc"><i>64</i>&nbsp;        this.outTime = Optional.ofNullable(outTime)</b>
+<b class="fc"><i>65</i>&nbsp;                .map(Date::getTime)</b>
+<b class="fc"><i>66</i>&nbsp;                .map(Date::new)</b>
+<b class="fc"><i>67</i>&nbsp;                .orElse(null);</b>
+<i>68</i>&nbsp;                //new Date(outTime.getTime());
+<b class="fc"><i>69</i>&nbsp;    }</b>
+<i>70</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>

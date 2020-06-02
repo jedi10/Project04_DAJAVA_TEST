@@ -94,137 +94,143 @@
 <i>20</i>&nbsp;import java.util.ArrayList;
 <i>21</i>&nbsp;import java.util.List;
 <i>22</i>&nbsp;
-<b class="fc"><i>23</i>&nbsp;public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {</b>
-<i>24</i>&nbsp;
-<b class="fc"><i>25</i>&nbsp;    private static final Logger logger = LogManager.getLogger(&quot;RecurringVehiculeDAO&quot;);</b>
-<i>26</i>&nbsp;
-<b class="fc"><i>27</i>&nbsp;    public DataBaseConfig dataBaseConfig = new DataBaseConfig();</b>
-<i>28</i>&nbsp;
-<i>29</i>&nbsp;    @Override
-<i>30</i>&nbsp;    public List&lt;RecurringVehicule&gt; getListOfRecurrentVehicule() {
-<b class="fc"><i>31</i>&nbsp;        RecurringVehicule recurringVehicule = null;</b>
-<b class="fc"><i>32</i>&nbsp;        List&lt;RecurringVehicule&gt; recurringVehiculeList = new ArrayList&lt;&gt;();</b>
-<b class="fc"><i>33</i>&nbsp;        try(Connection con = dataBaseConfig.getConnection();</b>
-<b class="fc"><i>34</i>&nbsp;            PreparedStatement ps = con.prepareStatement(</b>
-<i>35</i>&nbsp;                    DBConstants.GET_RECURRING_VEHICLE_LIST);) {
-<i>36</i>&nbsp;            //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
-<b class="fc"><i>37</i>&nbsp;            try(ResultSet rs = ps.executeQuery()){</b>
-<b class="fc"><i>38</i>&nbsp;                while(rs.next()){</b>
-<b class="fc"><i>39</i>&nbsp;                    recurringVehicule = new RecurringVehicule(</b>
-<b class="fc"><i>40</i>&nbsp;                            rs.getString(2),</b>
-<b class="fc"><i>41</i>&nbsp;                            rs.getTimestamp(3).toInstant());</b>
-<b class="fc"><i>42</i>&nbsp;                    recurringVehicule.setId(rs.getInt(1));</b>
-<b class="fc"><i>43</i>&nbsp;                    recurringVehiculeList.add(recurringVehicule);</b>
-<i>44</i>&nbsp;                }
-<b class="fc"><i>45</i>&nbsp;            }</b>
-<b class="fc"><i>46</i>&nbsp;        }catch (Exception ex){</b>
-<b class="nc"><i>47</i>&nbsp;            logger.error(&quot;Error fetching next available slot&quot;,ex);</b>
-<b class="fc"><i>48</i>&nbsp;        }</b>
-<i>49</i>&nbsp;
-<b class="fc"><i>50</i>&nbsp;        return recurringVehiculeList;</b>
-<i>51</i>&nbsp;    }
-<i>52</i>&nbsp;
-<i>53</i>&nbsp;    @Override
-<i>54</i>&nbsp;    public RecurringVehicule getRecurringVehicule(String vehicleRegNumber) {
-<b class="fc"><i>55</i>&nbsp;        RecurringVehicule recurringVehicule = null;</b>
-<b class="fc"><i>56</i>&nbsp;        try(Connection con = dataBaseConfig.getConnection();</b>
-<b class="fc"><i>57</i>&nbsp;            PreparedStatement ps = con.prepareStatement(</b>
-<i>58</i>&nbsp;                    DBConstants.GET_RECURRING_VEHICLE);) {
-<i>59</i>&nbsp;            //ID, VEHICLE_REG_NUMBER, LAST_VIST)
-<b class="fc"><i>60</i>&nbsp;            ps.setString(1, vehicleRegNumber);</b>
-<b class="fc"><i>61</i>&nbsp;            try(ResultSet rs = ps.executeQuery()){</b>
-<b class="fc"><i>62</i>&nbsp;                if(rs.next()){</b>
-<b class="fc"><i>63</i>&nbsp;                    recurringVehicule = new RecurringVehicule(</b>
-<b class="fc"><i>64</i>&nbsp;                            rs.getString(2),</b>
-<b class="fc"><i>65</i>&nbsp;                            rs.getTimestamp(3).toInstant());</b>
-<i>66</i>&nbsp;                    //https://stackoverflow.com/questions/26065928/timestamps-and-time-zone-conversions-in-java-and-mysql
-<i>67</i>&nbsp;                    //https://stackoverflow.com/questions/47198806/how-to-store-a-java-instant-in-a-mysql-database
-<b class="fc"><i>68</i>&nbsp;                    recurringVehicule.setId(rs.getInt(1));</b>
-<b class="fc"><i>69</i>&nbsp;                } else if (!rs.isBeforeFirst() ) {</b>
-<i>70</i>&nbsp;                    //System.out.println(&quot;No data&quot;);
-<b class="fc"><i>71</i>&nbsp;                    logger.error(&quot;getRecurringVehicule: No Data &quot;);</b>
-<i>72</i>&nbsp;                }
-<b class="fc"><i>73</i>&nbsp;            }</b>
-<b class="fc"><i>74</i>&nbsp;        }catch (Exception ex){</b>
-<b class="nc"><i>75</i>&nbsp;            logger.error(&quot;Error fetching next available slot&quot;,ex);</b>
-<b class="fc"><i>76</i>&nbsp;        }</b>
-<i>77</i>&nbsp;
-<b class="fc"><i>78</i>&nbsp;        return recurringVehicule;</b>
-<i>79</i>&nbsp;    }
-<i>80</i>&nbsp;
-<i>81</i>&nbsp;    @Override
-<i>82</i>&nbsp;    public RecurringVehicule addRecurrentVehicule(RecurringVehicule recurringVehicule) {
-<b class="fc"><i>83</i>&nbsp;        RecurringVehicule result = null;</b>
-<b class="fc"><i>84</i>&nbsp;        try(Connection con = dataBaseConfig.getConnection();</b>
-<b class="fc"><i>85</i>&nbsp;            PreparedStatement ps = con.prepareStatement(</b>
-<i>86</i>&nbsp;                    DBConstants.SAVE_RECURRING_VEHICLE,
-<i>87</i>&nbsp;                    Statement.RETURN_GENERATED_KEYS);) {
-<i>88</i>&nbsp;            //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
-<i>89</i>&nbsp;            //OffsetDateTime odt = OffsetDateTime.ofInstant(recurringVehicule.getLastVisit(), ZoneOffset.UTC);
-<b class="fc"><i>90</i>&nbsp;            ps.setString(1, recurringVehicule.getVehicleRegNumber());</b>
-<b class="fc"><i>91</i>&nbsp;            ps.setTimestamp(2, Timestamp.from(recurringVehicule.getLastVisit()));</b>
-<i>92</i>&nbsp;            //https://www.codota.com/code/java/classes/java.sql.PreparedStatement
-<b class="fc"><i>93</i>&nbsp;            int affectedRows = ps.executeUpdate();</b>
-<b class="fc"><i>94</i>&nbsp;            if (affectedRows == 0) {</b>
-<b class="nc"><i>95</i>&nbsp;                throw new SQLException(&quot;Creating Recurrent Vehicle failed, no rows affected.&quot;);</b>
-<i>96</i>&nbsp;            }
-<b class="fc"><i>97</i>&nbsp;            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {</b>
-<b class="fc"><i>98</i>&nbsp;                if (generatedKeys.next()) {</b>
-<b class="fc"><i>99</i>&nbsp;                    result = new RecurringVehicule(recurringVehicule.getVehicleRegNumber(),</b>
-<b class="fc"><i>100</i>&nbsp;                            recurringVehicule.getLastVisit());</b>
-<b class="fc"><i>101</i>&nbsp;                    result.setId(generatedKeys.getInt(1));</b>
-<i>102</i>&nbsp;                }
-<i>103</i>&nbsp;                else {
-<b class="nc"><i>104</i>&nbsp;                    throw new SQLException(&quot;Creating Recurrent Vehicle failed, no ID obtained.&quot;);</b>
-<i>105</i>&nbsp;                }
-<b class="fc"><i>106</i>&nbsp;            }</b>
-<b class="fc"><i>107</i>&nbsp;        }catch (Exception ex){</b>
-<b class="nc"><i>108</i>&nbsp;            logger.error(&quot;Error create new entry in recurring_vehicle base&quot;,ex);</b>
-<b class="fc"><i>109</i>&nbsp;        }</b>
-<i>110</i>&nbsp;
-<b class="fc"><i>111</i>&nbsp;        return result;</b>
-<i>112</i>&nbsp;    }
-<i>113</i>&nbsp;
-<i>114</i>&nbsp;    @Override
-<i>115</i>&nbsp;    public int updateRecurrentVehicule(RecurringVehicule recurringVehicule) {
-<b class="fc"><i>116</i>&nbsp;        int result = 0;</b>
-<b class="fc"><i>117</i>&nbsp;        try(Connection con = dataBaseConfig.getConnection();</b>
-<b class="fc"><i>118</i>&nbsp;            PreparedStatement ps = con.prepareStatement(</b>
-<i>119</i>&nbsp;                    DBConstants.UPDATE_RECURRING_VEHICLE);) {
-<i>120</i>&nbsp;            //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
-<b class="fc"><i>121</i>&nbsp;            ps.setString(1, recurringVehicule.getVehicleRegNumber());</b>
-<b class="fc"><i>122</i>&nbsp;            ps.setTimestamp(2, Timestamp.from(recurringVehicule.getLastVisit()));</b>
-<b class="fc"><i>123</i>&nbsp;            ps.setInt(3,recurringVehicule.getId());</b>
-<i>124</i>&nbsp;            //https://stackoverflow.com/questions/23088708/prepared-statement-returns-false-but-row-is-inserted
-<b class="fc"><i>125</i>&nbsp;            result = ps.executeUpdate();</b>
-<b class="fc"><i>126</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
-<b class="fc"><i>127</i>&nbsp;        }catch (Exception ex){</b>
-<b class="nc"><i>128</i>&nbsp;            logger.error(&quot;Error saving recurringVehicle info&quot;,ex);</b>
-<b class="fc"><i>129</i>&nbsp;        }</b>
-<b class="fc"><i>130</i>&nbsp;        return result;</b>
-<i>131</i>&nbsp;    }
-<i>132</i>&nbsp;
-<i>133</i>&nbsp;    @Override
-<i>134</i>&nbsp;    public void setDataBaseConfig(DataBaseConfig dataBaseConfig) {
-<b class="fc"><i>135</i>&nbsp;        this.dataBaseConfig = dataBaseConfig;</b>
-<b class="fc"><i>136</i>&nbsp;    }</b>
-<i>137</i>&nbsp;
-<i>138</i>&nbsp;    @Override
-<i>139</i>&nbsp;    public DataBaseConfig getDataBaseConfig() {
-<b class="nc"><i>140</i>&nbsp;        return this.dataBaseConfig;</b>
-<i>141</i>&nbsp;    }
-<i>142</i>&nbsp;}
+<i>23</i>&nbsp;/**
+<i>24</i>&nbsp; * &lt;b&gt;Simple brute force implementation of Interface IRecurringVehiculeDAO&lt;/b&gt;
+<i>25</i>&nbsp; * @see IRecurringVehiculeDAO
+<i>26</i>&nbsp; * @author Jedy10
+<i>27</i>&nbsp; * @since beta1.0.0
+<i>28</i>&nbsp; */
+<b class="fc"><i>29</i>&nbsp;public class RecurringVehiculeDAO implements IRecurringVehiculeDAO {</b>
+<i>30</i>&nbsp;
+<b class="fc"><i>31</i>&nbsp;    private static final Logger logger = LogManager.getLogger(&quot;RecurringVehiculeDAO&quot;);</b>
+<i>32</i>&nbsp;
+<b class="fc"><i>33</i>&nbsp;    public DataBaseConfig dataBaseConfig = new DataBaseConfig();</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    @Override
+<i>36</i>&nbsp;    public List&lt;RecurringVehicule&gt; getListOfRecurrentVehicule() {
+<b class="fc"><i>37</i>&nbsp;        RecurringVehicule recurringVehicule = null;</b>
+<b class="fc"><i>38</i>&nbsp;        List&lt;RecurringVehicule&gt; recurringVehiculeList = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>39</i>&nbsp;        try(Connection con = dataBaseConfig.getConnection();</b>
+<b class="fc"><i>40</i>&nbsp;            PreparedStatement ps = con.prepareStatement(</b>
+<i>41</i>&nbsp;                    DBConstants.GET_RECURRING_VEHICLE_LIST);) {
+<i>42</i>&nbsp;            //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
+<b class="fc"><i>43</i>&nbsp;            try(ResultSet rs = ps.executeQuery()){</b>
+<b class="fc"><i>44</i>&nbsp;                while(rs.next()){</b>
+<b class="fc"><i>45</i>&nbsp;                    recurringVehicule = new RecurringVehicule(</b>
+<b class="fc"><i>46</i>&nbsp;                            rs.getString(2),</b>
+<b class="fc"><i>47</i>&nbsp;                            rs.getTimestamp(3).toInstant());</b>
+<b class="fc"><i>48</i>&nbsp;                    recurringVehicule.setId(rs.getInt(1));</b>
+<b class="fc"><i>49</i>&nbsp;                    recurringVehiculeList.add(recurringVehicule);</b>
+<i>50</i>&nbsp;                }
+<b class="fc"><i>51</i>&nbsp;            }</b>
+<b class="fc"><i>52</i>&nbsp;        }catch (Exception ex){</b>
+<b class="nc"><i>53</i>&nbsp;            logger.error(&quot;Error fetching next available slot&quot;,ex);</b>
+<b class="fc"><i>54</i>&nbsp;        }</b>
+<i>55</i>&nbsp;
+<b class="fc"><i>56</i>&nbsp;        return recurringVehiculeList;</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    @Override
+<i>60</i>&nbsp;    public RecurringVehicule getRecurringVehicule(String vehicleRegNumber) {
+<b class="fc"><i>61</i>&nbsp;        RecurringVehicule recurringVehicule = null;</b>
+<b class="fc"><i>62</i>&nbsp;        try(Connection con = dataBaseConfig.getConnection();</b>
+<b class="fc"><i>63</i>&nbsp;            PreparedStatement ps = con.prepareStatement(</b>
+<i>64</i>&nbsp;                    DBConstants.GET_RECURRING_VEHICLE);) {
+<i>65</i>&nbsp;            //ID, VEHICLE_REG_NUMBER, LAST_VIST)
+<b class="fc"><i>66</i>&nbsp;            ps.setString(1, vehicleRegNumber);</b>
+<b class="fc"><i>67</i>&nbsp;            try(ResultSet rs = ps.executeQuery()){</b>
+<b class="fc"><i>68</i>&nbsp;                if(rs.next()){</b>
+<b class="fc"><i>69</i>&nbsp;                    recurringVehicule = new RecurringVehicule(</b>
+<b class="fc"><i>70</i>&nbsp;                            rs.getString(2),</b>
+<b class="fc"><i>71</i>&nbsp;                            rs.getTimestamp(3).toInstant());</b>
+<i>72</i>&nbsp;                    //https://stackoverflow.com/questions/26065928/timestamps-and-time-zone-conversions-in-java-and-mysql
+<i>73</i>&nbsp;                    //https://stackoverflow.com/questions/47198806/how-to-store-a-java-instant-in-a-mysql-database
+<b class="fc"><i>74</i>&nbsp;                    recurringVehicule.setId(rs.getInt(1));</b>
+<b class="fc"><i>75</i>&nbsp;                } else if (!rs.isBeforeFirst() ) {</b>
+<i>76</i>&nbsp;                    //System.out.println(&quot;No data&quot;);
+<b class="fc"><i>77</i>&nbsp;                    logger.warn(&quot;getRecurringVehicule: No Data &quot;);</b>
+<i>78</i>&nbsp;                }
+<b class="fc"><i>79</i>&nbsp;            }</b>
+<b class="fc"><i>80</i>&nbsp;        }catch (Exception ex){</b>
+<b class="nc"><i>81</i>&nbsp;            logger.error(&quot;Error fetching next available slot&quot;,ex);</b>
+<b class="fc"><i>82</i>&nbsp;        }</b>
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;        return recurringVehicule;</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    @Override
+<i>88</i>&nbsp;    public RecurringVehicule addRecurrentVehicule(RecurringVehicule recurringVehicule) {
+<b class="fc"><i>89</i>&nbsp;        RecurringVehicule result = null;</b>
+<b class="fc"><i>90</i>&nbsp;        try(Connection con = dataBaseConfig.getConnection();</b>
+<b class="fc"><i>91</i>&nbsp;            PreparedStatement ps = con.prepareStatement(</b>
+<i>92</i>&nbsp;                    DBConstants.SAVE_RECURRING_VEHICLE,
+<i>93</i>&nbsp;                    Statement.RETURN_GENERATED_KEYS);) {
+<i>94</i>&nbsp;            //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
+<i>95</i>&nbsp;            //OffsetDateTime odt = OffsetDateTime.ofInstant(recurringVehicule.getLastVisit(), ZoneOffset.UTC);
+<b class="fc"><i>96</i>&nbsp;            ps.setString(1, recurringVehicule.getVehicleRegNumber());</b>
+<b class="fc"><i>97</i>&nbsp;            ps.setTimestamp(2, Timestamp.from(recurringVehicule.getLastVisit()));</b>
+<i>98</i>&nbsp;            //https://www.codota.com/code/java/classes/java.sql.PreparedStatement
+<b class="fc"><i>99</i>&nbsp;            int affectedRows = ps.executeUpdate();</b>
+<b class="fc"><i>100</i>&nbsp;            if (affectedRows == 0) {</b>
+<b class="nc"><i>101</i>&nbsp;                throw new SQLException(&quot;Creating Recurrent Vehicle failed, no rows affected.&quot;);</b>
+<i>102</i>&nbsp;            }
+<b class="fc"><i>103</i>&nbsp;            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {</b>
+<b class="fc"><i>104</i>&nbsp;                if (generatedKeys.next()) {</b>
+<b class="fc"><i>105</i>&nbsp;                    result = new RecurringVehicule(recurringVehicule.getVehicleRegNumber(),</b>
+<b class="fc"><i>106</i>&nbsp;                            recurringVehicule.getLastVisit());</b>
+<b class="fc"><i>107</i>&nbsp;                    result.setId(generatedKeys.getInt(1));</b>
+<i>108</i>&nbsp;                }
+<i>109</i>&nbsp;                else {
+<b class="nc"><i>110</i>&nbsp;                    throw new SQLException(&quot;Creating Recurrent Vehicle failed, no ID obtained.&quot;);</b>
+<i>111</i>&nbsp;                }
+<b class="fc"><i>112</i>&nbsp;            }</b>
+<b class="fc"><i>113</i>&nbsp;        }catch (Exception ex){</b>
+<b class="nc"><i>114</i>&nbsp;            logger.error(&quot;Error create new entry in recurring_vehicle base&quot;,ex);</b>
+<b class="fc"><i>115</i>&nbsp;        }</b>
+<i>116</i>&nbsp;
+<b class="fc"><i>117</i>&nbsp;        return result;</b>
+<i>118</i>&nbsp;    }
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;    @Override
+<i>121</i>&nbsp;    public int updateRecurrentVehicule(RecurringVehicule recurringVehicule) {
+<b class="fc"><i>122</i>&nbsp;        int result = 0;</b>
+<b class="fc"><i>123</i>&nbsp;        try(Connection con = dataBaseConfig.getConnection();</b>
+<b class="fc"><i>124</i>&nbsp;            PreparedStatement ps = con.prepareStatement(</b>
+<i>125</i>&nbsp;                    DBConstants.UPDATE_RECURRING_VEHICLE);) {
+<i>126</i>&nbsp;            //ID, VEHICLE_REG_NUMBER, LAST_VISIT)
+<b class="fc"><i>127</i>&nbsp;            ps.setString(1, recurringVehicule.getVehicleRegNumber());</b>
+<b class="fc"><i>128</i>&nbsp;            ps.setTimestamp(2, Timestamp.from(recurringVehicule.getLastVisit()));</b>
+<b class="fc"><i>129</i>&nbsp;            ps.setInt(3,recurringVehicule.getId());</b>
+<i>130</i>&nbsp;            //https://stackoverflow.com/questions/23088708/prepared-statement-returns-false-but-row-is-inserted
+<b class="fc"><i>131</i>&nbsp;            result = ps.executeUpdate();</b>
+<b class="fc"><i>132</i>&nbsp;            dataBaseConfig.closePreparedStatement(ps);</b>
+<b class="fc"><i>133</i>&nbsp;        }catch (Exception ex){</b>
+<b class="nc"><i>134</i>&nbsp;            logger.error(&quot;Error saving recurringVehicle info&quot;,ex);</b>
+<b class="fc"><i>135</i>&nbsp;        }</b>
+<b class="fc"><i>136</i>&nbsp;        return result;</b>
+<i>137</i>&nbsp;    }
+<i>138</i>&nbsp;
+<i>139</i>&nbsp;    @Override
+<i>140</i>&nbsp;    public void setDataBaseConfig(DataBaseConfig dataBaseConfig) {
+<b class="fc"><i>141</i>&nbsp;        this.dataBaseConfig = dataBaseConfig;</b>
+<b class="fc"><i>142</i>&nbsp;    }</b>
 <i>143</i>&nbsp;
-<i>144</i>&nbsp;
-<i>145</i>&nbsp;
-<i>146</i>&nbsp;////https://stackoverflow.com/questions/42766674/java-convert-java-time-instant-to-java-sql-timestamp-without-zone-offset
-<i>147</i>&nbsp;//https://stackoverflow.com/questions/43259722/java-date-and-timestamp-from-instance-of-zoneddatetime-utc
+<i>144</i>&nbsp;    @Override
+<i>145</i>&nbsp;    public DataBaseConfig getDataBaseConfig() {
+<b class="nc"><i>146</i>&nbsp;        return this.dataBaseConfig;</b>
+<i>147</i>&nbsp;    }
+<i>148</i>&nbsp;}
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;////https://stackoverflow.com/questions/42766674/java-convert-java-time-instant-to-java-sql-timestamp-without-zone-offset
+<i>153</i>&nbsp;//https://stackoverflow.com/questions/43259722/java-date-and-timestamp-from-instance-of-zoneddatetime-utc
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>

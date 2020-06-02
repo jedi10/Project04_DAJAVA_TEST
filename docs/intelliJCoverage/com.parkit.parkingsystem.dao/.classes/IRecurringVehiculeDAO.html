@@ -28,13 +28,13 @@
   <th class="name">Class</th>
 </tr>
   <tr>
-    <td class="name">IRecurringVehiculeDAO$MockitoMock$1302363577</td>
+    <td class="name">IRecurringVehiculeDAO$MockitoMock$227150166</td>
   </tr>
   <tr>
-    <td class="name">IRecurringVehiculeDAO$MockitoMock$1302363577$auxiliary$BrNftjJJ</td>
+    <td class="name">IRecurringVehiculeDAO$MockitoMock$227150166$auxiliary$BbJ99yzd</td>
   </tr>
   <tr>
-    <td class="name">IRecurringVehiculeDAO$MockitoMock$1302363577$auxiliary$IwipXgb6</td>
+    <td class="name">IRecurringVehiculeDAO$MockitoMock$227150166$auxiliary$io9OImZp</td>
   </tr>
 <tr>
   <td class="name"><strong>total</strong></td>
@@ -52,27 +52,41 @@
 <i>5</i>&nbsp;
 <i>6</i>&nbsp;import java.util.List;
 <i>7</i>&nbsp;
-<i>8</i>&nbsp;public interface IRecurringVehiculeDAO {
-<i>9</i>&nbsp;
-<i>10</i>&nbsp;    public List&lt;RecurringVehicule&gt; getListOfRecurrentVehicule();
-<i>11</i>&nbsp;
-<i>12</i>&nbsp;    public RecurringVehicule getRecurringVehicule(String vehicleRegNumber);
-<i>13</i>&nbsp;
-<i>14</i>&nbsp;    public RecurringVehicule addRecurrentVehicule(RecurringVehicule recurringVehicule);
-<i>15</i>&nbsp;
-<i>16</i>&nbsp;    public int updateRecurrentVehicule(RecurringVehicule recurringVehicule);
-<i>17</i>&nbsp;
-<i>18</i>&nbsp;    public void setDataBaseConfig(DataBaseConfig dataBaseConfig);
-<i>19</i>&nbsp;
-<i>20</i>&nbsp;    public DataBaseConfig getDataBaseConfig();
-<i>21</i>&nbsp;
-<i>22</i>&nbsp;}
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * CRUD operations for RecurringVehicle Table
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;public interface IRecurringVehiculeDAO {
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    public List&lt;RecurringVehicule&gt; getListOfRecurrentVehicule();
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    public RecurringVehicule getRecurringVehicule(String vehicleRegNumber);
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public RecurringVehicule addRecurrentVehicule(RecurringVehicule recurringVehicule);
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    public int updateRecurrentVehicule(RecurringVehicule recurringVehicule);
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    /**
+<i>22</i>&nbsp;     * &lt;b&gt;Setter for Resource needed to connect with DBB&lt;/b&gt;
+<i>23</i>&nbsp;     * &lt;p&gt;useful to choose Type of Table used (Production or Test)&lt;/p&gt;     *
+<i>24</i>&nbsp;     * @param dataBaseConfig resource needed to connect with DBB
+<i>25</i>&nbsp;     * @see DataBaseConfig
+<i>26</i>&nbsp;     */
+<i>27</i>&nbsp;    public void setDataBaseConfig(DataBaseConfig dataBaseConfig);
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    /**
+<i>30</i>&nbsp;     * Getter for Resource needed to connect with DBB
+<i>31</i>&nbsp;     * @return dataBaseConfig
+<i>32</i>&nbsp;     * @see DataBaseConfig
+<i>33</i>&nbsp;     */
+<i>34</i>&nbsp;    public DataBaseConfig getDataBaseConfig();
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-22 15:59</div>
+    <div style="float:right;">generated on 2020-06-02 15:37</div>
 </div>
 </body>
 </html>
