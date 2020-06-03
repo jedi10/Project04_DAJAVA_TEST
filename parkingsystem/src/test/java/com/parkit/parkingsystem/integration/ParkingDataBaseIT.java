@@ -98,13 +98,15 @@ public class ParkingDataBaseIT {
         int availableParkingSpotNumber = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
         assertNotNull(availableParkingSpotNumber,
                 "no parking spot available (null)");
-        //Get vehicle Parking Spot 
+        //Get vehicle Parking Spot
         ParkingSpot parkingSpot = ticket.getParkingSpot();
         assertNotNull(parkingSpot,
                 "Ticket don't have any parking spot (null)");
         assertTrue(parkingSpot instanceof ParkingSpot,
                 "Returned object is not a parking Spot");
         assertNotEquals(parkingSpot.getId(), availableParkingSpotNumber,
+                "Availability of parking spot has not been updated");
+        assertFalse(parkingSpot.isAvailable(),
                 "Availability of parking spot has not been updated");
     }
 
@@ -172,6 +174,8 @@ public class ParkingDataBaseIT {
                 "Ticket don't have any parking spot (null)");
 
         assertEquals(parkingSpot.getId(), availableParkingSpotNumber,
+                "Availability of parking spot has not been updated");
+        assertTrue(parkingSpot.isAvailable(),
                 "Availability of parking spot has not been updated");
     }
 }
