@@ -1,6 +1,7 @@
 package com.parkit.parkingsystem.integration;
 
 import com.parkit.parkingsystem.constants.Fare;
+import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.RecurringVehiculeDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -93,11 +94,18 @@ public class ParkingDataBaseIT {
         //*********************************************
         //***TEST Parking Spot Availability in DBB ****
         //*********************************************
+        //Get next available Parking Spot
+        int availableParkingSpotNumber = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
+        assertNotNull(availableParkingSpotNumber,
+                "no parking spot available (null)");
+        //Get vehicle Parking Spot
         ParkingSpot parkingSpot = ticket.getParkingSpot();
         assertNotNull(parkingSpot,
                 "Ticket don't have any parking spot (null)");
         assertTrue(parkingSpot instanceof ParkingSpot,
                 "Returned object is not a parking Spot");
+        assertNotEquals(parkingSpot.getId(), availableParkingSpotNumber,
+                "Availability of parking spot has not been updated");
         assertFalse(parkingSpot.isAvailable(),
                 "Availability of parking spot has not been updated");
     }
@@ -151,7 +159,23 @@ public class ParkingDataBaseIT {
                 "Price is null");
         assertEquals(Fare.CAR_RATE_PER_HOUR, ticket.getPrice(),
                 "Price is not the proper one");
+        //*********************************************
+        //***TEST Parking Spot Availability in DBB ****
+        //*********************************************
+        //Get ParkingSpot on Entry
+        ParkingSpot parkingSpot = ticket.getParkingSpot();
+        assertNotNull(parkingSpot,
+                "Ticket don't have any parking spot (null)");
+        assertTrue(parkingSpot instanceof ParkingSpot,
+                "Returned object is not a parking Spot");
+        //Get Available Parking Spot on Exit
+        int availableParkingSpotNumber = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
+        assertNotNull(availableParkingSpotNumber,
+                "Ticket don't have any parking spot (null)");
 
+        assertEquals(parkingSpot.getId(), availableParkingSpotNumber,
+                "Availability of parking spot has not been updated");
+        assertTrue(parkingSpot.isAvailable(),
+                "Availability of parking spot has not been updated");
     }
-
 }
